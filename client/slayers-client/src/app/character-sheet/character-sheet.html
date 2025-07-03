@@ -1,0 +1,22 @@
+<div class="slayerDefined" *ngIf="slayer">
+    <div class="topHalf">
+        <p>{{player?.displayName}}</p>
+        <p>{{slayer.name}}</p>
+        <p>{{slayer.class}}</p>
+        <p>HP: {{slayer.currentHP}}/{{slayer.maxHP}}</p>
+        <p>{{slayer.speed}}</p>
+        <p>{{slayer.weaponNumber}}d{{slayer.weaponSides}}</p>
+        <p>{{slayer.damage}}</p>
+        <div class="advances">
+            <div class="advance" *ngFor="let advance of slayer.advances">
+                <p>{{advance.name}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="bottomHalf">
+    
+    </div>
+</div>
+<div class="slayerUndefined" *ngIf="!slayer">
+    <p>No Slayer assigned</p>
+</div>

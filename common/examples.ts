@@ -1,0 +1,90 @@
+import { IPlayer, ISlayer, IGunslinger, IBlade, IArcanist, ITactician, ERunes, EPlaybooks, EStances } from "./common";
+
+export const Clint: IGunslinger = {
+    name: "Clint",
+    class: EPlaybooks.Gunslinger,
+    maxHP: 8,
+    currentHP: 7,
+    damage: 2,
+    speed: 6,
+    weaponNumber: 1,
+    weaponSides: 6,
+
+    advances: [{
+        name: "Draw",
+        desc: "Roll a d8 for speed"
+    }],
+    chamber1Loaded: true,
+    chamber1Rune: ERunes.None,
+    chamber2Loaded: true,
+    chamber2Rune: ERunes.None,
+    chamber3Loaded: true,
+    chamber3Rune: ERunes.None,
+    chamber4Loaded: true,
+    chamber4Rune: ERunes.None,
+    chamber5Loaded: true,
+    chamber5Rune: ERunes.None,
+    chamber6Loaded: true,
+    chamber6Rune: ERunes.None,
+}
+
+export const Cervantes: IBlade = {
+    name: "Cervantes de Leon",
+    class: EPlaybooks.Blade,
+    maxHP: 8,
+    currentHP: 7,
+    damage: 2,
+    speed: 6,
+    weaponNumber: 1,
+    weaponSides: 6,
+
+    advances: [],
+    stance: EStances.Flow
+}
+
+export const Ryze: IArcanist = {
+    name: "Ryze",
+    class: EPlaybooks.Arcanist,
+    maxHP: 8,
+    currentHP: 7,
+    damage: 2,
+    speed: 6,
+    weaponNumber: 1,
+    weaponSides: 6,
+
+    advances: [],
+    corruption: 2,
+    favoredSpell: "",
+    knownSpells: [
+        {
+            name: "Create Potato",
+            desc: "Creates a potato",
+            enhanced: false
+        }
+    ]
+}
+
+export const Gene: ITactician = {
+    name: "Gene Krantz",
+    class: EPlaybooks.Tactician,
+    maxHP: 8,
+    currentHP: 7,
+    damage: 2,
+    speed: 6,
+    weaponNumber: 1,
+    weaponSides: 6,
+
+    advances: [{
+        name: "Draw",
+        desc: "Roll a d8 for speed"
+    }],
+    plans: []
+}
+
+
+
+export const Chris: IPlayer = {
+    id: "soubaiurvb",
+    name: "dails",
+    displayName: "Chris"
+}
