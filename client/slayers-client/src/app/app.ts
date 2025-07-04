@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { IPlayer } from '../../../../common/common';
 import { Chris } from '../../../../common/examples';
 import { CharacterSheet } from './character-sheet/character-sheet';
-import { Colyseus } from './services/colyseus';
+import { ColyseusService } from './services/colyseusService';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +15,7 @@ export class App {
   protected title = 'slayers-client';
 
   constructor(
-    public colyseus: Colyseus
+    public colyseus: ColyseusService
   ){
     this.player = Chris;
   }

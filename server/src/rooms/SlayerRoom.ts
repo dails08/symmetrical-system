@@ -1,5 +1,5 @@
 import { Room, Client, logger } from "@colyseus/core";
-import { SlayerRoomState, Player, Slayer, schemaFromTemplate } from "../SlayerRoomState";
+import { SlayerRoomState, Player, Slayer, Blade, Tactician, Gunslinger, Arcanist } from "../SlayerRoomState";
 import { IJoinOptions } from "../../../common/common";
 import { Clint, Ryze, Cervantes, Gene} from "../../../common/examples";
 
@@ -25,19 +25,25 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     //   }, 1000);
     // }, 5000 )
 
-    const clint = schemaFromTemplate(Clint);
+    // const clint = schemaFromTemplate(Clint);
     // logger.debug(clint);
 
-    const ryze = schemaFromTemplate(Ryze);
+    const ryze = new Arcanist(Ryze);
     // logger.debug(ryze);
 
-    const cervantes = schemaFromTemplate(Cervantes);
+    const cervantes = new Blade(Cervantes);
     // logger.debug(cervantes);
-    
+
+    const gene = new Tactician(Gene);
+    // logger.debug(cervantes);
+    logger.debug(Clint);
+
+    const clint = new Gunslinger(Clint);
+    logger.debug(clint);
     setTimeout(() => { this.state.roster.push(clint)}, 5000);
-    setTimeout(() => { this.state.roster.push(cervantes)}, 6000);
-    setTimeout(() => { this.state.roster.push(ryze)}, 7000);  
-    setTimeout(() => { this.state.roster.push(schemaFromTemplate(Gene))}, 8000);
+    setTimeout(() => { if (cervantes) this.state.roster.push(cervantes)}, 6000);
+    setTimeout(() => { if (ryze) this.state.roster.push(ryze)}, 7000);  
+    setTimeout(() => { if (gene) this.state.roster.push(gene)}, 8000);
     this.onMessage("type", (client, message) => {
       //
       // handle "type" message

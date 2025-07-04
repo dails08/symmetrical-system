@@ -16,7 +16,23 @@ export class Player extends Schema implements IPlayer {
 
 // export class Slayer extends Schema implements ISlayer { //re-un-comment this to soft-check interface compliance
 export class Slayer extends Schema {
-  @type("string") name: string = "";
+
+  constructor(data?: ISlayer){
+    super();
+    if (data){
+      Object.assign(this, data);
+      this.advances = new ArraySchema<Advance>();
+      for (let advance of data.advances){
+        const newAdvance = new Advance();
+        newAdvance.name = advance.name;
+        newAdvance.desc = advance.desc;
+        this.advances.push(newAdvance);
+      }
+    } else {
+      this.advances = new ArraySchema<Advance>();
+    }
+  }
+  @type("string") name: string = "Nameless";
   @type("string") class: EPlaybooks = EPlaybooks.Blade;
   @type("number") maxHP: number = 8;
   @type("number") currentHP: number = 8;
@@ -26,20 +42,30 @@ export class Slayer extends Schema {
   @type("number") speed: 8 | 4 | 6 | 10 | 12 = 6;
   @type("number") weaponNumber: number = 1;
   @type("number") weaponSides: number = 6;
-
-  loadAdvances(data: ISlayer) {
-    this.advances = new ArraySchema<Advance>();
-    for (let advance of data.advances){
-      const newAdvance = new Advance();
-      newAdvance.name = advance.name;
-      newAdvance.desc = advance.desc
-      this.advances.push(new Advance)
-    }
-  }
 }
 
 // export class Gunslinger extends Slayer implements IGunslinger {
 export class Gunslinger extends Slayer {
+
+  constructor(data?: IGunslinger){
+    super(data || undefined);
+    this.class = EPlaybooks.Gunslinger;
+
+    if (data){
+      this.chamber1Loaded = data.chamber1Loaded;
+      this.chamber1Rune = data.chamber1Rune;
+      this.chamber2Loaded = data.chamber2Loaded;
+      this.chamber2Rune = data.chamber2Rune;
+      this.chamber3Loaded = data.chamber3Loaded;
+      this.chamber3Rune = data.chamber3Rune;
+      this.chamber4Loaded = data.chamber4Loaded;
+      this.chamber4Rune = data.chamber4Rune;
+      this.chamber5Loaded = data.chamber5Loaded;
+      this.chamber5Rune = data.chamber5Rune;
+      this.chamber6Loaded = data.chamber6Loaded;
+      this.chamber6Rune = data.chamber6Rune;  
+    }
+  }
   @type("boolean") chamber1Loaded: boolean = false;
   @type("string") chamber1Rune: ERunes = ERunes.None;
   @type("boolean") chamber2Loaded: boolean = false;
@@ -52,73 +78,78 @@ export class Gunslinger extends Slayer {
   @type("string") chamber5Rune: ERunes = ERunes.None;
   @type("boolean") chamber6Loaded: boolean = false;
   @type("string") chamber6Rune: ERunes = ERunes.None;
-
-  static from(data: IGunslinger): Gunslinger {
-    const returnValue = new Gunslinger();
-    Object.assign(returnValue, data);
-    returnValue.loadAdvances(data);
-    return returnValue;
-  }
 }
 
 // export class Blade extends Slayer implements IBlade {
 export class Blade extends Slayer {
-  @type("string") stance: EStances = EStances.Flow;
 
-  static from(data: IBlade): Blade {
-    const returnValue = new Blade();
-    Object.assign(returnValue, data);
-    returnValue.loadAdvances(data);
-    return returnValue;
+  constructor(data?: IBlade) {
+    super(data || undefined);
+    this.class = EPlaybooks.Blade;
+    if (data){
+      this.stance = data.stance;
+    }
   }
-
+  @type("string") stance: EStances = EStances.Flow;
 }
 
 export class KnownSpell extends Schema {
+  constructor(newSpell: {name: string, desc: string, enhanced: boolean}){
+    super();
+    Object.assign(this, newSpell);
+  }
   @type("string") name = "";
   @type("string") desc = "";
   @type("boolean") enhanced = false;
 }
 
 export class Arcanist extends Slayer {
+
+  constructor(data?: IArcanist){
+    super(data);
+    this.knownSpells = new ArraySchema<KnownSpell>();
+    this.class = EPlaybooks.Arcanist;
+    if (data){
+      this.corruption = data.corruption;
+      this.favoredSpell = data.favoredSpell;  
+      for (let knownSpell of data.knownSpells){
+        const newKnownSpell = new KnownSpell(knownSpell);
+        newKnownSpell.name = knownSpell.name;
+        newKnownSpell.desc = knownSpell.desc;
+        newKnownSpell.enhanced = knownSpell.enhanced;
+        this.knownSpells.push(newKnownSpell);
+      }
+    }
+  }
   @type("number") corruption: number = 0;
   @type("string") favoredSpell: string = "";
   @type([KnownSpell]) knownSpells = new ArraySchema<KnownSpell>();
 
-  static from(data: IArcanist): Arcanist {
-    const returnValue = new Arcanist();
-    Object.assign(returnValue, data);
-    returnValue.loadAdvances(data);
-    returnValue.knownSpells = new ArraySchema<KnownSpell>();
-    for (let knownSpell of data.knownSpells){
-      const newKnownSpell = new KnownSpell();
-      newKnownSpell.name = knownSpell.name;
-      newKnownSpell.desc = knownSpell.desc;
-      newKnownSpell.enhanced = knownSpell.enhanced;
-      returnValue.knownSpells.push(newKnownSpell);
-    }
-    return returnValue;
-  }
 }
 
 export class Tactician extends Slayer {
-  @type(["number"]) plans: number[] = [];
+  constructor(data?: ITactician){
+    super(data);
+    this.class = EPlaybooks.Tactician;
+    this.plans = new ArraySchema<Number>();
+    if (data){
+      for (const plan of data.plans){
+        this.plans.push(plan);
+      }  
+    }
 
-  static from(data: ITactician): Tactician {
-    const returnValue = new Tactician();
-    Object.assign(returnValue, data);
-    returnValue.loadAdvances(data);
-    return returnValue;
   }
+  @type(["number"]) plans = new ArraySchema<Number>();
+
 }
 
-export function schemaFromTemplate(data: ISlayer) {
-  if (data.class == EPlaybooks.Blade) return Blade.from(data as IBlade);
-  if (data.class == EPlaybooks.Gunslinger) return Gunslinger.from(data as IGunslinger);
-  if (data.class == EPlaybooks.Arcanist) return Arcanist.from(data as IArcanist);
-  if (data.class == EPlaybooks.Tactician) return Tactician.from(data as ITactician);
-  return undefined
-}
+// export function schemaFromTemplate(data: ISlayer) {
+//   if (data.class == EPlaybooks.Blade) return Blade.from(data as IBlade);
+//   if (data.class == EPlaybooks.Gunslinger) return Gunslinger.from(data as IGunslinger);
+//   if (data.class == EPlaybooks.Arcanist) return Arcanist.from(data as IArcanist);
+//   if (data.class == EPlaybooks.Tactician) return Tactician.from(data as ITactician);
+//   return undefined
+// }
 
 export class SlayerRoomState extends Schema {
 

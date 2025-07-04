@@ -8,8 +8,9 @@
         <p>{{slayer.weaponNumber}}d{{slayer.weaponSides}}</p>
         <p>{{slayer.damage}}</p>
         <div class="advances">
-            <div class="advance" *ngFor="let advance of slayer.advances">
-                <p>{{advance.name}}</p>
+            <div class="advance" *ngFor="let advance of slayer.advances.toArray()">
+                <p>Name: {{advance.name}}</p>
+                <p>Desc: {{advance.desc}}</p>
             </div>
         </div>
     </div>
