@@ -143,17 +143,11 @@ export class Tactician extends Slayer {
 
 }
 
-// export function schemaFromTemplate(data: ISlayer) {
-//   if (data.class == EPlaybooks.Blade) return Blade.from(data as IBlade);
-//   if (data.class == EPlaybooks.Gunslinger) return Gunslinger.from(data as IGunslinger);
-//   if (data.class == EPlaybooks.Arcanist) return Arcanist.from(data as IArcanist);
-//   if (data.class == EPlaybooks.Tactician) return Tactician.from(data as ITactician);
-//   return undefined
-// }
 
 export class SlayerRoomState extends Schema {
 
   @type({map: Player}) playerMap = new MapSchema<Player>();
   @type([Slayer]) roster = new ArraySchema<Slayer>();
   @type([Slayer]) kia = new ArraySchema<Slayer>();
+  @type({ map: Slayer }) assignments = new MapSchema<Slayer>();
 }

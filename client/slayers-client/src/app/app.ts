@@ -4,6 +4,7 @@ import { IPlayer } from '../../../../common/common';
 import { Chris } from '../../../../common/examples';
 import { CharacterSheet } from './character-sheet/character-sheet';
 import { ColyseusService } from './services/colyseusService';
+import { CentralService } from './central-service';
 
 @Component({
   selector: 'app-root',
@@ -15,10 +16,10 @@ export class App {
   protected title = 'slayers-client';
 
   constructor(
-    public colyseus: ColyseusService
+    public colyseus: ColyseusService,
+    public centralService: CentralService
   ){
-    this.player = Chris;
+    this.centralService.player = Chris;
   }
 
-  player: IPlayer | undefined;
 }

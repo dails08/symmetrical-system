@@ -40,10 +40,16 @@ export class SlayerRoom extends Room<SlayerRoomState> {
 
     const clint = new Gunslinger(Clint);
     logger.debug(clint);
-    setTimeout(() => { this.state.roster.push(clint)}, 5000);
-    setTimeout(() => { if (cervantes) this.state.roster.push(cervantes)}, 6000);
-    setTimeout(() => { if (ryze) this.state.roster.push(ryze)}, 7000);  
-    setTimeout(() => { if (gene) this.state.roster.push(gene)}, 8000);
+
+    const exampleBand = [clint, ryze, cervantes, gene];
+    for (const elem of exampleBand){
+      this.state.roster.push(elem);
+    }
+
+    // setTimeout(() => { this.state.roster.push(clint)}, 5000);
+    // setTimeout(() => { if (cervantes) this.state.roster.push(cervantes)}, 6000);
+    // setTimeout(() => { if (ryze) this.state.roster.push(ryze)}, 7000);  
+    // setTimeout(() => { if (gene) this.state.roster.push(gene)}, 8000);
     this.onMessage("type", (client, message) => {
       //
       // handle "type" message
@@ -56,7 +62,12 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     const player = new Player();
     player.name = options.name || "UN Owen";
     player.displayName = options.displayName || "NoName";
+    // client.send()
     this.state.playerMap.set(client.sessionId, player);
+    const ix = Math.floor(Math.random() * this.state.roster.length);
+    console.log("Assigning " + this.state.roster[ix].name);
+    this.state.assignments.set(client.sessionId, this.state.roster[ix]);
+
   }
 
   onLeave (client: Client, consented: boolean) {
