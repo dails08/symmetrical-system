@@ -1,11 +1,19 @@
 import { Room, Client, logger } from "@colyseus/core";
 import { SlayerRoomState, Player, Slayer, Blade, Tactician, Gunslinger, Arcanist } from "../SlayerRoomState";
-import { IJoinOptions } from "../../../common/common";
+import { ICampaign, IJoinOptions } from "../../../common/common";
 import { Clint, Ryze, Cervantes, Gene} from "../../../common/examples";
 
 export class SlayerRoom extends Room<SlayerRoomState> {
   maxClients = 4;
   state = new SlayerRoomState();
+  campaign: ICampaign | undefined = {
+    gms: [],
+    id: "1234",
+    kia: [],
+    roster: [],
+    name: "Starter campaign",
+    players: []
+  }
   
 
 
@@ -66,7 +74,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     this.state.playerMap.set(client.sessionId, player);
     const ix = Math.floor(Math.random() * this.state.roster.length);
     console.log("Assigning " + this.state.roster[ix].name);
-    this.state.assignments.set(client.sessionId, this.state.roster[ix]);
+    this.state.currentAssignments.set(client.sessionId, this.state.roster[ix]);
 
   }
 

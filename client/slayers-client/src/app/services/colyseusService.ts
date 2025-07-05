@@ -17,7 +17,7 @@ export class ColyseusService {
   private rosterChangeSubject = new Subject<Slayer>();
   private assignmentChangeSubject = new Subject<[Slayer, String]>();
 
-  constructor() { 
+  constructor() {
     this.client = new Client("http://localhost:2567");
     console.log(this.client);
     this.init();
@@ -28,12 +28,12 @@ export class ColyseusService {
     this.room = await this.client.joinOrCreate<SlayerRoomState>("gameplay", {name: "Chris?", displayName: "dails"});
     console.log("Joined " + this.room.name);
     this.$ = getStateCallbacks<SlayerRoomState>(this.room);
-    
+
     this.$(this.room.state).roster.onAdd((item, ix) => {
       this.rosterChangeSubject.next(item);
     })
 
-    this.$(this.room.state).assignments.onAdd((item, ix) => {
+    this.$(this.room.state).currentAssignments.onAdd((item, ix) => {
       this.assignmentChangeSubject.next([item, ix]);
     })
 

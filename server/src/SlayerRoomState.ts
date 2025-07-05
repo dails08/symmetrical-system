@@ -32,6 +32,24 @@ export class Slayer extends Schema {
       this.advances = new ArraySchema<Advance>();
     }
   }
+
+  toISlayer(){
+    const slayer: ISlayer = {
+      name: this.name,
+      class: this.class,
+      currentHP: this.currentHP,
+      damage: this.damage,
+      maxHP: this.maxHP,
+      speed: this.speed,
+      weaponNumber: this.weaponNumber,
+      weaponSides: this.weaponSides,
+      advances: []
+    }
+    for (const advance of this.advances){
+      slayer.advances.push(advance);
+    }
+    return slayer;
+  }
   @type("string") name: string = "Nameless";
   @type("string") class: EPlaybooks = EPlaybooks.Blade;
   @type("number") maxHP: number = 8;
@@ -66,6 +84,24 @@ export class Gunslinger extends Slayer {
       this.chamber6Rune = data.chamber6Rune;  
     }
   }
+
+  toIGunslinger(): IGunslinger{
+    const returnValue: IGunslinger = this.toISlayer() as IGunslinger;
+
+    returnValue.chamber1Loaded = this.chamber1Loaded;
+    returnValue.chamber1Rune = this.chamber1Rune;
+    returnValue.chamber2Loaded = this.chamber2Loaded;
+    returnValue.chamber2Rune = this.chamber2Rune;
+    returnValue.chamber3Loaded = this.chamber3Loaded;
+    returnValue.chamber3Rune = this.chamber3Rune;
+    returnValue.chamber4Loaded = this.chamber4Loaded;
+    returnValue.chamber4Rune = this.chamber4Rune;
+    returnValue.chamber5Loaded = this.chamber5Loaded;
+    returnValue.chamber5Rune = this.chamber5Rune;
+    returnValue.chamber6Loaded = this.chamber6Loaded;
+    returnValue.chamber6Rune = this.chamber6Rune;
+    return returnValue;
+  }
   @type("boolean") chamber1Loaded: boolean = false;
   @type("string") chamber1Rune: ERunes = ERunes.None;
   @type("boolean") chamber2Loaded: boolean = false;
@@ -90,6 +126,12 @@ export class Blade extends Slayer {
       this.stance = data.stance;
     }
   }
+
+  toIBlade(){
+    const returnValue: IBlade = this.toISlayer() as IBlade;
+    returnValue.stance = this.stance;
+    return returnValue;
+  }
   @type("string") stance: EStances = EStances.Flow;
 }
 
@@ -97,6 +139,14 @@ export class KnownSpell extends Schema {
   constructor(newSpell: {name: string, desc: string, enhanced: boolean}){
     super();
     Object.assign(this, newSpell);
+  }
+
+  toObject(){
+    return {
+      name: this.name,
+      desc: this.desc,
+      enhanced: this.enhanced
+    }
   }
   @type("string") name = "";
   @type("string") desc = "";
@@ -121,6 +171,17 @@ export class Arcanist extends Slayer {
       }
     }
   }
+
+  toIArcanist(){
+    const returnValue: IArcanist = this.toISlayer() as IArcanist;
+    returnValue.corruption = this.corruption;
+    returnValue.favoredSpell = this.favoredSpell;
+    returnValue.knownSpells = [];
+    for (const knownSpell of this.knownSpells){
+      returnValue.knownSpells.push(knownSpell.toObject())
+    }
+    return returnValue;
+  }
   @type("number") corruption: number = 0;
   @type("string") favoredSpell: string = "";
   @type([KnownSpell]) knownSpells = new ArraySchema<KnownSpell>();
@@ -137,10 +198,17 @@ export class Tactician extends Slayer {
         this.plans.push(plan);
       }  
     }
+  }
 
+  toITactician(){
+    const returnValue: ITactician = this.toISlayer() as ITactician;
+    returnValue.plans = new Array<number>();
+    for (const elem of this.plans){
+      returnValue.plans.push(elem as number);
+    }
+    return returnValue
   }
   @type(["number"]) plans = new ArraySchema<Number>();
-
 }
 
 
@@ -149,5 +217,9 @@ export class SlayerRoomState extends Schema {
   @type({map: Player}) playerMap = new MapSchema<Player>();
   @type([Slayer]) roster = new ArraySchema<Slayer>();
   @type([Slayer]) kia = new ArraySchema<Slayer>();
-  @type({ map: Slayer }) assignments = new MapSchema<Slayer>();
+  @type({ map: Slayer }) currentAssignments = new MapSchema<Slayer>();
+
+  export(){
+    
+  }
 }

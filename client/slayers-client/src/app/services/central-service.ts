@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Player, Slayer } from '../../../../server/src/SlayerRoomState';
-import { IPlayer } from '../../../../common/common';
-import { ColyseusService } from './services/colyseusService';
+import { Player, Slayer } from '../../../../../server/src/SlayerRoomState';
+import { IPlayer } from '../../../../../common/common';
+import { ColyseusService } from './colyseusService';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class CentralService {
 
   constructor(
     private cjs: ColyseusService
-  ) { 
+  ) {
     this.player = {
       id: "smallpotato",
       displayName: "Chris",

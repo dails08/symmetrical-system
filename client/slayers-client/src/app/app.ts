@@ -4,7 +4,7 @@ import { IPlayer } from '../../../../common/common';
 import { Chris } from '../../../../common/examples';
 import { CharacterSheet } from './character-sheet/character-sheet';
 import { ColyseusService } from './services/colyseusService';
-import { CentralService } from './central-service';
+import { CentralService } from './services/central-service';
 
 @Component({
   selector: 'app-root',

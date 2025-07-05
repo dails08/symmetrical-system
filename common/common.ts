@@ -54,7 +54,7 @@ export interface IGunslinger extends ISlayer {
 export interface IArcanist extends ISlayer {
     corruption: number,
     favoredSpell: string,
-    knownSpells: [{name: string, desc: string, enhanced: boolean}]
+    knownSpells: {name: string, desc: string, enhanced: boolean}[]
 }
 
 export interface ITactician extends ISlayer {
@@ -72,7 +72,7 @@ export interface ICampaign {
     name: string,
     gms: string[],
     players: string[],
-    assignments: {player: string, slayer: ISlayer}[],
+    roster: ISlayer[],
     kia: ISlayer[]
 }
 

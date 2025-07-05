@@ -5,7 +5,7 @@ import { Cervantes, Clint } from "../../../../../common/examples";
 import { ColyseusService } from '../services/colyseusService';
 import { Slayer, Blade, Gunslinger, Arcanist, Tactician, KnownSpell, Advance } from '../../../../../server/src/SlayerRoomState';
 import { provideRouter } from '@angular/router';
-import { CentralService } from '../central-service';
+import { CentralService } from '../services/central-service';
 
 @Component({
   selector: 'app-character-sheet',
