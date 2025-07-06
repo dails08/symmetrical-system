@@ -7,6 +7,18 @@
         <p>{{cs.slayer.speed}}</p>
         <p>{{cs.slayer.weaponNumber}}d{{cs.slayer.weaponSides}}</p>
         <p>{{cs.slayer.damage}}</p>
+        <div class="skills">
+            <span>Agile: {{cs.slayer.skillsAgile}} </span>
+            <span>Brawn: {{cs.slayer.skillsBrawn}} </span>
+            <span>Deceive: {{cs.slayer.skillsDeceive}} </span>
+            <span>Hunt: {{cs.slayer.skillsHunt}} </span>
+            <span>Mend: {{cs.slayer.skillsMend}} </span>
+            <span>Negotiate: {{cs.slayer.skillsNegotiate}} </span>
+            <span>Street: {{cs.slayer.skillsStreet}} </span>
+            <span>Stealth: {{cs.slayer.skillsStealth}} </span>
+            <span>Study: {{cs.slayer.skillsStudy}} </span>
+            <span>Tactics: {{cs.slayer.skillsTactics}} </span>
+        </div>
         <div class="bladeData" *ngIf="cs.slayer.class == playbooks.Blade">
             @let castSlayer = cs.slayer | asBlade;
             <div class="stance">

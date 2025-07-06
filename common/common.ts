@@ -15,6 +15,16 @@ export interface ISlayer {
     weaponSides: number,
     speed: 4|6|8|10|12,
     damage: number,
+    skillsAgile: 4|6|8|10|12,
+    skillsBrawn: 4|6|8|10|12,
+    skillsDeceive: 4|6|8|10|12,
+    skillsHunt: 4|6|8|10|12,
+    skillsMend: 4|6|8|10|12,
+    skillsNegotiate: 4|6|8|10|12,
+    skillsStreet: 4|6|8|10|12,
+    skillsStealth: 4|6|8|10|12,
+    skillsStudy: 4|6|8|10|12,
+    skillsTactics: 4|6|8|10|12,
     advances: {name: string, desc: string}[]
 }
 
@@ -67,6 +77,10 @@ export interface IPlayer {
     name: string,
     displayName: string,
     currentCampaign: string
+}
+
+export interface IPlayerRecord extends IPlayer {
+    campaigns: string[]
 }
 
 export interface ICampaign {

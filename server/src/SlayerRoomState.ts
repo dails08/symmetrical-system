@@ -48,6 +48,16 @@ export class Slayer extends Schema {
       speed: this.speed,
       weaponNumber: this.weaponNumber,
       weaponSides: this.weaponSides,
+      skillsAgile: this.skillsAgile,
+      skillsBrawn: this.skillsBrawn,
+      skillsDeceive: this.skillsDeceive,
+      skillsHunt: this.skillsHunt,
+      skillsMend: this.skillsMend,
+      skillsNegotiate: this.skillsNegotiate,
+      skillsStreet: this.skillsStreet,
+      skillsStealth: this.skillsStealth,
+      skillsStudy: this.skillsStudy,
+      skillsTactics: this.skillsTactics,
       advances: []
     }
     for (const advance of this.advances){
@@ -60,6 +70,16 @@ export class Slayer extends Schema {
   @type("string") class: EPlaybooks = EPlaybooks.Blade;
   @type("number") maxHP: number = 8;
   @type("number") currentHP: number = 8;
+  @type("number") skillsAgile: 4|6|8|10|12 = 4
+  @type("number") skillsBrawn: 4|6|8|10|12 = 4
+  @type("number") skillsDeceive: 4|6|8|10|12 = 4
+  @type("number") skillsHunt: 4|6|8|10|12 = 4
+  @type("number") skillsMend: 4|6|8|10|12 = 4
+  @type("number") skillsNegotiate: 4|6|8|10|12 = 4
+  @type("number") skillsStreet: 4|6|8|10|12 = 4
+  @type("number") skillsStealth: 4|6|8|10|12 = 4
+  @type("number") skillsStudy: 4|6|8|10|12 = 4
+  @type("number") skillsTactics: 4|6|8|10|12 = 4
 
   @type([Advance]) advances = new ArraySchema<Advance>();
   @type("number") damage: number = 1;
