@@ -64,7 +64,8 @@ export interface ITactician extends ISlayer {
 export interface IPlayer {
     id: string,
     name: string,
-    displayName: string
+    displayName: string,
+    currentCampaign: string
 }
 
 export interface ICampaign {
@@ -73,10 +74,12 @@ export interface ICampaign {
     gms: string[],
     players: string[],
     roster: ISlayer[],
-    kia: ISlayer[]
+    kia: ISlayer[],
+    roomId?: string;
 }
 
 export interface IJoinOptions {
     name: string,
     displayName: string;
+    campaignId: string;
 }

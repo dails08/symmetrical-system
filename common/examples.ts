@@ -3,35 +3,6 @@ import { Gunslinger, Advance } from "../server/src/SlayerRoomState";
 import { ArraySchema } from "@colyseus/schema";
 
 
-
-// export const Clint = new Gunslinger({
-//     name: "Clint",
-//     class: EPlaybooks.Gunslinger,
-//     maxHP: 8,
-//     currentHP: 7,
-//     damage: 2,
-//     speed: 6,
-//     weaponNumber: 1,
-//     weaponSides: 6,
-
-//     advances: new ArraySchema<Advance>(...[new Advance({
-//         name: "Draw",
-//         desc: "Roll a d8 for speed"
-//     })]),
-//     chamber1Loaded: true,
-//     chamber1Rune: ERunes.None,
-//     chamber2Loaded: true,
-//     chamber2Rune: ERunes.None,
-//     chamber3Loaded: true,
-//     chamber3Rune: ERunes.None,
-//     chamber4Loaded: true,
-//     chamber4Rune: ERunes.None,
-//     chamber5Loaded: true,
-//     chamber5Rune: ERunes.None,
-//     chamber6Loaded: true,
-//     chamber6Rune: ERunes.None,
-// });
-
 export const Clint: IGunslinger ={
     name: "Clint",
     class: EPlaybooks.Gunslinger,
@@ -120,5 +91,6 @@ export const Gene: ITactician = {
 export const Chris: IPlayer = {
     id: "soubaiurvb",
     name: "dails",
-    displayName: "Chris"
+    displayName: "Chris",
+    currentCampaign: ""
 }

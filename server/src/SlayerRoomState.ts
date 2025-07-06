@@ -11,6 +11,7 @@ export class Player extends Schema implements IPlayer {
   @type("string") id: string = "";
   @type("string") name: string = "";
   @type("string") displayName: string = "";
+  @type("string") currentCampaign: string = "";
 
 }
 

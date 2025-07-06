@@ -18,7 +18,8 @@ export class CentralService {
     this.player = {
       id: "smallpotato",
       displayName: "Chris",
-      name: "dails"
+      name: "dails",
+      currentCampaign: ""
     };
 
 

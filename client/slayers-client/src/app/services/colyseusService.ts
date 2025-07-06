@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Client, getStateCallbacks, Room } from 'colyseus.js';
 import { ArraySchema, type SchemaCallbackProxy }from "@colyseus/schema";
 import { Slayer, SlayerRoomState, } from "../../../../../server/src/SlayerRoomState";
-import { SlayerRoom } from "../../../../../server/src/rooms/SlayerRoom";
 import { Subject } from 'rxjs';
+import { IJoinOptions } from '../../../../../common/common';
 @Injectable({
   providedIn: 'root'
 })
@@ -25,7 +25,12 @@ export class ColyseusService {
 
   async init() {
 
-    this.room = await this.client.joinOrCreate<SlayerRoomState>("gameplay", {name: "Chris?", displayName: "dails"});
+    const joinOptions: IJoinOptions = {
+      name: "Chris?", 
+      displayName: "dails",
+      campaignId: "1234"
+    }
+    this.room = await this.client.joinOrCreate<SlayerRoomState>("gameplay", );
     console.log("Joined " + this.room.name);
     this.$ = getStateCallbacks<SlayerRoomState>(this.room);
 
