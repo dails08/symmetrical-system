@@ -10,7 +10,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
   // db: Firestore | undefined;
   state = new SlayerRoomState();
   campaign: ICampaign | undefined = {
-    id: "1234",
+    id: "",
     name: "Starter campaign",
     gms: [],
     players: [],
@@ -33,41 +33,45 @@ export class SlayerRoom extends Room<SlayerRoomState> {
   }
 
 
-  loadCampaign(campaignID: string){
+  async loadCampaign(campaignID: string){
     console.log("Loading campaign " + campaignID);
-    db.collection("campaigns").doc(campaignID).get().then((campaignRef) => {
-      const campaignValue = campaignRef.data();
-      if (campaignValue){
-        console.log("Found campaign:\n" + campaignRef.data())
-        const tempCampaign: ICampaign = campaignValue.data() as ICampaign;
-        this.campaign.name = tempCampaign.name;
-        this.campaign.id = tempCampaign.id;
-        this.campaign.gms = [];
-        for (const gm of tempCampaign.gms){
-          this.campaign.gms.push(gm);
-        }
-        this.campaign.players = [];
-        for (const player of tempCampaign.players){
-          this.campaign.players.push(player);
-        }
-        this.campaign.roster = [];
-        this.state.roster.clear();
-        for (const character of tempCampaign.roster){
-          this.campaign.roster.push(character);
-          this.state.roster.push(SlayerRoom.schemaFromISlayer(character));
-        }
-        this.campaign.kia = []
-        this.state.kia.clear();
-        for (const casualty of tempCampaign.kia){
-          this.campaign.kia.push(casualty);
-          this.state.kia.push(SlayerRoom.schemaFromISlayer(casualty));
-        }
-        tempCampaign.roomId = this.roomId;
-        db.collection("campaigns").doc(campaignID).set(tempCampaign);
-      } else {
-        console.log("No campaign found with id " + campaignID);
+    const campaignRef = await db.collection("campaigns").doc(campaignID).get();
+    const campaignValue = campaignRef.data();
+    if (campaignValue){
+      const tempCampaign: ICampaign = campaignValue as ICampaign;
+      console.log("Found campaign " + tempCampaign.id); //\n" + JSON.stringify(campaignValue));
+      this.campaign.name = tempCampaign.name;
+      this.campaign.id = tempCampaign.id;
+      this.campaign.gms = [];
+      for (const gm of tempCampaign.gms){
+        this.campaign.gms.push(gm);
       }
-    })
+      this.campaign.players = [];
+      for (const player of tempCampaign.players){
+        this.campaign.players.push(player);
+      }
+      this.campaign.roster = [];
+      this.state.roster.clear();
+      for (const character of tempCampaign.roster){
+        this.campaign.roster.push(character);
+        this.state.roster.push(SlayerRoom.schemaFromISlayer(character));
+      }
+      // console.log(JSON.stringify(this.campaign.roster));
+      for (const slayerData of this.state.roster){
+        console.log(slayerData.toISlayer().name);
+      }
+      this.campaign.kia = []
+      this.state.kia.clear();
+      for (const casualty of tempCampaign.kia){
+        this.campaign.kia.push(casualty);
+        this.state.kia.push(SlayerRoom.schemaFromISlayer(casualty));
+      }
+      tempCampaign.roomId = this.roomId;
+      db.collection("campaigns").doc(campaignID).set(tempCampaign);
+    } else {
+      console.log("No campaign found with id " + campaignID);
+    }
+    
       
   }
 
@@ -80,9 +84,21 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     // for (const character of this.state.kia){
     //   this.campaign.kia.push(character.toJSON() as ISlayer)
     // }
-    // const cleanCampaign: ICampaign = 
-    db.collection("campaigns").doc(this.campaign.id).set(this.campaign).then((value) => {
-      console.log(value);
+    console.log(this.state.roster.length);
+    // console.log(this.state.roster.toArray());
+    const cleanCampaign: ICampaign = {
+      id: this.campaign.id,
+      name: this.campaign.name,
+      roster: this.state.roster.toJSON(),
+      kia: this.state.kia.toJSON(),
+      roomId: this.roomId,
+      gms: this.campaign.gms,
+      players: this.campaign.players
+    }
+    // console.log("Saving:");
+    // console.log(JSON.stringify(cleanCampaign));
+    db.collection("campaigns").doc(this.campaign.id).set(cleanCampaign).then((value) => {
+      // console.log(value);
       console.log("Campaign " + this.campaign.id + " saved");
     })
 
@@ -98,9 +114,10 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     const clint = new Gunslinger(Clint);
 
     const exampleBand = [clint, ryze, cervantes, gene];
-    for (const elem of exampleBand){
-      this.state.roster.push(elem);
-    }
+    // for (const elem of exampleBand){
+    //   this.state.roster.push(elem);
+    //   // this.campaign.roster.push(elem);
+    // }
 
     // const serviceAccount = JSON.parse(readFileSync("creds/slayers-74330-firebase-adminsdk-fbsvc-2e2d26caa1.json", "utf-8"));
     // // console.log(cert(serviceAccount));
@@ -127,7 +144,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     
 
     this.onMessage(EMessageTypes.NumericalUpdate, (client, msg: IUpdateNumericalMsg) => {
-
+      console.log(msg);
       for (const elem of this.state.roster){
         if (elem.id == msg.slayerId){
           if (msg.field == "currentHP"){
@@ -138,6 +155,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
       }
     })
     this.onMessage(EMessageTypes.SaveCampaign, (client, msg) => {
+      console.log("Saving campaign " + this.campaign.id);
       this.saveCampaign();
     })
 
@@ -149,18 +167,26 @@ export class SlayerRoom extends Room<SlayerRoomState> {
       }
     })
 
+    this.onMessage("addDefault", (client, msg) => {
+      for (const elem of exampleBand){
+        this.state.roster.push(elem);
+        // this.campaign.roster.push(elem);
+      }  
+    })
+
     // setTimeout(() => {
     //   console.log(this.state.toJSON());
     // }, 5000);
   }
 
-  onJoin (client: Client, options: IJoinOptions) {
+  async onJoin (client: Client, options: IJoinOptions) {
     console.log(client.sessionId, "joined!");
 
     if (this.state.playerMap.size == 0){
-      if (this.campaign.id == "1234" && options.campaignId != ""){
+      if (this.campaign.id == "" && options.campaignId != ""){
         console.log("On join, loading campaign " + options.campaignId);
-        this.loadCampaign(options.campaignId);
+        await this.loadCampaign(options.campaignId);
+        // console.log("Onjoin loaded campaign: " + JSON.stringify(this.campaign));
       }
     }
 
@@ -170,6 +196,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     
     this.state.playerMap.set(client.sessionId, player);
     const ix = Math.floor(Math.random() * this.state.roster.length);
+    // console.log(this.state.roster)
     console.log("Assigning " + this.state.roster[ix].name);
     this.state.currentAssignments.set(client.sessionId, this.state.roster[ix]);
 

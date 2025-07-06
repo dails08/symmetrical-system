@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CharacterSheet } from './character-sheet';
+import { CharacterSheet } from './study';
 
 describe('CharacterSheet', () => {
   let component: CharacterSheet;

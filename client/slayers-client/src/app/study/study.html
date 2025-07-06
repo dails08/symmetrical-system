@@ -1,0 +1,76 @@
+<div class="slayerDefined" *ngIf="cs.slayer">
+    <div class="topHalf">
+        <p>{{cs.player?.displayName}}</p>
+        <p>{{cs.slayer.name}}</p>
+        <p>{{cs.slayer.class}}</p>
+        <p>HP: {{cs.slayer.currentHP}}/{{cs.slayer.maxHP}}</p>
+        <p>{{cs.slayer.speed}}</p>
+        <p>{{cs.slayer.weaponNumber}}d{{cs.slayer.weaponSides}}</p>
+        <p>{{cs.slayer.damage}}</p>
+        <div class="bladeData" *ngIf="cs.slayer.class == playbooks.Blade">
+            @let castSlayer = cs.slayer | asBlade;
+            <div class="stance">
+                <p>Stance: {{castSlayer.stance}}</p>
+            </div>
+        </div>
+        <div class="gunslingerData" *ngIf="cs.slayer.class == playbooks.Gunslinger">
+            @let castSlayer = cs.slayer | asGunslinger;
+            <div class="chambers">
+                <div class="chamber1">
+                    <p>1: <span *ngIf="castSlayer.chamber1Rune != 'none'">{{castSlayer.chamber1Rune}}: </span>{{castSlayer.chamber1Loaded}}</p>
+                </div>
+                <div class="chamber1">
+                    <p>2: <span *ngIf="castSlayer.chamber2Rune != 'none'">{{castSlayer.chamber2Rune}}: </span>{{castSlayer.chamber2Loaded}}</p>
+                </div>
+                <div class="chamber1">
+                    <p>3: <span *ngIf="castSlayer.chamber3Rune != 'none'">{{castSlayer.chamber3Rune}}: </span>{{castSlayer.chamber3Loaded}}</p>
+                </div>
+                <div class="chamber1">
+                    <p>4: <span *ngIf="castSlayer.chamber4Rune != 'none'">{{castSlayer.chamber4Rune}}: </span>{{castSlayer.chamber4Loaded}}</p>
+                </div>
+                <div class="chamber1">
+                    <p>5: <span *ngIf="castSlayer.chamber5Rune != 'none'">{{castSlayer.chamber5Rune}}: </span>{{castSlayer.chamber5Loaded}}</p>
+                </div>
+                <div class="chamber1">
+                    <p>6: <span *ngIf="castSlayer.chamber6Rune != 'none'">{{castSlayer.chamber6Rune}}: </span>{{castSlayer.chamber6Loaded}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="arcanistData" *ngIf="cs.slayer.class == playbooks.Arcanist">
+            @let castSlayer = cs.slayer | asArcanist;
+            <div class="stance">
+                <p>Corruption: {{castSlayer.corruption}}</p>
+            </div>
+            <div class="favoredSpell">
+                <p>Favored Spell: {{castSlayer.favoredSpell}}</p>
+            </div>
+            <div class="knownSpells">
+                <p *ngFor="let knownSpell of castSlayer.knownSpells">{{knownSpell | json}}</p>
+            </div>
+        </div>
+        <div class="tacticianData" *ngIf="cs.slayer.class == playbooks.Tactician">
+            @let castSlayer = cs.slayer | asTactician;
+            <div class="plans">
+                <p>plans: <span class="plan" *ngFor="let plan of castSlayer.plans">{{plan}} </span></p>
+            </div>
+        </div>
+        <div class="advances">
+            <div class="advance" *ngFor="let advance of cs.slayer.advances.toArray()">
+                <p>Name: {{advance.name}}</p>
+                <p>Desc: {{advance.desc}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="slayerUndefined" *ngIf="!cs.slayer">
+    <p>No Slayer assigned</p>
+</div>
+
+<div class="bottomHalf">
+    <div class="controls">
+        <button (click)="sendTakeDamage(1)">Take Damage</button>
+        <button (click)="sendSaveCampaign()">Save Campaign</button>
+        <button (click)="addDefaultRoster()">Add Default Roster</button>
+    </div>
+</div>
+

@@ -6,6 +6,7 @@ export enum EPlaybooks {
 }
 
 export interface ISlayer {
+    id: string,
     name: string,
     class: EPlaybooks,
     maxHP: number,

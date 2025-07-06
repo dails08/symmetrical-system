@@ -4,6 +4,7 @@ import { ArraySchema, type SchemaCallbackProxy }from "@colyseus/schema";
 import { Slayer, SlayerRoomState, } from "../../../../../server/src/SlayerRoomState";
 import { Subject } from 'rxjs';
 import { IJoinOptions } from '../../../../../common/common';
+import { EMessageTypes, IBaseMsg, ISaveCampaignMsg, IUpdateNumericalMsg } from "../../../../../common/messageFormat";
 @Injectable({
   providedIn: 'root'
 })
@@ -16,6 +17,8 @@ export class ColyseusService {
   private roomStateSubject = new Subject<SlayerRoomState>();
   private rosterChangeSubject = new Subject<Slayer>();
   private assignmentChangeSubject = new Subject<[Slayer, String]>();
+
+  public assignedSlayerSubject: Subject<Slayer> | undefined;
 
   constructor() {
     this.client = new Client("http://localhost:2567");
@@ -30,7 +33,7 @@ export class ColyseusService {
       displayName: "dails",
       campaignId: "1234"
     }
-    this.room = await this.client.joinOrCreate<SlayerRoomState>("gameplay", );
+    this.room = await this.client.joinOrCreate<SlayerRoomState>("gameplay", joinOptions);
     console.log("Joined " + this.room.name);
     this.$ = getStateCallbacks<SlayerRoomState>(this.room);
 
@@ -40,6 +43,9 @@ export class ColyseusService {
 
     this.$(this.room.state).currentAssignments.onAdd((item, ix) => {
       this.assignmentChangeSubject.next([item, ix]);
+      for (const elem in this.room?.state.currentAssignments) {
+
+      }
     })
 
   }
@@ -51,4 +57,9 @@ export class ColyseusService {
   getAssignmentChange() {
     return this.assignmentChangeSubject.asObservable();
   }
+
+  sendMessage(msg: IBaseMsg) {
+    return this.room?.send(msg.kind, msg)
+  }
+
 }

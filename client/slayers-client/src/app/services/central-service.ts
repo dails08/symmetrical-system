@@ -27,7 +27,11 @@ export class CentralService {
       console.log("Assignment change")
       if (ix == cjs.room?.sessionId){
         console.log("Assigned " + newAssignment.name)
-        this.slayer = newAssignment
+        this.slayer = newAssignment;
+        this.cjs.$!(newAssignment).listen("currentHP", (newValue, previousValue) => {
+          console.log("Automatically changing hp");
+          this.slayer!.currentHP = newValue;
+        })
       } else {
         console.log("Not our assignment: " + ix);
       }

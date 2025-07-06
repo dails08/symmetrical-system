@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { IPlayer } from '../../../../common/common';
 import { Chris } from '../../../../common/examples';
-import { CharacterSheet } from './character-sheet/character-sheet';
+import { Study } from './study/study';
 import { ColyseusService } from './services/colyseusService';
 import { CentralService } from './services/central-service';
 
 @Component({
   selector: 'app-root',
-  imports: [ CharacterSheet],
+  imports: [ Study],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

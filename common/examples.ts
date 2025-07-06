@@ -4,6 +4,7 @@ import { ArraySchema } from "@colyseus/schema";
 
 
 export const Clint: IGunslinger ={
+    id: "",
     name: "Clint",
     class: EPlaybooks.Gunslinger,
     maxHP: 8,
@@ -34,6 +35,7 @@ export const Clint: IGunslinger ={
 
 
 export const Cervantes: IBlade = {
+    id: "",
     name: "Cervantes de Leon",
     class: EPlaybooks.Blade,
     maxHP: 8,
@@ -48,6 +50,7 @@ export const Cervantes: IBlade = {
 }
 
 export const Ryze: IArcanist = {
+    id: "",
     name: "Ryze",
     class: EPlaybooks.Arcanist,
     maxHP: 8,
@@ -70,6 +73,7 @@ export const Ryze: IArcanist = {
 }
 
 export const Gene: ITactician = {
+    id: "",
     name: "Gene Krantz",
     class: EPlaybooks.Tactician,
     maxHP: 8,
