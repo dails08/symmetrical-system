@@ -1,6 +1,6 @@
 import { ArraySchema, MapSchema, Schema, type } from "@colyseus/schema";
 import { EPlaybooks, ISlayer, IPlayer, IGunslinger, ERunes, IBlade, EStances, IArcanist, ITactician } from "../../common/common";
-
+import { v4 as uuidv4 } from "uuid";
 
 export class Advance extends Schema {
   @type("string") name: string = "";
@@ -22,6 +22,9 @@ export class Slayer extends Schema {
     super();
     if (data){
       Object.assign(this, data);
+      if (this.id == ""){
+        this.id = uuidv4();
+      }
       this.advances = new ArraySchema<Advance>();
       for (let advance of data.advances){
         const newAdvance = new Advance();
@@ -36,6 +39,7 @@ export class Slayer extends Schema {
 
   toISlayer(){
     const slayer: ISlayer = {
+      id: this.id,
       name: this.name,
       class: this.class,
       currentHP: this.currentHP,
@@ -51,6 +55,7 @@ export class Slayer extends Schema {
     }
     return slayer;
   }
+  @type("string") id: string = "";
   @type("string") name: string = "Nameless";
   @type("string") class: EPlaybooks = EPlaybooks.Blade;
   @type("number") maxHP: number = 8;

@@ -37,7 +37,7 @@ export default config({
         /**
          * Define your room handlers:
          */
-        gameServer.define('gameplay', SlayerRoom);
+        gameServer.define('gameplay', SlayerRoom, );
 
     },
 
@@ -46,6 +46,10 @@ export default config({
          * Bind your custom express routes here:
          * Read more: https://expressjs.com/en/starter/basic-routing.html
          */
+        app.use("/", (req, res) => {
+            logger.info(req);
+        })
+
         app.get("/hello_world", (req, res) => {
             res.send("It's time to kick ass and chew bubblegum!");
         });
