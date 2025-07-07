@@ -4,7 +4,7 @@
         <div class="title">
             <p class="slayerClass">{{slayer.class}}</p>
             <p class="slayerName">{{slayer.name}}</p>
-            <div class="slayerSpeed">S{{slayer.speed}}</div>
+            <div class="slayerSpeed">({{slayer.speed}}({{slayer.damage}}</div>
         </div>
 
         <div class="healthbar">
@@ -14,8 +14,6 @@
               <div *ngFor="let _ of [].constructor(slayer.maxHP); let ix = index" class="segment"></div>
           </div>
         </div>
-        <p>{{slayer.speed}}</p>
-        <p>{{slayer.damage}}</p>
         <div class="skills">
             <span>Agile: {{slayer.skillsAgile}} </span>
             <span>Brawn: {{slayer.skillsBrawn}} </span>
@@ -27,6 +25,12 @@
             <span>Stealth: {{slayer.skillsStealth}} </span>
             <span>Study: {{slayer.skillsStudy}} </span>
             <span>Tactics: {{slayer.skillsTactics}} </span>
+        </div>
+        <div class="advances">
+            <div class="advance" *ngFor="let advance of slayer.advances.toArray()">
+                <p>Name: {{advance.name}}</p>
+                <p>Desc: {{advance.desc}}</p>
+            </div>
         </div>
         <div class="bladeData" *ngIf="slayer.class == playbooks.Blade">
             @let castSlayer = slayer | asBlade;
@@ -76,12 +80,7 @@
                 <p>plans: <span class="plan" *ngFor="let plan of castSlayer.plans">{{plan}} </span></p>
             </div>
         </div>
-        <div class="advances">
-            <div class="advance" *ngFor="let advance of slayer.advances.toArray()">
-                <p>Name: {{advance.name}}</p>
-                <p>Desc: {{advance.desc}}</p>
-            </div>
-        </div>
+
     </div>
     <div class="bottomHalf">
 
