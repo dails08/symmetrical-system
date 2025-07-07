@@ -7,7 +7,7 @@
             <div class="slayerSpeed">({{slayer.speed}}({{slayer.damage}}</div>
         </div>
 
-        <div class="healthbar">
+        <div class="healthbar"> 
           <div class="barcontent"> 
           </div>
           <div class="gutters">
@@ -15,16 +15,55 @@
           </div>
         </div>
         <div class="skills">
-            <span>Agile: {{slayer.skillsAgile}} </span>
-            <span>Brawn: {{slayer.skillsBrawn}} </span>
-            <span>Deceive: {{slayer.skillsDeceive}} </span>
-            <span>Hunt: {{slayer.skillsHunt}} </span>
-            <span>Mend: {{slayer.skillsMend}} </span>
-            <span>Negotiate: {{slayer.skillsNegotiate}} </span>
-            <span>Street: {{slayer.skillsStreet}} </span>
-            <span>Stealth: {{slayer.skillsStealth}} </span>
-            <span>Study: {{slayer.skillsStudy}} </span>
-            <span>Tactics: {{slayer.skillsTactics}} </span>
+            <div class="skill">
+                <p class="skillName agile">Agile</p>
+                <img src="/assets/shapes/{{slayer.skillsAgile}}.svg">
+            </div>
+            <div class="skill">
+                <p class="skillName">Brawn</p>
+                <img src="/assets/shapes/{{slayer.skillsBrawn}}.svg">
+            </div>
+            <div class="skill">
+                <p class="skillName deceive">Deceive</p>
+                <img src="/assets/shapes/{{slayer.skillsDeceive}}.svg">
+            </div>
+            <div class="skill">
+                <p class="skillName hunt">Hunt</p>
+                <img src="/assets/shapes/{{slayer.skillsHunt}}.svg">
+            </div>
+            <div class="skill">
+                <p class="skillName">Mend</p>
+                <img src="/assets/shapes/{{slayer.skillsMend}}.svg">
+            </div>
+            <div class="skill">
+                <p class="skillName negotiate">Negotiate</p>
+                <img src="/assets/shapes/{{slayer.skillsNegotiate}}.svg">
+            </div>
+            <div class="skill">
+                <p class="skillName">Street</p>
+                <img src="/assets/shapes/{{slayer.skillsStreet}}.svg">
+            </div>
+            <div class="skill">
+                <p class="skillName">Stealth</p>
+                <img src="/assets/shapes/{{slayer.skillsStealth}}.svg">
+            </div>
+            <div class="skill">
+                <p class="skillName">Study</p>
+                <img src="/assets/shapes/{{slayer.skillsStudy}}.svg">
+            </div>
+            <div class="skill">
+                <p class="skillName">Tactics</p>
+                <img src="/assets/shapes/{{slayer.skillsTactics}}.svg">
+            </div>
+            <!-- <div class="skill">Brawn: {{slayer.skillsBrawn}} </div>
+            <div class="skill">Deceive: {{slayer.skillsDeceive}} </div>
+            <div class="skill">Hunt: {{slayer.skillsHunt}} </div>
+            <div class="skill">Mend: {{slayer.skillsMend}} </div>
+            <div class="skill">Negotiate: {{slayer.skillsNegotiate}} </div>
+            <div class="skill">Street: {{slayer.skillsStreet}} </div>
+            <div class="skill">Stealth: {{slayer.skillsStealth}} </div>
+            <div class="skill">Study: {{slayer.skillsStudy}} </div>
+            <div class="skill">Tactics: {{slayer.skillsTactics}} </div> -->
         </div>
         <div class="advances">
             <div class="advance" *ngFor="let advance of slayer.advances.toArray()">
