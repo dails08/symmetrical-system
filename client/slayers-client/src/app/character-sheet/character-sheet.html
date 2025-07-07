@@ -4,7 +4,6 @@
         <div class="title">
             <p class="slayerClass">{{slayer.class}}</p>
             <p class="slayerName">{{slayer.name}}</p>
-            <div class="slayerSpeed">({{slayer.speed}}({{slayer.damage}}</div>
         </div>
 
         <div class="healthbar"> 
@@ -13,6 +12,9 @@
           <div class="gutters">
               <div *ngFor="let _ of [].constructor(slayer.maxHP); let ix = index" class="segment"></div>
           </div>
+        </div>
+        <div class="misc">
+
         </div>
         <div class="skills">
             <div class="skill">
