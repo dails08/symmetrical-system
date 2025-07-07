@@ -19,7 +19,7 @@ export class CentralService {
       id: "smallpotato",
       displayName: "Chris",
       name: "dails",
-      currentCampaign: ""
+      chekhovPoints: 0
     };
 
 
@@ -28,6 +28,8 @@ export class CentralService {
       if (ix == cjs.room?.sessionId){
         console.log("Assigned " + newAssignment.name)
         this.slayer = newAssignment;
+
+        // Add listeners
         this.cjs.$!(newAssignment).listen("currentHP", (newValue, previousValue) => {
           console.log("Automatically changing hp");
           this.slayer!.currentHP = newValue;

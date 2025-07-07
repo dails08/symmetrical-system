@@ -1,0 +1,34 @@
+.healthbar {
+    position: relative;
+    width: 500px;
+    height: 100px;
+    display: flex
+  }
+  
+  .barcontent {
+    background-color: green;
+  /*   border: 1px solid gray; */
+    flex: 1;
+    transform: skewX(-20deg);
+  /*   margin: 0px 10px; */
+  }
+  
+  .gutters {
+    position: absolute;
+    bordeR: 5px solid pink;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    flex: 1;
+    display: flex;
+    justify-content: space-evenly;
+    transform: skewX(-20deg);
+  }
+  
+  .segment {
+    background-color: white;
+    height: 100%;
+  /*   transform: skewX(-20deg); */
+    width: 20px;
+  }
+  
