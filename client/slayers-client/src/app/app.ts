@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { IPlayer } from '../../../../common/common';
 import { Chris } from '../../../../common/examples';
 import { Study } from './study/study';
@@ -9,7 +9,7 @@ import { CentralService } from './services/central-service';
 
 @Component({
   selector: 'app-root',
-  imports: [ CharacterSheet],
+  imports: [ CharacterSheet, RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

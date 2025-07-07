@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {animate} from "animejs";
 import { ColyseusService } from '../services/colyseusService';
@@ -18,7 +18,7 @@ import { BladePipe, GunslingerPipe, ArcanistPipe, TacticianPipe } from "../class
   templateUrl: './character-sheet.html',
   styleUrl: './character-sheet.scss'
 })
-export class CharacterSheet {
+export class CharacterSheet implements AfterViewInit {
 
   playbooks = EPlaybooks;
 
@@ -27,16 +27,40 @@ export class CharacterSheet {
     public cs: CentralService
   ) {
 
-  }
+    // this.cs.getAssignmentChange().subscribe((newSlayer) => {
+    //   console.log("Adding listeners")
+    //     // Add listeners
+    //     this.cjs.$!(newSlayer).listen("currentHP", (newValue, previousValue) => {
+    //       console.log("Automatically changing hp: " + this.cs.slayer!.currentHP + "/" + this.cs.slayer!.maxHP);
+    //       this.cs.slayer!.currentHP = newValue;
+    //       console.log("Damage: " + this.cs.slayer!.currentHP);
+    //       if (this.cs.slayer){
+    //         animate(".barcontent", {
+    //           flex: this.cs.slayer.currentHP/this.cs.slayer.maxHP,
+    //           duration: 1000
+    //         });  
+    //       }
+        
+    //     })
+    //   });
+    }
 
-damage() {
-  console.log("Damage");
-  if (this.cs.slayer){
-    animate(".barcontent", {
-      flex: this.cs.slayer.currentHP/this.cs.slayer.maxHP,
-      duration: 1000
-    });  
-  }
-};
-
+    ngAfterViewInit(): void {
+      this.cs.getAssignmentChange().subscribe((newSlayer) => {
+        console.log("Adding listeners")
+          // Add listeners
+          this.cjs.$!(newSlayer).listen("currentHP", (newValue, previousValue) => {
+            console.log("Automatically changing hp: " + this.cs.slayer!.currentHP + "/" + this.cs.slayer!.maxHP);
+            this.cs.slayer!.currentHP = newValue;
+            console.log("Damage: " + this.cs.slayer!.currentHP);
+            if (this.cs.slayer){
+              animate(".barcontent", {
+                flex: this.cs.slayer.currentHP/this.cs.slayer.maxHP,
+                duration: 1000
+              });  
+            }
+          
+          })
+        });
+    }
 }

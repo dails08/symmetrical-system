@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Player, Slayer } from '../../../../../server/src/SlayerRoomState';
 import { IPlayer } from '../../../../../common/common';
 import { ColyseusService } from './colyseusService';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ export class CentralService {
 
   public player: IPlayer | undefined;
   public slayer: Slayer | undefined;
+  public assignmentChange: Subject<Slayer>;
 
 
   constructor(
@@ -22,23 +24,25 @@ export class CentralService {
       chekhovPoints: 0
     };
 
+    this.assignmentChange = new Subject<Slayer>();
+
+    
+
 
     cjs.getAssignmentChange().subscribe(([newAssignment, ix]) => {
       console.log("Assignment change")
       if (ix == cjs.room?.sessionId){
         console.log("Assigned " + newAssignment.name)
         this.slayer = newAssignment;
-
-        // Add listeners
-        this.cjs.$!(newAssignment).listen("currentHP", (newValue, previousValue) => {
-          console.log("Automatically changing hp");
-          this.slayer!.currentHP = newValue;
-        })
+        this.assignmentChange.next(this.slayer);
       } else {
         console.log("Not our assignment: " + ix);
       }
     })
   }
 
+  getAssignmentChange() {
+    return this.assignmentChange.asObservable();
+  }
 
 }
