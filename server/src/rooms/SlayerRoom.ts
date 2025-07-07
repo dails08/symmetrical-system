@@ -15,8 +15,10 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     gms: [],
     players: [],
     roster: [],
-    kia: [],
+    kia: []
   }
+
+  lastRollResult: number = 1;
 
   constructor(){
     super();

@@ -11,7 +11,8 @@ export class Player extends Schema implements IPlayer {
   @type("string") id: string = "";
   @type("string") name: string = "";
   @type("string") displayName: string = "";
-  @type("string") currentCampaign: string = "";
+  @type("number") chekhovPoints: number = 0;
+  
 
 }
 
@@ -46,8 +47,6 @@ export class Slayer extends Schema {
       damage: this.damage,
       maxHP: this.maxHP,
       speed: this.speed,
-      weaponNumber: this.weaponNumber,
-      weaponSides: this.weaponSides,
       skillsAgile: this.skillsAgile,
       skillsBrawn: this.skillsBrawn,
       skillsDeceive: this.skillsDeceive,
@@ -70,22 +69,20 @@ export class Slayer extends Schema {
   @type("string") class: EPlaybooks = EPlaybooks.Blade;
   @type("number") maxHP: number = 8;
   @type("number") currentHP: number = 8;
-  @type("number") skillsAgile: 4|6|8|10|12 = 4
-  @type("number") skillsBrawn: 4|6|8|10|12 = 4
-  @type("number") skillsDeceive: 4|6|8|10|12 = 4
-  @type("number") skillsHunt: 4|6|8|10|12 = 4
-  @type("number") skillsMend: 4|6|8|10|12 = 4
-  @type("number") skillsNegotiate: 4|6|8|10|12 = 4
-  @type("number") skillsStreet: 4|6|8|10|12 = 4
-  @type("number") skillsStealth: 4|6|8|10|12 = 4
-  @type("number") skillsStudy: 4|6|8|10|12 = 4
-  @type("number") skillsTactics: 4|6|8|10|12 = 4
+  @type("number") skillsAgile: 6|8|10|12 = 6
+  @type("number") skillsBrawn: 6|8|10|12 = 6
+  @type("number") skillsDeceive: 6|8|10|12 = 6
+  @type("number") skillsHunt: 6|8|10|12 = 6
+  @type("number") skillsMend: 6|8|10|12 = 6
+  @type("number") skillsNegotiate: 6|8|10|12 = 6
+  @type("number") skillsStreet: 6|8|10|12 = 6
+  @type("number") skillsStealth: 6|8|10|12 = 6
+  @type("number") skillsStudy: 6|8|10|12 = 6
+  @type("number") skillsTactics: 6|8|10|12 = 6
 
   @type([Advance]) advances = new ArraySchema<Advance>();
   @type("number") damage: number = 1;
   @type("number") speed: 8 | 4 | 6 | 10 | 12 = 6;
-  @type("number") weaponNumber: number = 1;
-  @type("number") weaponSides: number = 6;
 }
 
 // export class Gunslinger extends Slayer implements IGunslinger {
@@ -156,8 +153,12 @@ export class Blade extends Slayer {
   toIBlade(){
     const returnValue: IBlade = this.toISlayer() as IBlade;
     returnValue.stance = this.stance;
+    returnValue.weaponNumber = this.weaponNumber;
+    returnValue.weaponSides = this.weaponSides;
     return returnValue;
   }
+  @type("number") weaponNumber: number = 1;
+  @type("number") weaponSides: number = 6;
   @type("string") stance: EStances = EStances.Flow;
 }
 

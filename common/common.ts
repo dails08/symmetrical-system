@@ -11,20 +11,18 @@ export interface ISlayer {
     class: EPlaybooks,
     maxHP: number,
     currentHP: number,
-    weaponNumber: number,
-    weaponSides: number,
     speed: 4|6|8|10|12,
     damage: number,
-    skillsAgile: 4|6|8|10|12,
-    skillsBrawn: 4|6|8|10|12,
-    skillsDeceive: 4|6|8|10|12,
-    skillsHunt: 4|6|8|10|12,
-    skillsMend: 4|6|8|10|12,
-    skillsNegotiate: 4|6|8|10|12,
-    skillsStreet: 4|6|8|10|12,
-    skillsStealth: 4|6|8|10|12,
-    skillsStudy: 4|6|8|10|12,
-    skillsTactics: 4|6|8|10|12,
+    skillsAgile: 6|8|10|12,
+    skillsBrawn: 6|8|10|12,
+    skillsDeceive: 6|8|10|12,
+    skillsHunt: 6|8|10|12,
+    skillsMend: 6|8|10|12,
+    skillsNegotiate: 6|8|10|12,
+    skillsStreet: 6|8|10|12,
+    skillsStealth: 6|8|10|12,
+    skillsStudy: 6|8|10|12,
+    skillsTactics: 6|8|10|12,
     advances: {name: string, desc: string}[]
 }
 
@@ -35,6 +33,8 @@ export enum EStances {
 }
 export interface IBlade extends ISlayer {
     stance: EStances,
+    weaponNumber: number,
+    weaponSides: number,
 }
 
 export enum ERunes {
@@ -76,11 +76,12 @@ export interface IPlayer {
     id: string,
     name: string,
     displayName: string,
-    currentCampaign: string
+    chekhovPoints: number,
 }
 
 export interface IPlayerRecord extends IPlayer {
-    campaigns: string[]
+    campaigns: string[],
+    currentCampaign: string
 }
 
 export interface ICampaign {

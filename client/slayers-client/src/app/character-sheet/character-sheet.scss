@@ -1,34 +1,100 @@
-.healthbar {
-    position: relative;
-    width: 500px;
-    height: 100px;
-    display: flex
-  }
-  
-  .barcontent {
-    background-color: green;
-  /*   border: 1px solid gray; */
-    flex: 1;
-    transform: skewX(-20deg);
-  /*   margin: 0px 10px; */
-  }
-  
-  .gutters {
+:host {
+  background-color: black;
+  box-sizing: border-box;
+}
+
+.title {
+  position: relative;
+  width: 100%;
+  height: 30px;
+  border-bottom: 1px solid gray;
+
+  .slayerName {
     position: absolute;
-    bordeR: 5px solid pink;
+    font-family: "sarina";
+    color: white;
+    z-index: 5;
+    bottom: -20%;
+  }
+
+  .slayerClass {
+    font-family: "trickr-logo";
+    font-size: 2rem;
+    position: absolute;
     width: 100%;
     height: 100%;
-    top: 0;
-    flex: 1;
+    left: 0px;
+    top: 0px;
+    color: slategray;
+    z-index: 0;
+  }
+
+  .slayerSpeed {
+    position: absolute;
+    font-family: "trickr-logo";
+    font-size: 2rem;
+    right: 0%;
+    height:100%;
+    top:0px;
+    color: slategray;
+
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+.healthbar {
+  // margin: 10px 10px;
+  // box-sizing: content-box;
+  border-bottom: 1px solid gray;
+  padding: 5px 5px;
+    position: relative;
+    width: 100%;
+    height: 30px;
     display: flex;
-    justify-content: space-evenly;
-    transform: skewX(-20deg);
+    justify-content: center;
+
+    .barcontent {
+      background-color: green;
+    /*   border: 1px solid gray; */
+      flex: 1;
+      transform: skewX(-20deg);
+    /*   margin: 0px 10px; */
+    }
+    
+    .gutters {
+      position: absolute;
+      // border: 5px solid pink;
+      width: 100%;
+      height: 100%;
+      top: 0px;
+      // left: -10px;
+      flex: 1;
+      display: flex;
+      justify-content: space-evenly;
+      transform: skewX(-20deg);
+
+      .segment {
+        background-color: black;
+        height: 100%;
+      /*   transform: skewX(-20deg); */
+        width: 5px;
+      }  
+    }
   }
   
-  .segment {
-    background-color: white;
-    height: 100%;
-  /*   transform: skewX(-20deg); */
-    width: 20px;
-  }
+
   
+  
+  .skills {
+    display: flex;
+    overflow-x: scroll
+  }

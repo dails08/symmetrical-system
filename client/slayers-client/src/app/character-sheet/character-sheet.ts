@@ -3,32 +3,40 @@ import { CommonModule } from '@angular/common';
 import {animate} from "animejs";
 import { ColyseusService } from '../services/colyseusService';
 import { CentralService } from '../services/central-service';
+import { CssSelector } from '@angular/compiler';
+import { EPlaybooks, IPlayer, ISlayer, IGunslinger, IBlade, IArcanist, ITactician } from "../../../../../common/common";
+import { Cervantes, Clint } from "../../../../../common/examples";
+import { Slayer, Blade, Gunslinger, Arcanist, Tactician, KnownSpell, Advance } from '../../../../../server/src/SlayerRoomState';
+import { provideRouter } from '@angular/router';
+import { EMessageTypes, IBaseMsg, ICharacterUpdateMsg, ISaveCampaignMsg, IUpdateNumericalMsg } from '../../../../../common/messageFormat';
+import { BladePipe, GunslingerPipe, ArcanistPipe, TacticianPipe } from "../classPipes";
 
 
 @Component({
   selector: 'app-character-sheet',
-  imports: [CommonModule],
+  imports: [CommonModule, BladePipe, GunslingerPipe, ArcanistPipe, TacticianPipe],
   templateUrl: './character-sheet.html',
   styleUrl: './character-sheet.scss'
 })
 export class CharacterSheet {
 
+  playbooks = EPlaybooks;
 
   constructor(
-    cjs: ColyseusService,
-    cs: CentralService
+    public cjs: ColyseusService,
+    public cs: CentralService
   ) {
 
   }
 
-damage(e) {
+damage() {
   console.log("Damage");
-  var hp -= 1;
-  animate(".barcontent", {
-    flex: hp/5,
-    duration: 1000
-  });
-  console.log(hp);
+  if (this.cs.slayer){
+    animate(".barcontent", {
+      flex: this.cs.slayer.currentHP/this.cs.slayer.maxHP,
+      duration: 1000
+    });  
+  }
 };
 
 }

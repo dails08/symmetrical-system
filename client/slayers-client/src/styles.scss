@@ -1,1 +1,31 @@
 /* You can add global styles to this file, and also import other style files */
+@font-face {
+    font-family: "sarina";
+    src: url("../public/assets/sarina/Sarina-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "trickr-logo";
+    src: url("../public/assets/trickr-logo/TrickrLogo-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "vipnagorgialla";
+    src: url("../public/assets/vipnagorgialla/Vipnagorgialla\ Rg.otf") format("otf");
+    font-weight: normal;
+    font-style: normal;
+}
+
+html {
+    background-color: black;
+    color: white;
+}
+
+* {
+        box-sizing: border-box;
+        margin: 0px;
+}

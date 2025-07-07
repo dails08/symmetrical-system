@@ -10,7 +10,7 @@ import { EMessageTypes, IBaseMsg, ICharacterUpdateMsg, ISaveCampaignMsg, IUpdate
 import { BladePipe, GunslingerPipe, ArcanistPipe, TacticianPipe } from "../classPipes";
 
 @Component({
-  selector: 'app-character-sheet',
+  selector: 'app-study',
   imports: [CommonModule, BladePipe, GunslingerPipe, ArcanistPipe, TacticianPipe],
   templateUrl: './study.html',
   styleUrl: './study.scss'
