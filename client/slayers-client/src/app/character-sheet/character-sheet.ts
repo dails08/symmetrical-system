@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { afterNextRender, afterRenderEffect, AfterViewInit, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {animate} from "animejs";
 import { ColyseusService } from '../services/colyseusService';
@@ -53,14 +53,23 @@ export class CharacterSheet implements AfterViewInit {
             console.log("Automatically changing hp: " + this.cs.slayer!.currentHP + "/" + this.cs.slayer!.maxHP);
             this.cs.slayer!.currentHP = newValue;
             console.log("Damage: " + this.cs.slayer!.currentHP);
-            if (this.cs.slayer){
+            
+            setTimeout(()=> {
+              if (this.cs.slayer){
+              console.log("Actual animation");
+
               animate(".barcontent", {
                 flex: this.cs.slayer.currentHP/this.cs.slayer.maxHP,
                 duration: 1000
-              });  
+                }
+              );
+
             }
+            }, 1000);
+            
+            
           
-          })
+          });
         });
     }
 }
