@@ -9,7 +9,7 @@ import { CentralService } from './services/central-service';
 
 @Component({
   selector: 'app-root',
-  imports: [ CharacterSheet, RouterOutlet],
+  imports: [ RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="33.899mm" height="46.348mm" version="1.1" viewBox="0 0 33.899 46.348" xmlns="http://www.w3.org/2000/svg"><g transform="translate(-45.296 -47.568)" fill="none" stroke="#000"><path d="m47.413 63.794 14.832-14.138z" stroke-width=".24302px"/><path d="m77.078 63.794-14.832-14.138z" stroke-width=".24302px"/><path d="m47.413 63.794 14.764 28.06z" stroke-width=".26458px"/><path d="m62.177 91.853 14.901-28.06z" stroke-width=".26458px"/></g></svg>
+<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <!-- Created with SVG-edit - http://svg-edit.googlecode.com/ -->
+ <title>d10</title>
+
+ <g>
+  <title>Layer 1</title>
+  <g stroke="null" id="svg_18">
+   <path stroke="#000000" id="svg_17" d="m150.000001,290.000001c129.500001,-93.770834 129.500001,-93.770834 130.287501,-93.377084c0.7875,0.39375 11.025,-63.39375 9.45,-65.3625c-1.575,-1.96875 -140.175001,-120.093751 -139.781251,-121.275001c0.39375,-1.18125 -138.206251,123.243751 -140.175001,121.275001c-1.96875,-1.96875 9.84375,64.96875 9.45,65.3625c-0.39375,0.39375 130.768751,93.377084 130.768751,93.377084z" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" fill="none"/>
+   <line stroke="#000000" id="svg_4" y2="196.666667" x2="280.666668" y1="10" x1="150.000001" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" fill="none"/>
+   <line stroke="#000000" id="svg_5" y2="271.333334" x2="150.000001" y1="196.666667" x1="280.666668" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" fill="none"/>
+   <line stroke="#000000" id="svg_6" y2="196.666667" x2="19.333333" y1="271.333334" x1="150.000001" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" fill="none"/>
+   <line stroke="#000000" id="svg_7" y2="10" x2="150.000001" y1="196.666667" x1="19.333333" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" fill="none"/>
+   <line stroke="#000000" id="svg_14" y2="271.333334" x2="150.000001" y1="290.000001" x1="150.000001" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" fill="none"/>
+  </g>
+ </g>
+</svg>

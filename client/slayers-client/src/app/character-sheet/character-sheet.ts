@@ -21,6 +21,7 @@ import { BladePipe, GunslingerPipe, ArcanistPipe, TacticianPipe } from "../class
 export class CharacterSheet implements AfterViewInit {
 
   playbooks = EPlaybooks;
+  fresh: boolean;
 
   constructor(
     public cjs: ColyseusService,
@@ -43,7 +44,10 @@ export class CharacterSheet implements AfterViewInit {
         
     //     })
     //   });
+    this.fresh = true;
+
     }
+
 
     ngAfterViewInit(): void {
       this.cs.getAssignmentChange().subscribe((newSlayer) => {
@@ -54,18 +58,31 @@ export class CharacterSheet implements AfterViewInit {
             this.cs.slayer!.currentHP = newValue;
             console.log("Damage: " + this.cs.slayer!.currentHP);
             
-            setTimeout(()=> {
+            if (this.fresh){
+              setTimeout(()=> {
+                if (this.cs.slayer){
+                console.log("Actual animation");
+  
+                animate(".barcontent", {
+                  flex: this.cs.slayer.currentHP/this.cs.slayer.maxHP,
+                  duration: 1000
+                  }
+                );
+                this.fresh = false;
+  
+              }
+              }, 100);
+            } else {
               if (this.cs.slayer){
-              console.log("Actual animation");
-
-              animate(".barcontent", {
-                flex: this.cs.slayer.currentHP/this.cs.slayer.maxHP,
-                duration: 1000
-                }
-              );
+                animate(".barcontent", {
+                  flex: this.cs.slayer.currentHP/this.cs.slayer.maxHP,
+                  duration: 1000
+                  }
+                );
+              }
 
             }
-            }, 1000);
+            
             
             
           

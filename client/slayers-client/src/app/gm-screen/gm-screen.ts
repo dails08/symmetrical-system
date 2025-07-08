@@ -46,7 +46,7 @@ export class GmScreen {
             kind: EMessageTypes.NumericalUpdate,
             slayerId: this.cs.slayer.id,
             field: "currentHP",
-            newValue: Math.max(this.cs.slayer?.currentHP - dmg, 0)
+            newValue: Math.min(Math.max(this.cs.slayer?.currentHP - dmg, 0), this.cs.slayer?.maxHP)
           }
           this.cjs.sendMessage(msg);
         }
