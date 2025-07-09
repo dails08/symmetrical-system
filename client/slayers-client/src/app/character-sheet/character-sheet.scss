@@ -54,10 +54,10 @@
 .healthbar {
   // margin: 10px 10px;
   // box-sizing: content-box;
-  border-bottom: 1px solid gray;
+  // border-bottom: 1px solid gray;
   padding: 5px 5px;
     position: relative;
-    // width: 100%;
+    width: 98%;
     height: 30px;
     // display: flex;
     // justify-content: start;
@@ -122,6 +122,7 @@
     position: relative;
     height: 100px;
     width: 100%;
+    border-top: 1px solid gray;
 
     .skill {
       position: relative;
