@@ -13,6 +13,20 @@
               <div *ngFor="let _ of [].constructor(slayer.maxHP + 1); let ix = index" class="segment" [style.left]="'calc('+100*(ix)/slayer.maxHP+'%)'"></div>
           <!-- </div> -->
         </div>
+        <div class="misc">
+            <div class="speed stackedStat">
+                <p class="statName">Speed</p>
+                <p class="statNumber">d{{slayer.speed}}</p>
+            </div>
+            <div class="damage stackedStat">
+                <p class="statName">dmg</p>
+                <p class="statNumber">{{slayer.damage}}</p>
+            </div>
+            <div class="chekhov stackedStat">
+                <p class="statName">Chekhov</p>
+                <p class="statNumber">{{cs.player?.chekhovPoints}}</p>
+            </div>
+        </div>
         <div class="skills">
             <div class="skill">
                 <p class="skillName agile">Agile</p>
@@ -64,9 +78,7 @@
             <div class="skill">Study: {{slayer.skillsStudy}} </div>
             <div class="skill">Tactics: {{slayer.skillsTactics}} </div> -->
         </div>
-        <div class="misc">
 
-        </div>
 
         <div class="advances">
             <div class="advance" *ngFor="let advance of slayer.advances.toArray()">
