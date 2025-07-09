@@ -9,9 +9,9 @@
         <div class="healthbar"> 
           <div class="barcontent"> 
           </div>
-          <div class="gutters">
-              <div *ngFor="let _ of [].constructor(slayer.maxHP - 1); let ix = index" class="segment"></div>
-          </div>
+          <!-- <div class="gutters"> -->
+              <div *ngFor="let _ of [].constructor(slayer.maxHP + 1); let ix = index" class="segment" [style.left]="'calc('+100*(ix)/slayer.maxHP+'%)'"></div>
+          <!-- </div> -->
         </div>
         <div class="misc">
 

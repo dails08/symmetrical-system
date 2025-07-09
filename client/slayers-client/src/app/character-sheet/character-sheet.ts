@@ -48,6 +48,21 @@ export class CharacterSheet implements AfterViewInit {
 
     }
 
+    animateHPChange() {
+      if (this.cs.slayer){
+        console.log("Actual animation");
+
+        animate(".barcontent", {
+          right: 100 * (1 - this.cs.slayer.currentHP/this.cs.slayer.maxHP) + '%',
+          duration: 1000
+          }
+        );
+        this.fresh = false;
+
+      }
+
+    }
+
 
     ngAfterViewInit(): void {
       this.cs.getAssignmentChange().subscribe((newSlayer) => {
@@ -60,27 +75,10 @@ export class CharacterSheet implements AfterViewInit {
             
             if (this.fresh){
               setTimeout(()=> {
-                if (this.cs.slayer){
-                console.log("Actual animation");
-  
-                animate(".barcontent", {
-                  flex: this.cs.slayer.currentHP/this.cs.slayer.maxHP,
-                  duration: 1000
-                  }
-                );
-                this.fresh = false;
-  
-              }
+                this.animateHPChange();
               }, 100);
             } else {
-              if (this.cs.slayer){
-                animate(".barcontent", {
-                  flex: this.cs.slayer.currentHP/this.cs.slayer.maxHP,
-                  duration: 1000
-                  }
-                );
-              }
-
+              this.animateHPChange();
             }
             
             
