@@ -3,6 +3,7 @@ import { Player, Slayer } from '../../../../../server/src/SlayerRoomState';
 import { IPlayer } from '../../../../../common/common';
 import { ColyseusService } from './colyseusService';
 import { Subject } from 'rxjs';
+import { getStateCallbacks } from 'colyseus.js';
 
 @Injectable({
   providedIn: 'root'
@@ -30,14 +31,19 @@ export class CentralService {
 
 
     cjs.getAssignmentChange().subscribe(([newAssignment, ix]) => {
-      console.log("Assignment change")
-      if (ix == cjs.room?.sessionId){
-        console.log("Assigned " + newAssignment.name)
-        this.slayer = newAssignment;
-        this.assignmentChange.next(this.slayer);
-      } else {
-        console.log("Not our assignment: " + ix);
-      }
+      cjs.room.then((room) => {
+        const $ = getStateCallbacks(room);
+        console.log("Assignment change")
+        if (ix == room.sessionId){
+          console.log("Assigned " + newAssignment.name)
+          this.slayer = newAssignment;
+          $(newAssignment).bindTo(this.slayer);
+          this.assignmentChange.next(this.slayer);
+        } else {
+          console.log("Not our assignment: " + ix);
+        }
+  
+      })
     })
   }
 

@@ -11,7 +11,7 @@ import { EMessageTypes, IBaseMsg, ISaveCampaignMsg, IUpdateNumericalMsg } from "
 export class ColyseusService {
 
   client: Client;
-  room: Room<SlayerRoomState> | undefined;
+  room: Promise<Room<SlayerRoomState>>;
   $: SchemaCallbackProxy<SlayerRoomState> | undefined;
 
   private roomStateSubject = new Subject<SlayerRoomState>();
@@ -23,27 +23,29 @@ export class ColyseusService {
   constructor() {
     this.client = new Client("http://localhost:2567");
     console.log(this.client);
-    this.init();
-  }
-
-  async init() {
-
     const joinOptions: IJoinOptions = {
       name: "Chris?", 
       displayName: "dails",
       campaignId: "1234"
     }
-    this.room = await this.client.joinOrCreate<SlayerRoomState>("gameplay", joinOptions);
-    console.log("Joined " + this.room.name);
-    this.$ = getStateCallbacks<SlayerRoomState>(this.room);
 
-    this.$(this.room.state).roster.onAdd((item, ix) => {
+    this.room = this.client.joinOrCreate<SlayerRoomState>("gameplay", joinOptions);
+
+    this.init();
+  }
+
+  async init() {
+    const room = await this.room;
+    console.log("Joined " + room.name);
+    const $ = getStateCallbacks<SlayerRoomState>(room);
+
+    $(room.state).roster.onChange((item, ix) => {
       this.rosterChangeSubject.next(item);
     })
 
-    this.$(this.room.state).currentAssignments.onAdd((item, ix) => {
+    $(room.state).currentAssignments.onAdd((item, ix) => {
       this.assignmentChangeSubject.next([item, ix]);
-      for (const elem in this.room?.state.currentAssignments) {
+      for (const elem in room.state.currentAssignments) {
 
       }
     })
@@ -58,8 +60,8 @@ export class ColyseusService {
     return this.assignmentChangeSubject.asObservable();
   }
 
-  sendMessage(msg: IBaseMsg) {
-    return this.room?.send(msg.kind, msg)
+  async sendMessage(msg: IBaseMsg) {
+    return (await this.room).send(msg.kind, msg)
   }
 
 }

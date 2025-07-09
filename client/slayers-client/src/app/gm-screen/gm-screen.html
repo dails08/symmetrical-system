@@ -1,4 +1,14 @@
 <button (click)="sendTakeDamage(1)">Take Damage</button>
 <button (click)="sendTakeDamage(-1)">Heal Damage</button>
 <button (click)="sendSaveCampaign()">Save Campaign</button>
-<button (click)="addDefaultRoster()">Add Default Roster</button>
+<!-- <button (click)="addDefaultRoster()">Add Default Roster</button> -->
+
+<div class="roster">
+    <div class="slayer" *ngFor="let slayer of roster">
+        <p>{{slayer.name}}</p>
+        <p>{{slayer.class}}</p>
+        <p>{{slayer.currentHP}}/{{slayer.maxHP}}</p>
+        <input type="text" #hpdelta>
+        <button (click)="sendHPDelta(slayer, hpdelta.value)">HP Delta</button>
+    </div>
+</div>

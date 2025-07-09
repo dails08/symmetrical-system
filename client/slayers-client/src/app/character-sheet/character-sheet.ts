@@ -10,6 +10,7 @@ import { Slayer, Blade, Gunslinger, Arcanist, Tactician, KnownSpell, Advance } f
 import { provideRouter } from '@angular/router';
 import { EMessageTypes, IBaseMsg, ICharacterUpdateMsg, ISaveCampaignMsg, IUpdateNumericalMsg } from '../../../../../common/messageFormat';
 import { BladePipe, GunslingerPipe, ArcanistPipe, TacticianPipe } from "../classPipes";
+import { getStateCallbacks } from 'colyseus.js';
 
 
 @Component({
@@ -45,7 +46,6 @@ export class CharacterSheet implements AfterViewInit {
     //     })
     //   });
     this.fresh = true;
-
     }
 
     animateHPChange() {
@@ -66,11 +66,13 @@ export class CharacterSheet implements AfterViewInit {
 
     ngAfterViewInit(): void {
       this.cs.getAssignmentChange().subscribe((newSlayer) => {
-        console.log("Adding listeners")
+        const room = this.cjs.room.then((room) => {
+          const $ = getStateCallbacks(room);
+          console.log("Adding listeners")
           // Add listeners
-          this.cjs.$!(newSlayer).listen("currentHP", (newValue, previousValue) => {
+          $(newSlayer).listen("currentHP", (newValue, previousValue) => {
             console.log("Automatically changing hp: " + this.cs.slayer!.currentHP + "/" + this.cs.slayer!.maxHP);
-            this.cs.slayer!.currentHP = newValue;
+            // this.cs.slayer!.currentHP = newValue;
             console.log("Damage: " + this.cs.slayer!.currentHP);
             
             if (this.fresh){
@@ -80,6 +82,8 @@ export class CharacterSheet implements AfterViewInit {
             } else {
               this.animateHPChange();
             }
+
+        })
             
             
             

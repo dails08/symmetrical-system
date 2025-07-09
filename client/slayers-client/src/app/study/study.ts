@@ -27,15 +27,18 @@ export class Study {
     }
 
     sendCharacterUpdate(){
-      const updatedChar = this.cjs.room?.state?.currentAssignments?.get(this.cs.player!.id)!;
-      updatedChar.currentHP = Math.max(updatedChar.currentHP - 1, 0);
-      const msg: ICharacterUpdateMsg = {
-        characterId: this.cjs.room?.state?.currentAssignments?.get(this.cs.player!.id)?.id!,
-        data: updatedChar,
-        kind: EMessageTypes.CharacterUpdate
-        
-      }
-      this.cjs.sendMessage(msg);
+      this.cjs.room.then((room) => {
+        const updatedChar = room.state.currentAssignments?.get(this.cs.player!.id)!;
+        updatedChar.currentHP = Math.max(updatedChar.currentHP - 1, 0);
+        const msg: ICharacterUpdateMsg = {
+          characterId: room.state.currentAssignments?.get(this.cs.player!.id)?.id!,
+          data: updatedChar,
+          kind: EMessageTypes.CharacterUpdate
+          
+        }
+        this.cjs.sendMessage(msg);
+  
+      })
     }
 
     sendTakeDamage(dmg: number) {
@@ -57,12 +60,12 @@ export class Study {
       this.cjs.sendMessage(msg)
     }
 
-    addDefaultRoster(){
-      const msg = {
-        kind: "addDefault"
-      };
-      this.cjs.room?.send("addDefault", msg);
-      // this.cjs.sendMessage(msg);
-    }
+    // addDefaultRoster(){
+    //   const msg = {
+    //     kind: "addDefault"
+    //   };
+    //   this.cjs.room?.send("addDefault", msg);
+    //   // this.cjs.sendMessage(msg);
+    // }
 
 }
