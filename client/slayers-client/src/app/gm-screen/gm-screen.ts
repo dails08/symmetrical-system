@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { EPlaybooks, IPlayer, ISlayer, IGunslinger, IBlade, IArcanist, ITactician } from "../../../../../common/common";
 import { Cervantes, Clint } from "../../../../../common/examples";
 import { ColyseusService } from '../services/colyseusService';
-import { Slayer, Blade, Gunslinger, Arcanist, Tactician, KnownSpell, Advance } from '../../../../../server/src/SlayerRoomState';
+import { Slayer, Blade, Gunslinger, Arcanist, Tactician, KnownSpell, Advance, Player } from '../../../../../server/src/SlayerRoomState';
 import { provideRouter } from '@angular/router';
 import { CentralService } from '../services/central-service';
 import { EMessageTypes, IBaseMsg, ICharacterUpdateMsg, ISaveCampaignMsg, IUpdateNumericalMsg } from '../../../../../common/messageFormat';
@@ -22,12 +22,16 @@ export class GmScreen {
   playbooks = EPlaybooks;
   roster: Slayer[];
 
+  players: Map<String, Player>;
+
     constructor(
       protected cjs: ColyseusService,
       protected cs: CentralService
     ){
 
       this.roster = [];
+      this.players = new Map<String, Player>();
+      // this.assignments: {player: Player, slayer: Slayer}[] = []
       this.cjs.room.then((room) => {
 
         const $ = getStateCallbacks(room);
@@ -40,7 +44,31 @@ export class GmScreen {
         });
         $(room.state).roster.onRemove((item, ix) => {
           this.roster.splice(ix);
+        });
 
+        $(room.state).playerMap.onAdd((item, ix) => {
+          console.log("Adding " + item.name)
+          this.players.set(ix, item);
+          $(item).bindTo(item);
+        });
+        $(room.state).playerMap.onRemove((item, key) =>{
+          console.log("Trying to remove player " + key + ", " + item.id);
+          if (this.players.has(key)){
+            console.log("Found");
+            this.players.delete(key)
+          } else {
+            console.log("Didn't find");
+          }
+          // const ix = this.players.findIndex((val, ix, arr) => {
+          //   console.log("Looking at " + val.id + "/" + ix);
+          //   return val.id == item.id;
+          // });
+          // if (ix){
+          //   console.log("Found");
+          //   this.players.splice(ix);
+          // } else {
+          //   console.log("Didn't find.");
+          // }
         })
     })
   }

@@ -11,6 +11,7 @@
           </div>
           <!-- <div class="gutters"> -->
               <div *ngFor="let _ of [].constructor(slayer.maxHP + 1); let ix = index" class="segment" [style.left]="'calc('+100*(ix)/slayer.maxHP+'%)'"></div>
+              <div class="segment halfhp" [style.left]="'calc(50% + 1px)'"></div>
           <!-- </div> -->
         </div>
         <div class="misc">

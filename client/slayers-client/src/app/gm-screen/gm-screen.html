@@ -1,7 +1,15 @@
-<button (click)="sendTakeDamage(1)">Take Damage</button>
+<!-- <button (click)="sendTakeDamage(1)">Take Damage</button>
 <button (click)="sendTakeDamage(-1)">Heal Damage</button>
-<button (click)="sendSaveCampaign()">Save Campaign</button>
+<button (click)="sendSaveCampaign()">Save Campaign</button> -->
 <!-- <button (click)="addDefaultRoster()">Add Default Roster</button> -->
+
+
+<div class="players">
+    <div class="player" *ngFor="let player of players | keyvalue">
+        <p>{{player.value.name}}</p>
+        <p>{{player.value.id}}</p>
+    </div>
+</div>
 
 <div class="roster">
     <div class="slayer" *ngFor="let slayer of roster">
