@@ -83,8 +83,8 @@
 
         <div class="advances">
             <div class="advance" *ngFor="let advance of slayer.advances.toArray()">
-                <p>Name: {{advance.name}}</p>
-                <p>Desc: {{advance.desc}}</p>
+                <ng-template class="advancePopover" #advancePopover>{{advance.desc}}</ng-template>
+                <p [tp]="advancePopover" tpVariation="popover" tpTrigger="click" class="advanceName">{{advance.name}}</p>
             </div>
         </div>
         <div class="bladeData" *ngIf="slayer.class == playbooks.Blade">

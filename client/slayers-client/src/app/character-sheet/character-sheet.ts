@@ -11,11 +11,12 @@ import { provideRouter } from '@angular/router';
 import { EMessageTypes, IBaseMsg, ICharacterUpdateMsg, ISaveCampaignMsg, IUpdateNumericalMsg } from '../../../../../common/messageFormat';
 import { BladePipe, GunslingerPipe, ArcanistPipe, TacticianPipe } from "../classPipes";
 import { getStateCallbacks } from 'colyseus.js';
+import { TippyDirective } from '@ngneat/helipopper';
 
 
 @Component({
   selector: 'app-character-sheet',
-  imports: [CommonModule, BladePipe, GunslingerPipe, ArcanistPipe, TacticianPipe],
+  imports: [CommonModule, BladePipe, GunslingerPipe, ArcanistPipe, TacticianPipe, TippyDirective],
   templateUrl: './character-sheet.html',
   styleUrl: './character-sheet.scss'
 })

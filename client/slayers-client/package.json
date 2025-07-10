@@ -26,6 +26,7 @@
     "@angular/forms": "^20.1.0",
     "@angular/platform-browser": "^20.1.0",
     "@angular/router": "^20.1.0",
+    "@ngneat/helipopper": "^11.1.2",
     "animejs": "^4.0.2",
     "colyseus.js": "^0.16.19",
     "rxjs": "~7.8.0",
