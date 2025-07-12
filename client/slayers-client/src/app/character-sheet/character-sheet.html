@@ -15,7 +15,7 @@
           <!-- </div> -->
         </div>
         <div class="misc">
-            <div class="speed stackedStat">
+            <div class="speed stackedStat" [tp]="rollerPopover" [tpInteractive]="true" [tpData]="{name: 'Speed', size: slayer.speed}" tpVariation="popover" tpTrigger="click">
                 <p class="statName">Speed</p>
                 <p class="statNumber">d{{slayer.speed}}</p>
             </div>
@@ -29,45 +29,54 @@
             </div>
         </div>
         <div class="skills">
-            <div class="skill">
-                <p class="skillName agile">Agile</p>
+            <!-- <div class="skillsLabel">
+                <p>Skills</p>
+            </div> -->
+            <div class="skill" [tp]="Roller" [tpInteractive]="true" [tpData]="{name: 'Agile', size: slayer.skillsAgile}" tpVariation="popover" tpTrigger="click">
+                <ng-template #rollerPopover let-name let-size>
+                    <app-roller name="Agile" [size]="slayer.skillsAgile"></app-roller>
+                </ng-template>
                 <img src="/assets/shapes/{{slayer.skillsAgile}}.svg">
+                <p class="skillName agile">Agile</p>
             </div>
-            <div class="skill">
+            <div class="skill" [tp]="rollerPopover" [tpInteractive]="true" [tpData]="{name: 'Brawn', size: slayer.skillsBrawn}" tpVariation="popover" tpTrigger="click">
+                <ng-template #rollerPopover let-name let-size>
+                    <app-roller name="Brawn" [size]="slayer.skillsBrawn"></app-roller>
+                </ng-template>
+                 <img src="/assets/shapes/{{slayer.skillsBrawn}}.svg">
                 <p class="skillName">Brawn</p>
-                <img src="/assets/shapes/{{slayer.skillsBrawn}}.svg">
             </div>
-            <div class="skill">
-                <p class="skillName deceive">Deceive</p>
+            <div class="skill" [tp]="rollerPopover" [tpInteractive]="true" [tpData]="{name: 'Deceive', size: slayer.skillsDeceive}" tpVariation="popover" tpTrigger="click">
                 <img src="/assets/shapes/{{slayer.skillsDeceive}}.svg">
+                <p class="skillName deceive">Deceive</p>
             </div>
-            <div class="skill">
-                <p class="skillName hunt">Hunt</p>
+            <div class="skill" [tp]="rollerPopover" [tpInteractive]="true" [tpData]="{name: 'Hunt', size: slayer.skillsHunt}" tpVariation="popover" tpTrigger="click">
                 <img src="/assets/shapes/{{slayer.skillsHunt}}.svg">
+                <p class="skillName hunt">Hunt</p>
             </div>
-            <div class="skill">
-                <p class="skillName">Mend</p>
+            <div class="skill" [tp]="rollerPopover" [tpInteractive]="true" [tpData]="{name: 'Mend', size: slayer.skillsMend}" tpVariation="popover" tpTrigger="click">
                 <img src="/assets/shapes/{{slayer.skillsMend}}.svg">
+                <p class="skillName">Mend</p>
             </div>
-            <div class="skill">
-                <p class="skillName negotiate">Negotiate</p>
+            <div class="skill" [tp]="rollerPopover" [tpInteractive]="true" [tpData]="{name: 'Negotiate', size: slayer.skillsNegotiate}" tpVariation="popover" tpTrigger="click">
                 <img src="/assets/shapes/{{slayer.skillsNegotiate}}.svg">
+                <p class="skillName negotiate">Negotiate</p>
             </div>
-            <div class="skill">
-                <p class="skillName">Street</p>
+            <div class="skill" [tp]="rollerPopover" [tpInteractive]="true" [tpData]="{name: 'Street', size: slayer.skillsStreet}" tpVariation="popover" tpTrigger="click">
                 <img src="/assets/shapes/{{slayer.skillsStreet}}.svg">
+                <p class="skillName">Street</p>
             </div>
-            <div class="skill">
-                <p class="skillName">Stealth</p>
+            <div class="skill" [tp]="rollerPopover" [tpInteractive]="true" [tpData]="{name: 'Stealth', size: slayer.skillsStealth}" tpVariation="popover" tpTrigger="click">
                 <img src="/assets/shapes/{{slayer.skillsStealth}}.svg">
+                <p class="skillName">Stealth</p>
             </div>
-            <div class="skill">
-                <p class="skillName">Study</p>
+            <div class="skill" [tp]="rollerPopover" [tpInteractive]="true" [tpData]="{name: 'Study', size: slayer.skillsStudy}" tpVariation="popover" tpTrigger="click">
                 <img src="/assets/shapes/{{slayer.skillsStudy}}.svg">
+                <p class="skillName">Study</p>
             </div>
-            <div class="skill">
-                <p class="skillName">Tactics</p>
+            <div class="skill" [tp]="rollerPopover" [tpInteractive]="true" [tpData]="{name: 'Tactics', size: slayer.skillsTactics}" tpVariation="popover" tpTrigger="click">
                 <img src="/assets/shapes/{{slayer.skillsTactics}}.svg">
+                <p class="skillName">Tactics</p>
             </div>
             <!-- <div class="skill">Brawn: {{slayer.skillsBrawn}} </div>
             <div class="skill">Deceive: {{slayer.skillsDeceive}} </div>

@@ -1,0 +1,35 @@
+.rollName {
+    text-align: center;
+}
+.squares {
+    display: flex;
+    padding: 10px;
+
+    .option {
+        height: 50px;
+        width: 50px;
+        // padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
+        border-radius: 3px;
+        margin: 0px 5px;
+    }
+
+    .disadvantaged {
+        border: 1px solid red;
+        background-color: darkred;
+    }
+
+    .normal {
+        border: 1px solid white;
+        background-color: slategray;
+    }
+
+    .advantaged {
+        border: 1px solid green;
+        background-color: darkgreen;
+    }
+}

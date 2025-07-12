@@ -140,20 +140,36 @@
     display: flex;
     overflow-x: scroll;
     position: relative;
-    height: 100px;
+    // height: 100px;
     width: 100%;
     border-bottom: 1px solid gray;
 
+    .skillsLabel {
+      font-family: "sarina";
+      font-size:1rem;
+      color: white;
+      // opacity: 0.2;
+      position: sticky;
+      left: 0;
+      top: 0;
+      z-index: -1;
+
+    }
+
     .skill {
-      position: relative;
+      // position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       min-width: 100px;
       height: 100%;
 
       p {
-        position:absolute;
-        bottom: 15%;
-        left: 25%;
+        // position:absolute;
+        // bottom: 15%;
+        // left: 25%;
         font-size: 1rem;
+        text-align: center;
       }
 
       p.deceive {
@@ -170,11 +186,13 @@
       }
 
       img {
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        top: 0px;
-        left: 0px;
+        // position: absolute;
+        // height: 100%;
+        // width: 100%;
+        // top: 0px;
+        // left: 0px;
+        height: 50px;
+        width: 50px;
         filter: invert(100%) sepia(100%) saturate(1%) hue-rotate(307deg) brightness(110%) contrast(101%);
       }
     }
@@ -182,7 +200,7 @@
 
   .advances {
     display: flex;
-    justify-content: center;
+    justify-content: start;
     padding: 10px;
     .advance{
       flex-grow: 0;
