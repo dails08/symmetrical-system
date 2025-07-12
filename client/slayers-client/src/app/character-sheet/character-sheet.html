@@ -32,17 +32,15 @@
             <!-- <div class="skillsLabel">
                 <p>Skills</p>
             </div> -->
-            <div class="skill" [tp]="Roller" [tpInteractive]="true" [tpData]="{name: 'Agile', size: slayer.skillsAgile}" tpVariation="popover" tpTrigger="click">
-                <ng-template #rollerPopover let-name let-size>
-                    <app-roller name="Agile" [size]="slayer.skillsAgile"></app-roller>
-                </ng-template>
+            <ng-template #rollerPopover let-item="data">
+                <app-roller [name]="item.name" [size]="item.size"></app-roller>
+            </ng-template>
+
+            <div class="skill" [tp]="rollerPopover" [tpInteractive]="true" [tpData]="{name: 'Agile', size: slayer.skillsAgile}" tpTrigger="click">
                 <img src="/assets/shapes/{{slayer.skillsAgile}}.svg">
                 <p class="skillName agile">Agile</p>
             </div>
             <div class="skill" [tp]="rollerPopover" [tpInteractive]="true" [tpData]="{name: 'Brawn', size: slayer.skillsBrawn}" tpVariation="popover" tpTrigger="click">
-                <ng-template #rollerPopover let-name let-size>
-                    <app-roller name="Brawn" [size]="slayer.skillsBrawn"></app-roller>
-                </ng-template>
                  <img src="/assets/shapes/{{slayer.skillsBrawn}}.svg">
                 <p class="skillName">Brawn</p>
             </div>

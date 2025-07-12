@@ -10,20 +10,21 @@ import { injectTippyRef } from '@ngneat/helipopper';
 export class Roller {
   tippy = injectTippyRef();
   @Input() name!: string;
-  kind!: "d" | "n" | "a";
+  // kind!: "d" | "n" | "a";
   @Input() size!: number;
 
   constructor(){
-    const {
-      name = "Null",
-      kind = "n",
-      size = 4
-    } = this.tippy.data ?? {};
-    console.log(this.tippy.data ?? "No data");
+    // const {
+    //   name = "Null",
+    //   kind = "n",
+    //   size = 4
+    // } = this.tippy.data ?? {};
+    // console.log(this.tippy.data ?? "No data");
   }
 
   sendRoll(kind: string){
     console.log("Rolling " + kind);
+    this.tippy.hide();
   }
 
 }

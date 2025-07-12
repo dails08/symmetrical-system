@@ -1,6 +1,7 @@
 @import 'tippy.js/dist/tippy.css';
 @import 'tippy.js/themes/light.css';
 @import 'tippy.js/animations/scale.css';
+@import 'tippy.js/dist/border.css';
 
 .tippy-content {
   position: relative;
@@ -41,6 +42,12 @@
 
 .tippy-arrow::before {
   box-shadow: -4px 4px 14px -4px rgba(0, 0, 0, 0.2);
+}
+
+.tippy-box[data-theme~='darkBorder'] {
+  border: 1px solid white;
+  // background-color: white;
+  color: white;
 }
 
 /* You can add global styles to this file, and also import other style files */
