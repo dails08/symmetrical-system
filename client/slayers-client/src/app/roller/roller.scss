@@ -3,11 +3,11 @@
 }
 .squares {
     display: flex;
-    padding: 10px;
+    padding: 0px;
 
     .option {
-        height: 50px;
-        width: 50px;
+        height: 70px;
+        width: 70px;
         // padding: 20px;
         display: flex;
         justify-content: center;
@@ -15,21 +15,44 @@
         text-align: center;
         color: white;
         border-radius: 3px;
-        margin: 0px 5px;
+        margin: 0px 10px;
+        position: relative;
+
+        .die {
+            height: 60px;
+            width: 60px;
+            position: absolute
+        }
+        .dieCentral {
+            // left: 5px;
+            // right: 5px;
+            // top: 5px;
+            // bottom: 5px;
+            position: static;
+        }
+
+        .dieOne {
+            left: 0;
+            top: 0;
+        }
+
+        .dieTwo {
+            right: 0;
+            bottom: 0;
+        }
+
+        .dis {
+            filter: brightness(0) saturate(100%) invert(15%) sepia(73%) saturate(5572%) hue-rotate(350deg) brightness(91%) contrast(92%);
+        }
+
+        .normal {
+            filter: brightness(0) saturate(100%) invert(100%) sepia(3%) saturate(13%) hue-rotate(61deg) brightness(104%) contrast(104%);
+        }
+
+        .adv {
+            filter: brightness(0) saturate(100%) invert(46%) sepia(96%) saturate(385%) hue-rotate(100deg) brightness(94%) contrast(77%);
+        }
+
     }
 
-    .disadvantaged {
-        border: 1px solid red;
-        background-color: darkred;
-    }
-
-    .normal {
-        border: 1px solid white;
-        background-color: slategray;
-    }
-
-    .advantaged {
-        border: 1px solid green;
-        background-color: darkgreen;
-    }
 }

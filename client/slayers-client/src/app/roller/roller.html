@@ -1,6 +1,15 @@
 <!-- <div class="rollName">{{name}}</div> -->
 <div class="squares">
-    <div class="option disadvantaged" (click)="sendRoll('D')">D</div>
-    <div class="option normal" (click)="sendRoll('N')">N</div>
-    <div class="option advantaged" (click)="sendRoll('A')">A</div>
+    <div class="option disadvantaged" (click)="sendRoll('D')">
+        <img src="/assets/shapes/{{size}}.svg" alt="" class="die dieOne dis">
+        <img src="/assets/shapes/{{size}}.svg" alt="" class="die dietwo dis">
+    </div>
+    <div class="option normal" (click)="sendRoll('N')">
+        <img src="/assets/shapes/{{size}}.svg" alt="" class="die dieCentral normal">
+    </div>
+    <div class="option advantaged" (click)="sendRoll('A')">
+        <img src="/assets/shapes/{{size}}.svg" alt="" class="die dieOne adv">
+        <img src="/assets/shapes/{{size}}.svg" alt="" class="die dietwo adv">
+
+    </div>
 </div>
