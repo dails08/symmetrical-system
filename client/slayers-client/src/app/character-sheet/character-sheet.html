@@ -94,6 +94,12 @@
                 <p [tp]="advancePopover" tpVariation="popover" tpTrigger="click" class="advanceName">{{advance.name}}</p>
             </div>
         </div>
+        <div class="inventory" *ngIf="slayer.inventory.length > 0">
+            <div class="invItem" *ngFor="let invItem of slayer.inventory.toArray()">
+                <ng-template class="advancePopover" #advancePopover>{{invItem.desc}}</ng-template>
+                <p [tp]="advancePopover" tpVariation="popover" tpTrigger="click" class="itemName">{{invItem.name}}</p>
+            </div>
+        </div>
         <div class="bladeData" *ngIf="slayer.class == playbooks.Blade">
             @let castSlayer = slayer | asBlade;
             <div class="stance">

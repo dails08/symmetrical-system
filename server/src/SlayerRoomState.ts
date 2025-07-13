@@ -6,6 +6,10 @@ export class Advance extends Schema {
   @type("string") name: string = "";
   @type("string") desc: string = "";
 }
+export class InventoryItem extends Schema {
+  @type("string") name: string = "";
+  @type("string") desc: string = "";
+}
 
 export class Player extends Schema implements IPlayer {
   @type("string") id: string = "";
@@ -27,16 +31,25 @@ export class Slayer extends Schema {
         this.id = uuidv4();
       }
       this.advances = new ArraySchema<Advance>();
-      for (let advance of data.advances){
+      for (let advance of data.advances || []){
         const newAdvance = new Advance();
         newAdvance.name = advance.name;
         newAdvance.desc = advance.desc;
         this.advances.push(newAdvance);
       }
+      this.inventory = new ArraySchema<InventoryItem>();
+      for (let invItem of data.inventory || []){
+        const newItem = new InventoryItem();
+        newItem.name = invItem.name;
+        newItem.desc = invItem.desc;
+        this.inventory.push(newItem);
+      }
     } else {
       this.advances = new ArraySchema<Advance>();
+      this.inventory = new ArraySchema<InventoryItem>();
     }
-  }
+
+}
 
   toISlayer(){
     const slayer: ISlayer = {
@@ -57,10 +70,15 @@ export class Slayer extends Schema {
       skillsStealth: this.skillsStealth,
       skillsStudy: this.skillsStudy,
       skillsTactics: this.skillsTactics,
-      advances: []
+      advances: [],
+      inventory: []
     }
     for (const advance of this.advances){
       slayer.advances.push(advance);
+    }
+    for (const invItem of this.inventory
+    ){
+      slayer.inventory.push(invItem);
     }
     return slayer;
   }
@@ -81,6 +99,7 @@ export class Slayer extends Schema {
   @type("number") skillsTactics: 6|8|10|12 = 6
 
   @type([Advance]) advances = new ArraySchema<Advance>();
+  @type([InventoryItem]) inventory = new ArraySchema<InventoryItem>();
   @type("number") damage: number = 1;
   @type("number") speed: 8 | 4 | 6 | 10 | 12 = 6;
 }

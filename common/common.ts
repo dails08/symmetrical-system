@@ -23,7 +23,8 @@ export interface ISlayer {
     skillsStealth: 6|8|10|12,
     skillsStudy: 6|8|10|12,
     skillsTactics: 6|8|10|12,
-    advances: {name: string, desc: string}[]
+    advances: {name: string, desc: string}[],
+    inventory: {name: string, desc: string}[]
 }
 
 export enum EStances {

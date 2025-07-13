@@ -26,6 +26,7 @@ export const Clint: IGunslinger ={
         name: "Draw",
         desc: "Roll a d8 for speed"
     }],
+    inventory: [],
     chamber1Loaded: true,
     chamber1Rune: ERunes.None,
     chamber2Loaded: true,
@@ -64,6 +65,10 @@ export const Cervantes: IBlade = {
     skillsTactics: 6,
 
     advances: [],
+    inventory: [{
+        name: "Soul Edge",
+        desc: "Cervantes was seriously wounded, but the soul still burns..."
+    }],
     stance: EStances.Flow
 }
 
@@ -87,6 +92,7 @@ export const Ryze: IArcanist = {
     skillsTactics: 6,
 
     advances: [],
+    inventory: [],
     corruption: 2,
     favoredSpell: "",
     knownSpells: [
@@ -121,6 +127,7 @@ export const Gene: ITactician = {
         name: "Draw",
         desc: "Roll a d8 for speed"
     }],
+    inventory: [],
     plans: []
 }
 

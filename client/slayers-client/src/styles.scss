@@ -46,8 +46,25 @@
 
 .tippy-box[data-theme~='darkBorder'] {
   border: 1px solid white;
-  background-color: black;
+  background: black;
   color: white;
+  
+  .tippy-box[data-theme~='darkBorder'][data-placement^='top'] > .tippy-arrow::before {
+      box-shadow: black;
+
+  }
+  .tippy-box[data-theme~='darkBorder'][data-placement^='bottom'] > .tippy-arrow::before {
+      box-shadow: black;
+
+  }
+  .tippy-box[data-theme~='darkBorder'][data-placement^='left'] > .tippy-arrow::before {
+      box-shadow: black;
+
+  }
+  .tippy-box[data-theme~='darkBorder'][data-placement^='right'] > .tippy-arrow::before {
+      box-shadow: black;
+
+  }
 }
 
 /* You can add global styles to this file, and also import other style files */
