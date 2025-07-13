@@ -1,3 +1,5 @@
+import { provideEventPlugins } from "@taiga-ui/event-plugins";
+import { provideAnimations } from "@angular/platform-browser/animations";
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideTippyConfig, provideTippyLoader, tooltipVariation, popperVariation, TippyProps } from '@ngneat/helipopper/config';
@@ -10,7 +12,8 @@ darkBorderVariation.trigger = "click";
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideBrowserGlobalErrorListeners(),
+        provideAnimations(),
+        provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideTippyLoader(() => import('tippy.js')),
@@ -23,5 +26,7 @@ export const appConfig: ApplicationConfig = {
       },
       theme: "darkBorder"
     }),
-  ]
+        provideEventPlugins(),
+        provideEventPlugins()
+    ]
 };

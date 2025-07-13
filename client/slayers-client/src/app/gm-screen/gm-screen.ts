@@ -9,11 +9,14 @@ import { CentralService } from '../services/central-service';
 import { EMessageTypes, IBaseMsg, ICharacterUpdateMsg, ISaveCampaignMsg, IUpdateNumericalMsg } from '../../../../../common/messageFormat';
 import { BladePipe, GunslingerPipe, ArcanistPipe, TacticianPipe } from "../classPipes";
 import { getStateCallbacks } from 'colyseus.js';
-
+import {TuiPlatform} from '@taiga-ui/cdk';
+import {TuiAppearance, TuiButton, TuiTitle} from '@taiga-ui/core';
+import {TuiCardLarge, TuiHeader} from '@taiga-ui/layout';
+import { GmSlayerSummary } from "./gm-slayer-summary/gm-slayer-summary";
 
 @Component({
   selector: 'app-gm-screen',
-  imports: [CommonModule],
+  imports: [CommonModule, TuiPlatform, TuiAppearance, TuiButton, TuiTitle, TuiCardLarge, TuiHeader, GmSlayerSummary],
   templateUrl: './gm-screen.html',
   styleUrl: './gm-screen.scss'
 })
@@ -24,12 +27,15 @@ export class GmScreen {
 
   players: Map<String, Player>;
 
+  assignments: Map<Player, Slayer>;
+
     constructor(
       protected cjs: ColyseusService,
       protected cs: CentralService
     ){
 
       this.roster = [];
+      this.assignments = new Map<Player, Slayer>();
       this.players = new Map<String, Player>();
       // this.assignments: {player: Player, slayer: Slayer}[] = []
       this.cjs.room.then((room) => {
@@ -51,24 +57,59 @@ export class GmScreen {
           this.players.set(ix, item);
           $(item).bindTo(item);
         });
-        $(room.state).playerMap.onRemove((item, key) =>{
-          console.log("Trying to remove player " + key + ", " + item.id);
-          if (this.players.has(key)){
-            console.log("Found");
-            this.players.delete(key)
-          } else {
-            console.log("Didn't find");
+
+        $(room.state).playerMap.onRemove((item, ix) => {
+          console.log("Removing " + item.name);
+          console.log("Removed? " + this.players.delete(ix));
+        })
+
+        // $(room.state).playerMap.onRemove((item, key) =>{
+        //   console.log("Trying to remove player " + key + ", " + item.id);
+        //   if (this.players.has(key)){
+        //     console.log("Found");
+        //     this.players.delete(key)
+        //   } else {
+        //     console.log("Didn't find");
+        //   }
+        // });
+
+        $(room.state).currentAssignments.onAdd((slayer, ix) => {
+            const assignmentPlayer = this.players.get(ix);
+            if (assignmentPlayer){
+              console.log("Setting assignment of " + assignmentPlayer.displayName + " to " + slayer.name);
+              this.assignments.set(assignmentPlayer!, slayer);
+              if (slayer) {
+                $(slayer).bindTo(this.assignments.get(assignmentPlayer));
+              } else {
+                console.log()
+              }
+            } else {
+              console.log("Can't find assigned player to add assignment")
+            }
+        });
+        $(room.state).currentAssignments.onChange((slayer, ix) => {
+          if (slayer){
+            const assignmentPlayer = this.players.get(ix);
+            if (assignmentPlayer){
+              console.log("Updating assignment of " + assignmentPlayer.displayName + " to " + slayer.name);
+              this.assignments.set(assignmentPlayer!, slayer);
+              $(slayer).bindTo(this.assignments.get(assignmentPlayer));
+            } else {
+              console.log("Can't find assigned player to add assignment")
+            }
+  
           }
-          // const ix = this.players.findIndex((val, ix, arr) => {
-          //   console.log("Looking at " + val.id + "/" + ix);
-          //   return val.id == item.id;
-          // });
-          // if (ix){
-          //   console.log("Found");
-          //   this.players.splice(ix);
-          // } else {
-          //   console.log("Didn't find.");
-          // }
+      });
+
+        $(room.state).currentAssignments.onRemove((slayer, ix) => {
+          const assignmentPlayer = this.players.get(ix);
+          if (assignmentPlayer){
+            console.log("Removing assignment of " + slayer.name + " to " + assignmentPlayer.displayName);
+            this.assignments.delete(assignmentPlayer!);
+          } else {
+            console.log("Can't find assigned player to add assignment")
+          }
+
         })
     })
   }

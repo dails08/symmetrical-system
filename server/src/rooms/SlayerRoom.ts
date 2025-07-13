@@ -201,18 +201,30 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     // console.log(this.state.roster)
     console.log("Assigning " + this.state.roster[ix].name);
     this.state.currentAssignments.set(client.sessionId, this.state.roster[ix]);
+    console.log("Added " + client.sessionId)
+    console.log("Playermap:")
+    this.state.playerMap.forEach((v, k) => {
+      console.log(v.name);
+    } )
+    console.log("==========");
 
   }
 
   onLeave (client: Client, consented: boolean) {
     console.log(client.sessionId, "left!");
     if (this.state.currentAssignments.has(client.sessionId) ){
-      this.state.currentAssignments.delete(client.sessionId);
+      console.log("Assignment deleted? " + this.state.currentAssignments.delete(client.sessionId));
 
     }
     if (this.state.playerMap.has(client.sessionId)){
-      this.state.playerMap.delete(client.sessionId);
+      console.log("Player deleted? " + this.state.playerMap.delete(client.sessionId));
     }
+    console.log("Deleted " + client.sessionId)
+    console.log("Playermap:")
+    this.state.playerMap.forEach((v, k) => {
+      console.log(v.name);
+    } )
+    console.log("==========");
   }
 
   onDispose() {

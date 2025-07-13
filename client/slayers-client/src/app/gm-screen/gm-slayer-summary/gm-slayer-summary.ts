@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Player, Slayer } from '../../../../../../server/src/SlayerRoomState';
-import { Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-gm-slayer-summary',
   imports: [CommonModule],
@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 })
 export class GmSlayerSummary {
 
-  @Input() player!: Player;
+  @Input({required: true}) player!: Player;
   @Input() slayer: Slayer | undefined;
 
   constructor() {

@@ -20,3 +20,8 @@
         <button (click)="sendHPDelta(slayer, hpdelta.value)">HP Delta</button>
     </div>
 </div>
+<div class="slayerCards">
+    <div tuiAppearance="floating" tuiCardLarge *ngFor="let assignment of this.assignments | keyvalue">
+        <app-gm-slayer-summary [player]="assignment.key" [slayer]="assignment.value"></app-gm-slayer-summary>
+    </div>
+</div>
