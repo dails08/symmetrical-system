@@ -4,6 +4,7 @@ import { IPlayer } from "./common"
 export enum EMessageTypes {
     CharacterUpdate,
     NumericalUpdate,
+    ArrayChange,
     Kill,
     Roll,
     OptionsChoice,
@@ -15,6 +16,16 @@ export enum EMessageTypes {
 
 export interface IBaseMsg {
     kind: EMessageTypes
+}
+
+export interface IArrayChangeMsg extends IBaseMsg {
+    kind: EMessageTypes.ArrayChange,
+    characterId: string,
+    array: "advances" | "inventory",
+    action: "add" | "remove",
+    ix?: number,
+    data?: {name: string, description: string}
+
 }
 
 export interface ICharacterUpdateMsg extends IBaseMsg {

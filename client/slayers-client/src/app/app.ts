@@ -6,6 +6,7 @@ import { Study } from './study/study';
 import { CharacterSheet } from './character-sheet/character-sheet';
 import { ColyseusService } from './services/colyseusService';
 import { CentralService } from './services/central-service';
+import { Player } from '../../../../server/src/SlayerRoomState';
 
 @Component({
   selector: 'app-root',
@@ -17,10 +18,11 @@ export class App {
   protected title = 'slayers-client';
 
   constructor(
-    public colyseus: ColyseusService,
-    public centralService: CentralService
+    public cjs: ColyseusService,
+    public cs: CentralService
   ){
-    this.centralService.player = Chris;
+    this.cs.player = new Player();
+    Object.assign(this.cs.player, Chris);
   }
 
 }

@@ -1,8 +1,26 @@
-
+// html {
+//       background-color: black;
+//       color: white;
+//   }
+  
+.slayerDefined {
+  background-color: black;
+  color: white;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+.slayerUndefined {
+  background-color: black;
+  color: white;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
 
 :host {
   background-color: black;
+  color: white;
   box-sizing: border-box;
+  flex: 1;
 }
 
 .title {

@@ -1,46 +1,68 @@
-<div class="playerBar">
-    <p>{{player.displayName}}</p>
-    <button (click)="alterChekhovPoints(-1)">-</button>
-    <p>{{player.chekhovPoints}}</p>
-    <button (click)="alterChekhovPoints(1)">+</button>
-</div>
-<div class="slayerDisplay" *ngIf="slayer">
-    <div class="commonElements">
-        <p>{{slayer.name}}</p>
-        <div class="statsRow">
-            <p>{{slayer.currentHP}}/{{slayer.maxHP}}</p>
-            <p>{{slayer.damage}}</p>
-            <p>{{slayer.class[0]}}</p>
+<mat-card appearance="outlined">
+    <mat-card-header class="playerBar">
+        <p>{{player.displayName}}</p>
+        <button matButton="filled" (click)="alterChekhovPoints(-1)">-</button>
+        <p>{{player.chekhovPoints}}</p>
+        <button matButton="filled" (click)="alterChekhovPoints(1)">+</button>
+    </mat-card-header>
+    <div class="slayerDisplay" *ngIf="slayer">
+        <div class="commonElements">
+            <p>{{slayer.name}}</p>
+            <div class="statsRow">
+                <p>{{slayer.currentHP}}/{{slayer.maxHP}}</p>
+                <p>{{slayer.damage}}</p>
+                <p>{{slayer.class[0]}}</p>
+            </div>
+            <div class="skillsRow">
+                <p>Agile: {{slayer.skillsAgile}}</p>
+                <p>Brawn: {{slayer.skillsBrawn}}</p>
+                <p>Deceive: {{slayer.skillsDeceive}}</p>
+                <p>Hunt: {{slayer.skillsHunt}}</p>
+                <p>Mend: {{slayer.skillsMend}}</p>
+                <p>Negotiate: {{slayer.skillsNegotiate}}</p>
+                <p>Stealth: {{slayer.skillsStealth}}</p>
+                <p>Street: {{slayer.skillsStreet}}</p>
+                <p>Study: {{slayer.skillsStudy}}</p>
+                <p>Tactics: {{slayer.skillsTactics}}</p>
+            </div>
+            <div class="advances">
+                <mat-accordion>
+                    <mat-expansion-panel *ngFor="let advance of slayer.advances.toArray(); let ix = index">
+                        <mat-expansion-panel-header>{{advance.name}}</mat-expansion-panel-header>
+                        <p>{{advance.desc}}</p>
+                        <button mat-button color="warn" (click)="removeAdvance(slayer, ix)">Remove</button>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>Add new advance</mat-expansion-panel-header>
+                        <div class="newAdvanceSection">
+                            <form #newAdvance (ngSubmit)="addAdvance(slayer, newAdvanceName.value, newAdvanceDescription.value)" class="advance-form">
+                                <mat-form-field class="example-full-width">
+                                  <mat-label>Name</mat-label>
+                                  <input #newAdvanceName matInput placeholder="Ex. Quick Draw">
+                                </mat-form-field>
+                              
+                                <mat-form-field class="example-full-width">
+                                  <mat-label>Description</mat-label>
+                                  <textarea #newAdvanceDescription matInput placeholder="Ex. Roll d8 for speed"></textarea>
+                                </mat-form-field>
+                                <input type="submit" value="Add Advance">
+                              </form>
+    
+                        </div>                        
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <div class="inventory"></div>
         </div>
-        <div class="skillsRow">
-            <p>Agile: {{slayer.skillsAgile}}</p>
-            <p>Brawn: {{slayer.skillsBrawn}}</p>
-            <p>Deceive: {{slayer.skillsDeceive}}</p>
-            <p>Hunt: {{slayer.skillsHunt}}</p>
-            <p>Mend: {{slayer.skillsMend}}</p>
-            <p>Negotiate: {{slayer.skillsNegotiate}}</p>
-            <p>Stealth: {{slayer.skillsStealth}}</p>
-            <p>Street: {{slayer.skillsStreet}}</p>
-            <p>Study: {{slayer.skillsStudy}}</p>
-            <p>Tactics: {{slayer.skillsTactics}}</p>
+        <div class="controls"></div>
+        <div class="classSpecific">
+            <div class="bladeSection" *ngIf="slayer.class == playbooks.Blade"></div>
+            <div class="arcanistSection" *ngIf="slayer.class == playbooks.Arcanist"></div>
+            <div class="tacticianSection" *ngIf="slayer.class == playbooks.Tactician"></div>
+            <div class="gunslingerSection" *ngIf="slayer.class == playbooks.Gunslinger"></div>
         </div>
     </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="noSlayerDisplay" *ngIf="!slayer">
-    <p>No Slayer assigned!</p>
-</div>
+    <div class="noSlayerDisplay" *ngIf="!slayer">
+        <p>No Slayer assigned!</p>
+    </div>
+</mat-card>

@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Client, getStateCallbacks, Room } from 'colyseus.js';
 import { ArraySchema, type SchemaCallbackProxy }from "@colyseus/schema";
-import { Slayer, SlayerRoomState, } from "../../../../../server/src/SlayerRoomState";
+import { Slayer, SlayerRoomState, Player} from "../../../../../server/src/SlayerRoomState";
 import { Subject } from 'rxjs';
 import { IJoinOptions } from '../../../../../common/common';
-import { EMessageTypes, IBaseMsg, ISaveCampaignMsg, IUpdateNumericalMsg } from "../../../../../common/messageFormat";
+import { EMessageTypes, IBaseMsg, ISaveCampaignMsg, IUpdateNumericalMsg, ICharacterUpdateMsg, IArrayChangeMsg } from "../../../../../common/messageFormat";
 @Injectable({
   providedIn: 'root'
 })
 export class ColyseusService {
 
   client: Client;
-  room: Promise<Room<SlayerRoomState>>;
+  room: Promise<Room<SlayerRoomState>> | undefined;
   $: SchemaCallbackProxy<SlayerRoomState> | undefined;
 
   private roomStateSubject = new Subject<SlayerRoomState>();
@@ -23,15 +23,18 @@ export class ColyseusService {
   constructor() {
     this.client = new Client("http://localhost:2567");
     console.log(this.client);
-    const joinOptions: IJoinOptions = {
-      name: "Chris?", 
-      displayName: "dails",
-      campaignId: "1234"
-    }
+    // const joinOptions: IJoinOptions = {
+    //   name: , 
+    //   displayName: "dails",
+    //   campaignId: "1234"
+    // }
 
-    this.room = this.client.joinOrCreate<SlayerRoomState>("gameplay", joinOptions);
+  }
 
+  joinRoom(roomId: string, options: IJoinOptions){
+    this.room = this.client.joinOrCreate<SlayerRoomState>("gameplay", options);
     this.init();
+
   }
 
   async init() {
@@ -61,6 +64,7 @@ export class ColyseusService {
   }
 
   async sendMessage(msg: IBaseMsg) {
+    console.log("CJS sending " + JSON.stringify(msg));
     return (await this.room).send(msg.kind, msg)
   }
 

@@ -1,8 +1,8 @@
 import { Room, Client, logger } from "@colyseus/core";
-import { SlayerRoomState, Player, Slayer, Blade, Tactician, Gunslinger, Arcanist } from "../SlayerRoomState";
+import { SlayerRoomState, Advance, Player, Slayer, Blade, Tactician, Gunslinger, Arcanist, InventoryItem } from "../SlayerRoomState";
 import { EPlaybooks, ICampaign, IJoinOptions, ISlayer, IBlade, IGunslinger, IArcanist, ITactician } from "../../../common/common";
 import { Clint, Ryze, Cervantes, Gene} from "../../../common/examples";
-import { EMessageTypes, IBaseMsg, ICharacterUpdateMsg, IUpdateNumericalMsg } from "../../../common/messageFormat";
+import { EMessageTypes, IBaseMsg, IArrayChangeMsg, ICharacterUpdateMsg, IUpdateNumericalMsg } from "../../../common/messageFormat";
 import { db } from "../firestoreConnection";
 
 export class SlayerRoom extends Room<SlayerRoomState> {
@@ -162,9 +162,18 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     })
 
     this.onMessage(EMessageTypes.CharacterUpdate, (client, msg: ICharacterUpdateMsg) => {
-      for (const elem of this.state.roster){
-        if (elem.id == msg.characterId){
-          elem.currentHP = msg.data.currentHP;
+      const clientPlayer = this.state.playerMap.get(client.sessionId);
+      if (clientPlayer) {
+        if (clientPlayer.id in this.campaign.gms || this.state.currentAssignments.get(client.sessionId).id == msg.characterId){
+          for (const elem of this.state.roster){
+            if (elem.id == msg.characterId){
+              elem.currentHP = msg.data.currentHP;
+            }
+          }    
+        } else {
+          console.log(clientPlayer.displayName + " (" + clientPlayer.id + ") is not authorized to update character " + msg.characterId);
+          console.log(JSON.stringify(this.campaign.gms));
+          console.log(clientPlayer.id);
         }
       }
     })
@@ -174,6 +183,44 @@ export class SlayerRoom extends Room<SlayerRoomState> {
         this.state.roster.push(elem);
         // this.campaign.roster.push(elem);
       }  
+    })
+
+    this.onMessage(EMessageTypes.ArrayChange, (client, msg: IArrayChangeMsg) => {
+      const clientPlayer = this.state.playerMap.get(client.sessionId);
+      if (clientPlayer) {
+        if (clientPlayer.id in this.campaign.gms || this.state.currentAssignments.get(client.sessionId).id == msg.characterId){
+          for (const slayer of this.state.roster){
+            if (slayer.id == msg.characterId){
+              if (msg.action == "remove" && msg.ix) {
+                if (msg.array == "advances"){
+                  slayer.advances.splice(msg.ix)
+                  console.log("Updated to " + JSON.stringify(slayer.advances));
+                } else if (msg.array == "inventory"){
+                  slayer.inventory.splice(msg.ix);
+                }
+              } else if (msg.action == "add" && msg.data){
+                if (msg.array == "advances"){
+                  const newAdvance = new Advance();
+                  newAdvance.name = msg.data.name;
+                  newAdvance.desc = msg.data.description
+                  slayer.advances.push(newAdvance);
+                  console.log("Updated to " + JSON.stringify(slayer.advances));
+                } else if (msg.array == "inventory") {
+                  const newInvItem = new InventoryItem();
+                  newInvItem.name = msg.data.name;
+                  newInvItem.desc = msg.data.description
+                  slayer.inventory.push(newInvItem);
+                }
+              }
+            }
+          }    
+        } else {
+          console.log(clientPlayer.displayName + " (" + clientPlayer.id + ") is not authorized to update character " + msg.characterId);
+          console.log(JSON.stringify(this.campaign.gms));
+          console.log(clientPlayer.id);
+        }
+      }
+
     })
 
     // setTimeout(() => {

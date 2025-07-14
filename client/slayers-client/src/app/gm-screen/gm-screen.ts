@@ -4,19 +4,14 @@ import { EPlaybooks, IPlayer, ISlayer, IGunslinger, IBlade, IArcanist, ITacticia
 import { Cervantes, Clint } from "../../../../../common/examples";
 import { ColyseusService } from '../services/colyseusService';
 import { Slayer, Blade, Gunslinger, Arcanist, Tactician, KnownSpell, Advance, Player } from '../../../../../server/src/SlayerRoomState';
-import { provideRouter } from '@angular/router';
 import { CentralService } from '../services/central-service';
 import { EMessageTypes, IBaseMsg, ICharacterUpdateMsg, ISaveCampaignMsg, IUpdateNumericalMsg } from '../../../../../common/messageFormat';
 import { BladePipe, GunslingerPipe, ArcanistPipe, TacticianPipe } from "../classPipes";
 import { getStateCallbacks } from 'colyseus.js';
-import {TuiPlatform} from '@taiga-ui/cdk';
-import {TuiAppearance, TuiButton, TuiTitle} from '@taiga-ui/core';
-import {TuiCardLarge, TuiHeader} from '@taiga-ui/layout';
 import { GmSlayerSummary } from "./gm-slayer-summary/gm-slayer-summary";
-
 @Component({
   selector: 'app-gm-screen',
-  imports: [CommonModule, TuiPlatform, TuiAppearance, TuiButton, TuiTitle, TuiCardLarge, TuiHeader, GmSlayerSummary],
+  imports: [CommonModule, GmSlayerSummary],
   templateUrl: './gm-screen.html',
   styleUrl: './gm-screen.scss'
 })

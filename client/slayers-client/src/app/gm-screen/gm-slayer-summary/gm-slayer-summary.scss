@@ -1,0 +1,30 @@
+.playerBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .name {
+        align-items: center;
+    }
+    .chekhov {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.slayerDisplay {
+    .commonElements{
+        .statsRow {
+            display: flex;
+            justify-content: space-between;
+
+            .hp {
+
+            }
+        }
+
+        .skillsRow {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    }
+}

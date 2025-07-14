@@ -10,7 +10,7 @@ import { getStateCallbacks } from 'colyseus.js';
 })
 export class CentralService {
 
-  public player: IPlayer | undefined;
+  public player: Player | undefined;
   public slayer: Slayer | undefined;
   public assignmentChange: Subject<Slayer>;
 
@@ -18,12 +18,12 @@ export class CentralService {
   constructor(
     private cjs: ColyseusService
   ) {
-    this.player = {
+    this.player = new Player({
       id: "smallpotato",
       displayName: "Chris",
       name: "dails",
       chekhovPoints: 0
-    };
+    });
 
     this.assignmentChange = new Subject<Slayer>();
 
@@ -37,7 +37,7 @@ export class CentralService {
         if (ix == room.sessionId){
           console.log("Assigned " + newAssignment.name)
           this.slayer = newAssignment;
-          $(newAssignment).bindTo(this.slayer);
+          $(this.slayer).bindTo(this.slayer);
           this.assignmentChange.next(this.slayer);
         } else {
           console.log("Not our assignment: " + ix);

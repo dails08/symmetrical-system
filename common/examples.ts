@@ -133,9 +133,9 @@ export const Gene: ITactician = {
 
 
 
-export const Chris: IPlayer = {
-    id: "soubaiurvb",
-    name: "dails",
-    displayName: "Chris",
-    chekhovPoints: 0,
-}
+// export const Chris: IPlayer = {
+//     id: "soubaiurvb",
+//     name: "dails",
+//     displayName: "Chris",
+//     chekhovPoints: 0,
+// }

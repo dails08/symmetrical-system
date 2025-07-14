@@ -75,7 +75,6 @@ export interface ITactician extends ISlayer {
 
 export interface IPlayer {
     id: string,
-    name: string,
     displayName: string,
     chekhovPoints: number,
 }
@@ -96,7 +95,7 @@ export interface ICampaign {
 }
 
 export interface IJoinOptions {
-    name: string,
+    id: string,
     displayName: string;
     campaignId: string;
 }
