@@ -1,4 +1,5 @@
 import config from "@colyseus/tools";
+import { LobbyRoom } from "colyseus";
 import { monitor } from "@colyseus/monitor";
 import { playground } from "@colyseus/playground";
 import { logger } from "colyseus";
@@ -38,6 +39,7 @@ export default config({
          * Define your room handlers:
          */
         gameServer.define('gameplay', SlayerRoom, );
+        gameServer.define("lobby", LobbyRoom);
 
     },
 

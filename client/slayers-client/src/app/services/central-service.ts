@@ -19,9 +19,8 @@ export class CentralService {
     private cjs: ColyseusService
   ) {
     this.player = new Player({
-      id: "smallpotato",
+      id: "soubaiurvb",
       displayName: "Chris",
-      name: "dails",
       chekhovPoints: 0
     });
 

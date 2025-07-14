@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { IPlayer } from '../../../../common/common';
-import { Chris } from '../../../../common/examples';
+// import { Chris } from '../../../../common/examples';
 import { Study } from './study/study';
 import { CharacterSheet } from './character-sheet/character-sheet';
 import { ColyseusService } from './services/colyseusService';
@@ -21,8 +21,8 @@ export class App {
     public cjs: ColyseusService,
     public cs: CentralService
   ){
-    this.cs.player = new Player();
-    Object.assign(this.cs.player, Chris);
+    // this.cs.player = new Player();
+    // Object.assign(this.cs.player, Chris);
   }
 
 }

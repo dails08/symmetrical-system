@@ -13,11 +13,19 @@ import { BladePipe, GunslingerPipe, ArcanistPipe, TacticianPipe } from "../class
 import { getStateCallbacks } from 'colyseus.js';
 import { Roller } from '../roller/roller';
 import { TippyDirective } from '@ngneat/helipopper';
-
+import { JoinScreen } from "../join-screen/join-screen";
 
 @Component({
   selector: 'app-character-sheet',
-  imports: [CommonModule, BladePipe, GunslingerPipe, ArcanistPipe, TacticianPipe, TippyDirective, Roller],
+  imports: [
+    CommonModule, 
+    BladePipe, 
+    GunslingerPipe, 
+    ArcanistPipe, 
+    TacticianPipe, 
+    TippyDirective, 
+    Roller, 
+    JoinScreen],
   templateUrl: './character-sheet.html',
   styleUrl: './character-sheet.scss'
 })

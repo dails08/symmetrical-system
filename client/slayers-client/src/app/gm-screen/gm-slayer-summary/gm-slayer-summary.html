@@ -1,10 +1,10 @@
-<mat-card appearance="outlined">
-    <mat-card-header class="playerBar">
+<p-card appearance="outlined">
+    <ng-template #header class="playerBar">
         <p>{{player.displayName}}</p>
         <button matButton="filled" (click)="alterChekhovPoints(-1)">-</button>
         <p>{{player.chekhovPoints}}</p>
         <button matButton="filled" (click)="alterChekhovPoints(1)">+</button>
-    </mat-card-header>
+    </ng-template>
     <div class="slayerDisplay" *ngIf="slayer">
         <div class="commonElements">
             <p>{{slayer.name}}</p>
@@ -26,31 +26,27 @@
                 <p>Tactics: {{slayer.skillsTactics}}</p>
             </div>
             <div class="advances">
-                <mat-accordion>
-                    <mat-expansion-panel *ngFor="let advance of slayer.advances.toArray(); let ix = index">
-                        <mat-expansion-panel-header>{{advance.name}}</mat-expansion-panel-header>
+                <p-accordion>
+                    <p-accordion-panel *ngFor="let advance of slayer.advances.toArray(); let ix = index">
+                        <p-accordion-header>{{advance.name}}</p-accordion-header>
                         <p>{{advance.desc}}</p>
                         <button mat-button color="warn" (click)="removeAdvance(slayer, ix)">Remove</button>
-                    </mat-expansion-panel>
-                    <mat-expansion-panel>
-                        <mat-expansion-panel-header>Add new advance</mat-expansion-panel-header>
+                    </p-accordion-panel>
+                    <p-accordion-panel>
+                        <p-accordion-header>Add new advance</p-accordion-header>
                         <div class="newAdvanceSection">
                             <form #newAdvance (ngSubmit)="addAdvance(slayer, newAdvanceName.value, newAdvanceDescription.value)" class="advance-form">
-                                <mat-form-field class="example-full-width">
-                                  <mat-label>Name</mat-label>
-                                  <input #newAdvanceName matInput placeholder="Ex. Quick Draw">
-                                </mat-form-field>
+                                <label>Name</label>
+                                <input type="text" pInputText #newAdvanceName placeholder="Ex. Quick Draw">
                               
-                                <mat-form-field class="example-full-width">
-                                  <mat-label>Description</mat-label>
-                                  <textarea #newAdvanceDescription matInput placeholder="Ex. Roll d8 for speed"></textarea>
-                                </mat-form-field>
+                                <label>Description</label>
+                                <textarea #newAdvanceDescription placeholder="Ex. Roll d8 for speed"></textarea>
                                 <input type="submit" value="Add Advance">
                               </form>
     
                         </div>                        
-                    </mat-expansion-panel>
-                </mat-accordion>
+                    </p-accordion-panel>
+                </p-accordion>
             </div>
             <div class="inventory"></div>
         </div>
@@ -65,4 +61,4 @@
     <div class="noSlayerDisplay" *ngIf="!slayer">
         <p>No Slayer assigned!</p>
     </div>
-</mat-card>
+</p-card>

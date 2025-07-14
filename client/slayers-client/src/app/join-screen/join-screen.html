@@ -1,1 +1,15 @@
-<p>join-screen works!</p>
+<div class="formLayout">
+    <div class="row">
+        <label for="displayName">Your name</label>
+        <input id="displayName" #displayName type="text">    
+    </div>
+    <div class="row">
+        <label for="playerId">Your id (optional)</label>
+        <input id="playerId" #playerId type="text">    
+    </div>
+    <div class="row">
+        <label>Your campaign ID</label>
+        <input #campaignId type="text">    
+    </div>
+    <button (click)="join(displayName.value, playerId.value, campaignId.value)">Join</button>
+</div>

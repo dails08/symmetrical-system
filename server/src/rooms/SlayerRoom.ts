@@ -240,7 +240,6 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     }
 
     const player = new Player();
-    player.name = options.name || "NoName";
     player.displayName = options.displayName || "U.N. Owen";
     
     this.state.playerMap.set(client.sessionId, player);
@@ -251,7 +250,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     console.log("Added " + client.sessionId)
     console.log("Playermap:")
     this.state.playerMap.forEach((v, k) => {
-      console.log(v.name);
+      console.log(v.displayName);
     } )
     console.log("==========");
 
@@ -269,7 +268,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     console.log("Deleted " + client.sessionId)
     console.log("Playermap:")
     this.state.playerMap.forEach((v, k) => {
-      console.log(v.name);
+      console.log(v.displayName);
     } )
     console.log("==========");
   }

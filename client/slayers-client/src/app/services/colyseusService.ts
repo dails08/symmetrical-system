@@ -11,8 +11,9 @@ import { EMessageTypes, IBaseMsg, ISaveCampaignMsg, IUpdateNumericalMsg, ICharac
 export class ColyseusService {
 
   client: Client;
-  room: Promise<Room<SlayerRoomState>> | undefined;
+  room: Promise<Room<SlayerRoomState>>;
   $: SchemaCallbackProxy<SlayerRoomState> | undefined;
+  roomType: "lobby" | "gameplay";
 
   private roomStateSubject = new Subject<SlayerRoomState>();
   private rosterChangeSubject = new Subject<Slayer>();
@@ -28,17 +29,15 @@ export class ColyseusService {
     //   displayName: "dails",
     //   campaignId: "1234"
     // }
-
+    this.room = this.client.joinOrCreate("lobby");
+    this.roomType = "lobby";
   }
 
-  joinRoom(roomId: string, options: IJoinOptions){
+  async joinRoom(options: IJoinOptions, roomId?: string){
     this.room = this.client.joinOrCreate<SlayerRoomState>("gameplay", options);
-    this.init();
-
-  }
-
-  async init() {
+    // this.init();
     const room = await this.room;
+    this.roomType = "gameplay";
     console.log("Joined " + room.name);
     const $ = getStateCallbacks<SlayerRoomState>(room);
 
@@ -53,7 +52,26 @@ export class ColyseusService {
       }
     })
 
+
   }
+
+  // async init() {
+  //   const room = await this.room;
+  //   console.log("Joined " + room.name);
+  //   const $ = getStateCallbacks<SlayerRoomState>(room);
+
+  //   $(room.state).roster.onChange((item, ix) => {
+  //     this.rosterChangeSubject.next(item);
+  //   })
+
+  //   $(room.state).currentAssignments.onAdd((item, ix) => {
+  //     this.assignmentChangeSubject.next([item, ix]);
+  //     for (const elem in room.state.currentAssignments) {
+
+  //     }
+  //   })
+
+  // }
 
   getRosterChange() {
     return this.rosterChangeSubject.asObservable();
@@ -64,8 +82,12 @@ export class ColyseusService {
   }
 
   async sendMessage(msg: IBaseMsg) {
-    console.log("CJS sending " + JSON.stringify(msg));
-    return (await this.room).send(msg.kind, msg)
+    if (this.room){
+      console.log("CJS sending " + JSON.stringify(msg));
+      return (await this.room).send(msg.kind, msg)  
+    } else {
+      console.log("Room is undefined");
+    }
   }
 
 }

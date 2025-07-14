@@ -48,13 +48,13 @@ export class GmScreen {
         });
 
         $(room.state).playerMap.onAdd((item, ix) => {
-          console.log("Adding " + item.name)
+          console.log("Adding " + item.displayName)
           this.players.set(ix, item);
           $(item).bindTo(item);
         });
 
         $(room.state).playerMap.onRemove((item, ix) => {
-          console.log("Removing " + item.name);
+          console.log("Removing " + item.displayName);
           console.log("Removed? " + this.players.delete(ix));
         })
 
