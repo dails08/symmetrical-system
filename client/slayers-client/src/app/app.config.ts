@@ -1,7 +1,10 @@
-import { provideAnimations } from "@angular/platform-browser/animations";
+// import { provideAnimationsA } from "@angular/platform-browser/animations";
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideTippyConfig, provideTippyLoader, tooltipVariation, popperVariation, TippyProps } from '@ngneat/helipopper/config';
+import { providePrimeNG } from 'primeng/config';
+import  Aura  from "@primeuix/themes/aura";
 import { routes } from './app.routes';
 
 const darkBorderVariation: Partial<TippyProps> = {};
@@ -11,8 +14,8 @@ darkBorderVariation.trigger = "click";
 
 export const appConfig: ApplicationConfig = {
   providers: [
-        provideAnimations(),
-        provideBrowserGlobalErrorListeners(),
+    provideAnimationsAsync(),
+    provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideTippyLoader(() => import('tippy.js')),
@@ -25,5 +28,10 @@ export const appConfig: ApplicationConfig = {
       },
       theme: "darkBorder"
     }),
+    providePrimeNG({
+      theme: {
+        preset: Aura
+      }
+    })
     ]
 };
