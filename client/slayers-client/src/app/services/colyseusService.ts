@@ -4,7 +4,8 @@ import { ArraySchema, type SchemaCallbackProxy }from "@colyseus/schema";
 import { Slayer, SlayerRoomState, Player} from "../../../../../server/src/SlayerRoomState";
 import { Subject } from 'rxjs';
 import { IJoinOptions } from '../../../../../common/common';
-import { EMessageTypes, IBaseMsg, ISaveCampaignMsg, IUpdateNumericalMsg, ICharacterUpdateMsg, IArrayChangeMsg } from "../../../../../common/messageFormat";
+import { EMessageTypes, IBaseMsg, IJoinResponseMsg, ISaveCampaignMsg, IUpdateNumericalMsg, ICharacterUpdateMsg, IArrayChangeMsg } from "../../../../../common/messageFormat";
+import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,6 +15,7 @@ export class ColyseusService {
   room: Promise<Room<SlayerRoomState>>;
   $: SchemaCallbackProxy<SlayerRoomState> | undefined;
   roomType: "lobby" | "gameplay";
+  role: "gm" | "player"
 
   private roomStateSubject = new Subject<SlayerRoomState>();
   private rosterChangeSubject = new Subject<Slayer>();
@@ -21,7 +23,9 @@ export class ColyseusService {
 
   public assignedSlayerSubject: Subject<Slayer> | undefined;
 
-  constructor() {
+  constructor(
+    private router: Router
+  ) {
     this.client = new Client("http://localhost:2567");
     console.log(this.client);
     // const joinOptions: IJoinOptions = {
@@ -31,6 +35,7 @@ export class ColyseusService {
     // }
     this.room = this.client.joinOrCreate("lobby");
     this.roomType = "lobby";
+    this.role = "player";
   }
 
   async joinRoom(options: IJoinOptions, roomId?: string){
@@ -51,6 +56,16 @@ export class ColyseusService {
 
       }
     })
+    console.log("Attaching join resp callback")
+    room.onMessage(EMessageTypes.JoinResponse, ((resp: IJoinResponseMsg) => {
+      console.log("Received join response message");
+      this.role = resp.role;
+      if (this.role == "gm"){
+        console.log("Navigating to gm screen");
+        this.router.navigate(["/gm"]);
+      }
+    }))
+    
 
 
   }

@@ -4,7 +4,8 @@ import { IPlayer } from '../../../../../common/common';
 import { ColyseusService } from './colyseusService';
 import { Subject } from 'rxjs';
 import { getStateCallbacks } from 'colyseus.js';
-
+import { EMessageTypes, IJoinResponseMsg } from '../../../../../common/messageFormat';
+import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
@@ -13,10 +14,12 @@ export class CentralService {
   public player: Player | undefined;
   public slayer: Slayer | undefined;
   public assignmentChange: Subject<Slayer>;
+  public role: "player" | "gm" = "player";
 
 
   constructor(
-    private cjs: ColyseusService
+    private cjs: ColyseusService,
+    private router: Router
   ) {
     this.player = new Player({
       id: "soubaiurvb",
@@ -26,6 +29,17 @@ export class CentralService {
 
     this.assignmentChange = new Subject<Slayer>();
 
+    cjs.room.then((room) => {
+      console.log("Attaching join resp callback")
+      room.onMessage(EMessageTypes.JoinResponse, ((resp: IJoinResponseMsg) => {
+        console.log("Received join response message");
+        this.role = resp.role;
+        if (this.role == "gm"){
+          console.log("Navigating to gm screen");
+          this.router.navigate(["/gm"]);
+        }
+      }))
+    })
     
 
 

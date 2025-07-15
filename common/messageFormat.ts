@@ -12,6 +12,7 @@ export enum EMessageTypes {
     Kick,
     PlayerUpdate,
     SaveCampaign,
+    JoinResponse
 }
 
 export interface IBaseMsg {
@@ -53,4 +54,9 @@ export interface IUpdateNumericalMsg extends IBaseMsg {
 
 export interface ISaveCampaignMsg extends IBaseMsg {
     kind: EMessageTypes.SaveCampaign
+}
+
+export interface IJoinResponseMsg extends IBaseMsg {
+    kind: EMessageTypes.JoinResponse,
+    role: "player" | "gm"
 }

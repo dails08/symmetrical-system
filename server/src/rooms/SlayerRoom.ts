@@ -2,16 +2,17 @@ import { Room, Client, logger } from "@colyseus/core";
 import { SlayerRoomState, Advance, Player, Slayer, Blade, Tactician, Gunslinger, Arcanist, InventoryItem } from "../SlayerRoomState";
 import { EPlaybooks, ICampaign, IJoinOptions, ISlayer, IBlade, IGunslinger, IArcanist, ITactician } from "../../../common/common";
 import { Clint, Ryze, Cervantes, Gene} from "../../../common/examples";
-import { EMessageTypes, IBaseMsg, IArrayChangeMsg, ICharacterUpdateMsg, IUpdateNumericalMsg } from "../../../common/messageFormat";
+import { EMessageTypes, IBaseMsg, IArrayChangeMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg } from "../../../common/messageFormat";
 import { db } from "../firestoreConnection";
 
 export class SlayerRoom extends Room<SlayerRoomState> {
   maxClients = 4;
   // db: Firestore | undefined;
   state = new SlayerRoomState();
+  // campaign: ICampaign | undefined;
   campaign: ICampaign | undefined = {
     id: "",
-    name: "Starter campaign",
+    name: "Dummy campaign",
     gms: [],
     players: [],
     roster: [],
@@ -46,6 +47,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
       this.campaign.id = tempCampaign.id;
       this.campaign.gms = [];
       for (const gm of tempCampaign.gms){
+        console.log("Adding " + gm + " to gms")
         this.campaign.gms.push(gm);
       }
       this.campaign.players = [];
@@ -56,9 +58,11 @@ export class SlayerRoom extends Room<SlayerRoomState> {
       this.state.roster.clear();
       for (const character of tempCampaign.roster){
         this.campaign.roster.push(character);
+        console.log("Adding " + character.name + " to roster");
         this.state.roster.push(SlayerRoom.schemaFromISlayer(character));
       }
       // console.log(JSON.stringify(this.campaign.roster));
+      console.log("State roster is ")
       for (const slayerData of this.state.roster){
         console.log(slayerData.toISlayer().name);
       }
@@ -241,6 +245,15 @@ export class SlayerRoom extends Room<SlayerRoomState> {
 
     const player = new Player();
     player.displayName = options.displayName || "U.N. Owen";
+    player.id = options.id;
+    console.log("Checking for " + player.id + " in " + JSON.stringify(this.campaign.gms));
+    const role: "gm" | "player" = this.campaign.gms.includes(player.id) ? "gm" : "player";
+    const joinResponseMessage: IJoinResponseMsg = {
+      kind: EMessageTypes.JoinResponse,
+      role: role
+    }
+    console.log("Sending join message with role=" + role);
+    client.send(EMessageTypes.JoinResponse, joinResponseMessage);
     
     this.state.playerMap.set(client.sessionId, player);
     const ix = Math.floor(Math.random() * this.state.roster.length);
@@ -252,6 +265,8 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     this.state.playerMap.forEach((v, k) => {
       console.log(v.displayName);
     } )
+
+    if (this.campaign.gms)
     console.log("==========");
 
   }
