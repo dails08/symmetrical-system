@@ -1,0 +1,14 @@
+{
+  "name": "overlay",
+  "version": "1.0.0",
+  "description": "Overlay component of slayers ui",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "phaser": "^3.90.0"
+  }
+}

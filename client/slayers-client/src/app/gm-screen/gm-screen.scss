@@ -1,3 +1,11 @@
 .slayerCards {
-    max-width: 300px;
+    // max-width: 300px;
+    display: flex;
+    justify-content: start;
+}
+
+.individualCard {
+    margin: 0px 20px;
+    max-width: 200px;
+    padding: 10px;
 }

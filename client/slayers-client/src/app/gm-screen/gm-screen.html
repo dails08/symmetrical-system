@@ -22,6 +22,6 @@
 </div>
 <div class="slayerCards">
     <div *ngFor="let assignment of this.assignments | keyvalue">
-        <app-gm-slayer-summary [player]="assignment.key" [slayer]="assignment.value"></app-gm-slayer-summary>
+        <app-gm-slayer-summary [player]="assignment.key" [slayer]="assignment.value" class="individualCard"></app-gm-slayer-summary>
     </div>
 </div>

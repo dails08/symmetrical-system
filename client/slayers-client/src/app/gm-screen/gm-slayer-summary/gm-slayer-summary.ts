@@ -8,25 +8,22 @@ import { CommonModule } from '@angular/common';
 // import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormsModule} from '@angular/forms';
 import { EPlaybooks } from '../../../../../../common/common';
-import { textChangeRangeNewSpan } from 'typescript';
 import { ColyseusService } from '../../services/colyseusService';
 import { CentralService } from '../../services/central-service';
 import { EMessageTypes, IArrayChangeMsg } from '../../../../../../common/messageFormat';
-import { AccordionModule } from 'primeng/accordion';
-import { CardModule } from 'primeng/card';
-import { InputTextModule } from 'primeng/inputtext';
-
+import {MatExpansionModule} from '@angular/material/expansion';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 @Component({
   selector: 'app-gm-slayer-summary',
   imports: [CommonModule, 
-    // MatButtonModule, 
-    // MatCardModule, 
-    // MatExpansionModule,
-    // MatInputModule,
-    // MatFormFieldModule,
-    AccordionModule,
-    CardModule,
-    InputTextModule,
+    MatButtonModule, 
+    MatCardModule, 
+    MatExpansionModule,
+    MatInputModule,
+    MatFormFieldModule,
     FormsModule
   ],
   templateUrl: './gm-slayer-summary.html',

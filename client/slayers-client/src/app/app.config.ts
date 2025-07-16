@@ -3,8 +3,6 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideTippyConfig, provideTippyLoader, tooltipVariation, popperVariation, TippyProps } from '@ngneat/helipopper/config';
-import { providePrimeNG } from 'primeng/config';
-import  Aura  from "@primeuix/themes/aura";
 import { routes } from './app.routes';
 
 const darkBorderVariation: Partial<TippyProps> = {};
@@ -28,10 +26,5 @@ export const appConfig: ApplicationConfig = {
       },
       theme: "darkBorder"
     }),
-    providePrimeNG({
-      theme: {
-        preset: Aura
-      }
-    })
     ]
 };

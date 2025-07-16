@@ -12,4 +12,6 @@
         <input #campaignId type="text">    
     </div>
     <button (click)="join(displayName.value, playerId.value, campaignId.value)">Join</button>
+    <button (click)="join('Chris', '', '1234')">Autojoin</button>
+    <button (click)="join('Chris', 'soubaiurvb', '1234')">DM Join</button>
 </div>
