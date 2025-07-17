@@ -81,7 +81,7 @@ class ComboCounter extends Phaser.GameObjects.Container {
         this.comboNumber += 1;
         // console.log(this.comboNumber);
         // console.log(this.comboNumber.toString());
-        this.comboText.setText(this.comboNumber.toString());
+        this.comboText.setText(this.comboNumber.toString() + "!");
         // this.scale = 2;
         // this.comboText = this.parentScene.add.bitmapText(this.x + 100, this.y - 50, this.fontName, this.comboNumber.toString(), 250);
         this.pulseTween = this.scene.tweens.add({
