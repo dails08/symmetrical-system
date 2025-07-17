@@ -27,12 +27,17 @@
         <div class="advances">
             <mat-accordion>
                 <mat-expansion-panel hideToggle *ngFor="let advance of slayer.advances.toArray(); let ix = index">
-                    <mat-panel-title>{{advance.name}}</mat-panel-title>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>{{advance.name}}</mat-panel-title>
+                    </mat-expansion-panel-header>
                     <p>{{advance.desc}}</p>
                     <button  (click)="removeAdvance(slayer, ix)">Remove</button>
                 </mat-expansion-panel>
-                <mat-expansion-panel>
-                    <mat-panel-title>Add new advance</mat-panel-title>
+                <mat-expansion-panel hideToggle>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Add new advance</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    
                     <div class="newAdvanceSection">
                         <form #newAdvance (ngSubmit)="addAdvance(slayer, newAdvanceName.value, newAdvanceDescription.value)" class="advance-form">
                             <label>Name</label>

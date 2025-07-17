@@ -36,10 +36,21 @@ export class GmSlayerSummary {
 
   playbooks = EPlaybooks;
 
+  dummyAdvances: Advance[];
+
   constructor(
     protected cjs: ColyseusService,
     protected cs: CentralService
   ) {
+    this.dummyAdvances = [];
+    let tmpAdv1 = new Advance();
+    tmpAdv1.name = "test1";
+    tmpAdv1.desc = "desc1";
+    this.dummyAdvances.push(tmpAdv1);
+    let tmpAdv2 = new Advance();
+    tmpAdv2.name = "test2";
+    tmpAdv2.desc = "desc2";
+    this.dummyAdvances.push(tmpAdv2);
 
   }
 
