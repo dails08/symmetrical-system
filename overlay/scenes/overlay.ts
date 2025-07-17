@@ -9,7 +9,9 @@ export class OverlayScene extends Scene {
     center_height: number;
 
     // SPACE: Phaser.Types.Input.Keyboard.CursorKeys
-    SPACE: number | undefined;
+    SPACE: Phaser.Input.Keyboard.Key;
+
+    cc: ComboCounter;
 
 
     constructor(){
@@ -17,7 +19,7 @@ export class OverlayScene extends Scene {
     }
 
     preload(){
-        this.load.bitmapFont("angel-red","assets/fonts/Agel-red/Angel-red.png", "assets/fonts/Agel-red/Angel-red.xml");
+        this.load.bitmapFont("angel-red","assets/fonts/Angel-red/Angel-red.png", "assets/fonts/Angel-red/Angel-red.xml");
 
     }
 
@@ -27,14 +29,66 @@ export class OverlayScene extends Scene {
         this.center_width = this.width / 2;
         this.center_height = this.height / 2;
 
-        // this.SPACE = this.input.keyboard?.addKey(
-        //     Phaser.Input.Keyboard.KeyCodes.SPACE
-        // )
+        if (this.input.keyboard){
+            this.SPACE = this.input.keyboard?.addKey(
+                Phaser.Input.Keyboard.KeyCodes.SPACE
+            )    
+        }
 
-        this.add.bitmapText(this.center_width, this.center_height, "angel-red", "1!", 25)
+
+        // this.add.bitmapText(this.center_width, this.center_height, "angel-red", "x", 150);
+        // this.add.bitmapText(this.center_width + 100, this.center_height - 50, "angel-red", "2!", 250);
+        this.cc = new ComboCounter(this, this.center_width, this.center_height);
+        // this.add.existing(this.cc);
+        this.SPACE.addListener("down", this.cc.incrementCombo, this.cc);
+
     }
 
     update(){
 
     }
+}
+
+class ComboCounter extends Phaser.GameObjects.Container {
+    
+    comboNumber: number;
+    comboText: Phaser.GameObjects.BitmapText;
+    comboPrefix: Phaser.GameObjects.BitmapText;
+    fontName: string;
+    pulseTween: Phaser.Tweens.Tween;
+    parentScene: Phaser.Scene;
+
+    constructor(scene: OverlayScene, x: number, y: number){
+        super(scene, x, y, []);
+        this.parentScene = scene;
+        this.scene.add.existing(this);
+        this.width = 250;
+        this.height = 250;
+
+        this.comboNumber = 2;
+        this.fontName = "angel-red";
+        this.comboPrefix = this.scene.add.bitmapText(this.x, this.y, this.fontName, "x", 150);
+        this.comboText = this.scene.add.bitmapText(this.x + 100, this.y - 50, this.fontName, this.comboNumber.toString(), 250);
+        this.pulseTween = scene.tweens.add({
+            targets: this,
+            scale: 1.5,
+            ease: "linear",
+            duration: 2000,
+            yoyo: true,
+            repeat: false,
+            persist: true
+        })
+    }
+
+    incrementCombo(){
+        this.comboNumber += 1;
+        console.log(this.comboNumber);
+        this.comboText.setText(this.comboNumber.toString());
+        // this.comboText = this.parentScene.add.bitmapText(this.x + 100, this.y - 50, this.fontName, this.comboNumber.toString(), 250);
+        this.pulseTween.play();
+
+    }
+
+
+
 }
