@@ -39,7 +39,7 @@ export class OverlayScene extends Scene {
         // this.add.bitmapText(this.center_width, this.center_height, "angel-red", "x", 150);
         // this.add.bitmapText(this.center_width + 100, this.center_height - 50, "angel-red", "2!", 250);
         this.cc = new ComboCounter(this, this.center_width, this.center_height);
-        // this.add.existing(this.cc);
+        this.add.existing(this.cc);
         this.SPACE.addListener("down", this.cc.incrementCombo, this.cc);
 
     }
@@ -55,37 +55,45 @@ class ComboCounter extends Phaser.GameObjects.Container {
     comboText: Phaser.GameObjects.BitmapText;
     comboPrefix: Phaser.GameObjects.BitmapText;
     fontName: string;
-    pulseTween: Phaser.Tweens.Tween;
+    pulseTween: Phaser.Tweens.Tween | undefined;
     parentScene: Phaser.Scene;
 
     constructor(scene: OverlayScene, x: number, y: number){
         super(scene, x, y, []);
-        this.parentScene = scene;
-        this.scene.add.existing(this);
+        // this.parentScene = scene;
+        // this.scene.add.existing(this);
         this.width = 250;
         this.height = 250;
 
         this.comboNumber = 2;
         this.fontName = "angel-red";
-        this.comboPrefix = this.scene.add.bitmapText(this.x, this.y, this.fontName, "x", 150);
-        this.comboText = this.scene.add.bitmapText(this.x + 100, this.y - 50, this.fontName, this.comboNumber.toString(), 250);
-        this.pulseTween = scene.tweens.add({
-            targets: this,
-            scale: 1.5,
-            ease: "linear",
-            duration: 2000,
-            yoyo: true,
-            repeat: false,
-            persist: true
-        })
+        this.comboPrefix = this.scene.add.bitmapText(0, 0, this.fontName, "x", 150);
+        this.add(this.comboPrefix);
+        this.comboText = this.scene.add.bitmapText(0 + 100, 0 - 50, this.fontName, this.comboNumber.toString(), 250);
+        this.add(this.comboText)
     }
 
     incrementCombo(){
+        if (this.pulseTween){
+            this.pulseTween.stop();
+            this.scale = 1;
+        }
         this.comboNumber += 1;
-        console.log(this.comboNumber);
+        // console.log(this.comboNumber);
+        // console.log(this.comboNumber.toString());
         this.comboText.setText(this.comboNumber.toString());
+        // this.scale = 2;
         // this.comboText = this.parentScene.add.bitmapText(this.x + 100, this.y - 50, this.fontName, this.comboNumber.toString(), 250);
-        this.pulseTween.play();
+        this.pulseTween = this.scene.tweens.add({
+            targets: this,
+            scale: 1.1,
+            ease: "linear",
+            duration: 50,
+            yoyo: true,
+            repeat: false,
+            onStart: () => {console.log("Starting")},
+            onComplete: () => {console.log("Finishing")}
+        },)
 
     }
 
