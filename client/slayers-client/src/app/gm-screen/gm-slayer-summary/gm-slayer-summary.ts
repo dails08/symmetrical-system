@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Advance, Player, Slayer } from '../../../../../../server/src/SlayerRoomState';
+import { Advance, InventoryItem, Player, Slayer } from '../../../../../../server/src/SlayerRoomState';
 import { CommonModule } from '@angular/common';
 // import { MatButtonModule } from '@angular/material/button';
 // import { MatCardModule } from '@angular/material/card';
@@ -83,6 +83,38 @@ export class GmSlayerSummary {
         kind: EMessageTypes.ArrayChange,
         characterId: slayer.id,
         array: "advances",
+        action: "remove",
+        ix: ix
+      };
+      this.cjs.sendMessage(msg);
+    }
+  }
+
+  addInvItem(slayer: Slayer, name: string, description: string){
+    console.log(slayer.name, name, description);
+    const newItem = new InventoryItem();
+    newItem.name = name;
+    newItem.desc = description;
+    if (this.cs.player){
+      const msg: IArrayChangeMsg = {
+        kind: EMessageTypes.ArrayChange,
+        characterId: slayer.id,
+        array: "inventory",
+        action: "add",
+        data: {name: name, description: description}
+      }
+      console.log("Sending msg " + JSON.stringify(msg))
+      this.cjs.sendMessage(msg);
+    }
+  };
+
+  removeInvItem(slayer: Slayer, ix: number) {
+    console.log("Removing item " + ix + " from " + slayer.name);
+    if (this.cs.player) {
+      const msg: IArrayChangeMsg = {
+        kind: EMessageTypes.ArrayChange,
+        characterId: slayer.id,
+        array: "inventory",
         action: "remove",
         ix: ix
       };

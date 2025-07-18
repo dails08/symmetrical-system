@@ -195,11 +195,13 @@ export class SlayerRoom extends Room<SlayerRoomState> {
         if (clientPlayer.id in this.campaign.gms || this.state.currentAssignments.get(client.sessionId).id == msg.characterId){
           for (const slayer of this.state.roster){
             if (slayer.id == msg.characterId){
-              if (msg.action == "remove" && msg.ix) {
+              if (msg.action == "remove" && "ix" in msg) {
                 if (msg.array == "advances"){
+                  console.log("Removing advance with ix " + msg.ix)
                   slayer.advances.splice(msg.ix)
-                  console.log("Updated to " + JSON.stringify(slayer.advances));
+                  console.log("Updated avd to " + JSON.stringify(slayer.advances));
                 } else if (msg.array == "inventory"){
+                  console.log("Removing item");
                   slayer.inventory.splice(msg.ix);
                 }
               } else if (msg.action == "add" && msg.data){
@@ -208,8 +210,9 @@ export class SlayerRoom extends Room<SlayerRoomState> {
                   newAdvance.name = msg.data.name;
                   newAdvance.desc = msg.data.description
                   slayer.advances.push(newAdvance);
-                  console.log("Updated to " + JSON.stringify(slayer.advances));
+                  console.log("Updated adv  to " + JSON.stringify(slayer.advances));
                 } else if (msg.array == "inventory") {
+                  console.log("Adding item");
                   const newInvItem = new InventoryItem();
                   newInvItem.name = msg.data.name;
                   newInvItem.desc = msg.data.description

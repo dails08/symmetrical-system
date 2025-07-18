@@ -1,67 +1,106 @@
 <div class="playerBar">
     <p>{{player.displayName}}</p>
-    <button matButton="filled" (click)="alterChekhovPoints(-1)">-</button>
-    <p>{{player.chekhovPoints}}</p>
-    <button matButton="filled" (click)="alterChekhovPoints(1)">+</button>
+    <div class="chekhov">
+        <button matButton="filled" (click)="alterChekhovPoints(-1)">-</button>
+        <p>{{player.chekhovPoints}}</p>
+        <button matButton="filled" (click)="alterChekhovPoints(1)">+</button>    
+    </div>
 </div>
-<div class="slayerDisplay" *ngIf="slayer">
-    <div class="commonElements">
-        <p>{{slayer.name}}</p>
-        <div class="statsRow">
-            <p>{{slayer.currentHP}}/{{slayer.maxHP}}</p>
-            <p>{{slayer.damage}}</p>
-            <p>{{slayer.class[0]}}</p>
-        </div>
-        <div class="skillsRow">
-            <p>Agile: {{slayer.skillsAgile}}</p>
-            <p>Brawn: {{slayer.skillsBrawn}}</p>
-            <p>Deceive: {{slayer.skillsDeceive}}</p>
-            <p>Hunt: {{slayer.skillsHunt}}</p>
-            <p>Mend: {{slayer.skillsMend}}</p>
-            <p>Negotiate: {{slayer.skillsNegotiate}}</p>
-            <p>Stealth: {{slayer.skillsStealth}}</p>
-            <p>Street: {{slayer.skillsStreet}}</p>
-            <p>Study: {{slayer.skillsStudy}}</p>
-            <p>Tactics: {{slayer.skillsTactics}}</p>
-        </div>
-        <div class="advances">
-            <mat-accordion>
-                <mat-expansion-panel hideToggle *ngFor="let advance of slayer.advances.toArray(); let ix = index">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>{{advance.name}}</mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <p>{{advance.desc}}</p>
-                    <button  (click)="removeAdvance(slayer, ix)">Remove</button>
-                </mat-expansion-panel>
-                <mat-expansion-panel hideToggle>
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>Add new advance</mat-panel-title>
-                    </mat-expansion-panel-header>
-                    
-                    <div class="newAdvanceSection">
-                        <form #newAdvance (ngSubmit)="addAdvance(slayer, newAdvanceName.value, newAdvanceDescription.value)" class="advance-form">
-                            <label>Name</label>
-                            <input type="text" pInputText #newAdvanceName placeholder="Ex. Quick Draw">
+    <div class="slayerDisplay" >
+        <mat-card *ngIf="slayer" appearance="outlined">
+        <mat-card-header>
+            <mat-card-title>{{slayer.name}}</mat-card-title>
+            <mat-card-subtitle>{{slayer.class | titlecase}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="commonElements">
+                <div class="statsRow">
+                    <p>{{slayer.currentHP}}/{{slayer.maxHP}} HP</p>
+                    <p>{{slayer.damage}} dmg</p>
+                </div>
+                <div class="skillsRow">
+                    <p>Agile: {{slayer.skillsAgile}}</p>
+                    <p>Brawn: {{slayer.skillsBrawn}}</p>
+                    <p>Deceive: {{slayer.skillsDeceive}}</p>
+                    <p>Hunt: {{slayer.skillsHunt}}</p>
+                    <p>Mend: {{slayer.skillsMend}}</p>
+                    <p>Negotiate: {{slayer.skillsNegotiate}}</p>
+                    <p>Stealth: {{slayer.skillsStealth}}</p>
+                    <p>Street: {{slayer.skillsStreet}}</p>
+                    <p>Study: {{slayer.skillsStudy}}</p>
+                    <p>Tactics: {{slayer.skillsTactics}}</p>
+                </div>
+                <p>Advances</p>
+                <div class="advances">
+                    <mat-accordion>
+                        <mat-expansion-panel hideToggle *ngFor="let advance of slayer.advances.toArray(); let ix = index">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>{{advance.name}}</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <p>{{advance.desc}}</p>
+                            <button  (click)="removeAdvance(slayer, ix)">Remove</button>
+                        </mat-expansion-panel>
+                        <mat-expansion-panel hideToggle>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>Add new advance</mat-panel-title>
+                            </mat-expansion-panel-header>
                             
-                            <label>Description</label>
-                            <textarea #newAdvanceDescription placeholder="Ex. Roll d8 for speed"></textarea>
-                            <input type="submit" value="Add Advance">
-                            </form>
+                            <div class="newAdvanceSection">
+                                <form #newAdvance (ngSubmit)="addAdvance(slayer, newAdvanceName.value, newAdvanceDescription.value)" class="advance-form">
+                                    <label>Name</label>
+                                    <input type="text" pInputText #newAdvanceName placeholder="Ex. Quick Draw">
+                                    
+                                    <label>Description</label>
+                                    <textarea #newAdvanceDescription placeholder="Ex. Roll d8 for speed"></textarea>
+                                    <input type="submit" value="Add Advance">
+                                    </form>
+        
+                            </div>                        
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+                <p>Inventory</p>
+                <div class="inventory">
+                    <mat-accordion>
+                        <mat-expansion-panel hideToggle *ngFor="let invItem of slayer.inventory.toArray(); let ix = index">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>{{invItem.name}}</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <p>{{invItem.desc}}</p>
+                            <button  (click)="removeInvItem(slayer, ix)">Remove</button>
+                        </mat-expansion-panel>
+                        <mat-expansion-panel hideToggle>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>Add new item</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            
+                            <div class="newItemSection">
+                                <form #newInvItem (ngSubmit)="addInvItem(slayer, newInvItemName.value, newInvItemDescription.value)" class="advance-form">
+                                    <label>Name</label>
+                                    <input type="text" pInputText #newInvItemName placeholder="Ex. Quick Draw">
+                                    
+                                    <label>Description</label>
+                                    <textarea #newInvItemDescription placeholder="Ex. Roll d8 for speed"></textarea>
+                                    <input type="submit" value="Add Item">
+                                    </form>
+        
+                            </div>                        
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>            </div>
+            <div class="controls"></div>
+            <div class="classSpecific">
+                <div class="bladeSection" *ngIf="slayer.class == playbooks.Blade"></div>
+                <div class="arcanistSection" *ngIf="slayer.class == playbooks.Arcanist"></div>
+                <div class="tacticianSection" *ngIf="slayer.class == playbooks.Tactician"></div>
+                <div class="gunslingerSection" *ngIf="slayer.class == playbooks.Gunslinger"></div>
+            </div>
+        </mat-card-content>
+ 
+        </mat-card>
+    </div>
+    <div class="noSlayerDisplay" *ngIf="!slayer">
+        <p>No Slayer assigned!</p>
+    </div>
 
-                    </div>                        
-                </mat-expansion-panel>
-            </mat-accordion>
-        </div>
-        <div class="inventory"></div>
-    </div>
-    <div class="controls"></div>
-    <div class="classSpecific">
-        <div class="bladeSection" *ngIf="slayer.class == playbooks.Blade"></div>
-        <div class="arcanistSection" *ngIf="slayer.class == playbooks.Arcanist"></div>
-        <div class="tacticianSection" *ngIf="slayer.class == playbooks.Tactician"></div>
-        <div class="gunslingerSection" *ngIf="slayer.class == playbooks.Gunslinger"></div>
-    </div>
-</div>
-<div class="noSlayerDisplay" *ngIf="!slayer">
-    <p>No Slayer assigned!</p>
-</div>
+

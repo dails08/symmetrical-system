@@ -7,11 +7,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .name {
-        align-items: center;
+    p {
+        margin: 0px 10px;
     }
     .chekhov {
         display: flex;
+        justify-content: end;
         align-items: center;
     }
 }
