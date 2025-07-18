@@ -1,8 +1,8 @@
-<button (click)="sendTakeDamage(1)">Take Damage</button>
-<button (click)="sendTakeDamage(-1)">Heal Damage</button>
-<button (click)="sendSaveCampaign()">Save Campaign</button>
-<!-- <button (click)="addDefaultRoster()">Add Default Roster</button> -->
-
+<div class="slayerCards">
+    <div *ngFor="let assignment of this.assignments | keyvalue">
+        <app-gm-slayer-summary [player]="assignment.key" [slayer]="assignment.value" class="individualCard"></app-gm-slayer-summary>
+    </div>
+</div>
 
 <div class="players">
     <div class="player" *ngFor="let player of players | keyvalue">
@@ -18,10 +18,5 @@
         <p>{{slayer.currentHP}}/{{slayer.maxHP}}</p>
         <input type="text" #hpdelta>
         <button (click)="sendHPDelta(slayer, hpdelta.value)">HP Delta</button>
-    </div>
-</div>
-<div class="slayerCards">
-    <div *ngFor="let assignment of this.assignments | keyvalue">
-        <app-gm-slayer-summary [player]="assignment.key" [slayer]="assignment.value" class="individualCard"></app-gm-slayer-summary>
     </div>
 </div>

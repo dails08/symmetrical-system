@@ -10,7 +10,7 @@ import {FormsModule} from '@angular/forms';
 import { EPlaybooks } from '../../../../../../common/common';
 import { ColyseusService } from '../../services/colyseusService';
 import { CentralService } from '../../services/central-service';
-import { EMessageTypes, IArrayChangeMsg } from '../../../../../../common/messageFormat';
+import { EMessageTypes, IArrayChangeMsg, IUpdateNumericalMsg } from '../../../../../../common/messageFormat';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -120,6 +120,51 @@ export class GmSlayerSummary {
       };
       this.cjs.sendMessage(msg);
     }
+  }
+
+  modStat(
+    slayer: Slayer, 
+    stat: "damage" | "speed" | "skillsAgile" | "skillsBrawn" | "skillsDeceive" | "skillsHunt" | "skillsMend" | "skillsNegotiate" | "skillsStealth" | "skillsStreet" | "skillsStudy" | "skillsTactics", 
+    delta: number){
+      let newVal: number;
+      if (stat == "damage") {
+        newVal = Math.min(Math.max(slayer[stat] + delta, 0), 10);
+      } else {
+        newVal = Math.min(Math.max(slayer[stat] + delta, 4), 10);
+      }
+      
+      const msg: IUpdateNumericalMsg = {
+        kind: EMessageTypes.NumericalUpdate,
+        field: stat,
+        newValue: newVal,
+        slayerId: slayer.id
+      };
+      this.cjs.sendMessage(msg);
+  }
+
+
+  modHp(
+    slayer: Slayer,
+    delta_str: string,
+    multiplier: 1 | -1
+  ){
+    const delta_num: number = Number.parseInt(delta_str);
+    const newVal: number = Math.min(Math.max(slayer.currentHP + delta_num * multiplier, 0), slayer.maxHP);
+    const msg: IUpdateNumericalMsg = {
+      kind: EMessageTypes.NumericalUpdate,
+      field: "currentHP",
+      newValue: newVal,
+      slayerId: slayer.id
+    };
+    this.cjs.sendMessage(msg);
+
+  }
+
+  modMaxHp(
+    slayer: Slayer,
+    newMax_str: string
+  ){
+
   }
 
 }

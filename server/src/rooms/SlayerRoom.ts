@@ -111,7 +111,15 @@ export class SlayerRoom extends Room<SlayerRoomState> {
 
   }
   
+  isGM(client: Client){
+    const clientPlayer = this.state.playerMap.get(client.sessionId);
+    return clientPlayer && this.campaign.gms.includes(clientPlayer.id);
+  }
 
+  controlsCharacter(client: Client, slayer: Slayer){
+    const clientPlayer = this.state.playerMap.get(client.sessionId);
+    const assignment = this.state.currentAssignments.get(client.sessionId)
+  }
 
   onCreate (options: any) {
     const ryze = new Arcanist(Ryze);
@@ -153,11 +161,26 @@ export class SlayerRoom extends Room<SlayerRoomState> {
       console.log(msg);
       for (const elem of this.state.roster){
         if (elem.id == msg.slayerId){
-          if (msg.field == "currentHP"){
-            console.log("Dealing damage");
-            elem.currentHP = msg.newValue;
+          if (this.isGM(client)){
+            if (msg.field == "currentHP"){
+              console.log("Setting hp");
+              elem.currentHP = msg.newValue;
+            }
+            if (msg.field == "damage"){
+              console.log("Setting damage");
+              elem.damage = msg.newValue;
+            }
+            if (msg.field == "speed"){
+              console.log("Setting speed");
+              elem.speed = msg.newValue as 4 | 6 | 8 | 10 | 12;
+            }
+            if (["skillsAgile", "skillsBrawn", "skillsDeceive", "skillsHunt", "skillsMend", "skillsNegotiate", "skillsStealth", "skillsStreet", "skillsStudy", "skillsTactics"].includes(msg.field) && [4,6,8,10].includes(msg.newValue)){
+
+              const field = msg.field as "skillsAgile" | "skillsBrawn" | "skillsDeceive" | "skillsHunt" | "skillsMend" | "skillsNegotiate" | "skillsStealth" | "skillsStreet" | "skillsStudy" | "skillsTactics";
+              elem[field] = msg.newValue as 4 | 6 | 8 | 10 | 12;
+            }
+          }  
           }
-        }
       }
     })
     this.onMessage(EMessageTypes.SaveCampaign, (client, msg) => {
@@ -165,10 +188,12 @@ export class SlayerRoom extends Room<SlayerRoomState> {
       this.saveCampaign();
     })
 
+    
+
     this.onMessage(EMessageTypes.CharacterUpdate, (client, msg: ICharacterUpdateMsg) => {
       const clientPlayer = this.state.playerMap.get(client.sessionId);
       if (clientPlayer) {
-        if (clientPlayer.id in this.campaign.gms || this.state.currentAssignments.get(client.sessionId).id == msg.characterId){
+        if (this.campaign.gms.includes(clientPlayer.id ) || this.state.currentAssignments.get(client.sessionId).id == msg.characterId){
           for (const elem of this.state.roster){
             if (elem.id == msg.characterId){
               elem.currentHP = msg.data.currentHP;
@@ -191,48 +216,41 @@ export class SlayerRoom extends Room<SlayerRoomState> {
 
     this.onMessage(EMessageTypes.ArrayChange, (client, msg: IArrayChangeMsg) => {
       const clientPlayer = this.state.playerMap.get(client.sessionId);
-      if (clientPlayer) {
-        if (clientPlayer.id in this.campaign.gms || this.state.currentAssignments.get(client.sessionId).id == msg.characterId){
-          for (const slayer of this.state.roster){
-            if (slayer.id == msg.characterId){
-              if (msg.action == "remove" && "ix" in msg) {
-                if (msg.array == "advances"){
-                  console.log("Removing advance with ix " + msg.ix)
-                  slayer.advances.splice(msg.ix)
-                  console.log("Updated avd to " + JSON.stringify(slayer.advances));
-                } else if (msg.array == "inventory"){
-                  console.log("Removing item");
-                  slayer.inventory.splice(msg.ix);
-                }
-              } else if (msg.action == "add" && msg.data){
-                if (msg.array == "advances"){
-                  const newAdvance = new Advance();
-                  newAdvance.name = msg.data.name;
-                  newAdvance.desc = msg.data.description
-                  slayer.advances.push(newAdvance);
-                  console.log("Updated adv  to " + JSON.stringify(slayer.advances));
-                } else if (msg.array == "inventory") {
-                  console.log("Adding item");
-                  const newInvItem = new InventoryItem();
-                  newInvItem.name = msg.data.name;
-                  newInvItem.desc = msg.data.description
-                  slayer.inventory.push(newInvItem);
-                }
+      for (const slayer of this.state.roster){
+        if (slayer.id == msg.characterId){
+          if (clientPlayer && this.isGM(client) || this.controlsCharacter(client, slayer)) {
+            if (msg.action == "remove" && "ix" in msg) {
+              if (msg.array == "advances"){
+                console.log("Removing advance with ix " + msg.ix)
+                slayer.advances.splice(msg.ix)
+                console.log("Updated avd to " + JSON.stringify(slayer.advances));
+              } else if (msg.array == "inventory"){
+                console.log("Removing item");
+                slayer.inventory.splice(msg.ix);
               }
-            }
-          }    
-        } else {
+            } else if (msg.action == "add" && msg.data){
+              if (msg.array == "advances"){
+                const newAdvance = new Advance();
+                newAdvance.name = msg.data.name;
+                newAdvance.desc = msg.data.description
+                slayer.advances.push(newAdvance);
+                console.log("Updated adv  to " + JSON.stringify(slayer.advances));
+              } else if (msg.array == "inventory") {
+                console.log("Adding item");
+                const newInvItem = new InventoryItem();
+                newInvItem.name = msg.data.name;
+                newInvItem.desc = msg.data.description
+                slayer.inventory.push(newInvItem);
+              }
+            }   
+          } else {
           console.log(clientPlayer.displayName + " (" + clientPlayer.id + ") is not authorized to update character " + msg.characterId);
           console.log(JSON.stringify(this.campaign.gms));
           console.log(clientPlayer.id);
+          }
         }
       }
-
-    })
-
-    // setTimeout(() => {
-    //   console.log(this.state.toJSON());
-    // }, 5000);
+    });
   }
 
   async onJoin (client: Client, options: IJoinOptions) {

@@ -23,14 +23,37 @@
             display: flex;
             justify-content: space-between;
 
-            .hp {
+            .hpSection {
+                display: flex;
 
+                .hpModSection {
+                    display: flex;
+                    align-items: start;
+                    .smallInput {
+                        width: 2rem;
+                    }
+                }
             }
         }
 
         .skillsRow {
             display: flex;
-            flex-wrap: wrap;
+            flex-flow: column wrap;
+            max-height: 100px;
+            // flex-wrap: wrap;
+            p {
+                margin: 0px 5px;
+            }
+
+            .skillRow {
+                display: flex;
+                justify-content: start;
+
+                .skillButtons{
+                    display: flex;
+                    flex-direction: row;
+                }
+            }
         }
     }
 }
