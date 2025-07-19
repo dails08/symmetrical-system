@@ -82,6 +82,12 @@ export class ColyseusService {
         }
       })
 
+      $(room.state).currentAssignments.onRemove((slayer, playerId) => {
+        if (playerId == this.cs.player.id) {
+          this.cs.slayer = undefined;
+        }
+      })
+
     $(room.state).roster.onChange((item, ix) => {
       this.rosterChangeSubject.next(item);
     })

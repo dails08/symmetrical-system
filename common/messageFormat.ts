@@ -5,6 +5,7 @@ export enum EMessageTypes {
     CharacterUpdate,
     NumericalUpdate,
     ArrayChange,
+    Assignment, 
     Kill,
     Roll,
     OptionsChoice,
@@ -46,6 +47,13 @@ export interface IPlayerUpdateMsg extends IBaseMsg {
     field: string,
     newValueInt: number,
     newValueStr: string
+}
+
+export interface IAssignmentMsg extends IBaseMsg {
+    kind: EMessageTypes.Assignment,
+    action: "assign" | "unassign",
+    playerId: string,
+    slayerId?: string
 }
 
 export interface IUpdateNumericalMsg extends IBaseMsg {

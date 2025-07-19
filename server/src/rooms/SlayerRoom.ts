@@ -2,7 +2,7 @@ import { Room, Client, logger } from "@colyseus/core";
 import { SlayerRoomState, Advance, Player, Slayer, Blade, Tactician, Gunslinger, Arcanist, InventoryItem } from "../SlayerRoomState";
 import { EPlaybooks, ICampaign, IJoinOptions, ISlayer, IBlade, IGunslinger, IArcanist, ITactician } from "../../../common/common";
 import { Clint, Ryze, Cervantes, Gene} from "../../../common/examples";
-import { EMessageTypes, IBaseMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg } from "../../../common/messageFormat";
+import { EMessageTypes, IBaseMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg } from "../../../common/messageFormat";
 import { db } from "../firestoreConnection";
 import { v4 as uuidv4 } from "uuid";
 
@@ -167,6 +167,25 @@ export class SlayerRoom extends Room<SlayerRoomState> {
  this.onMessage(EMessageTypes.SaveCampaign, (client, msg) => {
       console.log("Saving campaign " + this.campaign.id);
       this.saveCampaign();
+    })
+
+    this.onMessage(EMessageTypes.Assignment, (client, msg: IAssignmentMsg) => {
+      if (this.isGM(client)) {
+        if (msg.action == "unassign") {
+          console.log("Unassigning " + msg.playerId)
+          this.state.currentAssignments.delete(msg.playerId);
+        }
+        if (msg.action == "assign") {
+          console.log("Assigning " + msg.slayerId + " to " + msg.playerId);
+          for (const elem of this.state.roster){
+            if (elem.id == msg.slayerId) {
+              this.state.currentAssignments.set(msg.playerId, elem);
+            }
+          }
+        }
+      } else {
+        console.log("Unauthorized: Assignment");
+      }
     })
     
 

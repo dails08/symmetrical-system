@@ -1,8 +1,13 @@
+:host {
+  display: flex;
+  max-height: 100vh
+}
 .slayerCards {
     // max-width: 300px;
     display: flex;
+    flex-direction: column;
     justify-content: start;
-    overflow: auto;
+    overflow: scroll;
 }
 
 .individualCard {

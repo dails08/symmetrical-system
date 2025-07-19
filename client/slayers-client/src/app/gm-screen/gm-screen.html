@@ -7,6 +7,7 @@
     <div *ngFor="let player of players | keyvalue">
         <div class="playerBar">
             <p>{{player.value.displayName}} ({{player.value.id}})</p>
+            <button (click)="unassignSlayer(player.value.id)">Unassign</button>
             <div class="chekhov">
                 <p>Chekhov:</p>
                 <button  (click)="alterChekhovPoints(player.key, player.value.chekhovPoints - 1)">-</button>

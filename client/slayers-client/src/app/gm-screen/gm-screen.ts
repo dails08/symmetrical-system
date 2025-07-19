@@ -5,7 +5,7 @@ import { Cervantes, Clint } from "../../../../../common/examples";
 import { ColyseusService } from '../services/colyseusService';
 import { Slayer, Blade, Gunslinger, Arcanist, Tactician, KnownSpell, Advance, Player } from '../../../../../server/src/SlayerRoomState';
 import { CentralService } from '../services/central-service';
-import { EMessageTypes, IBaseMsg, ICharacterUpdateMsg, IPlayerUpdateMsg, ISaveCampaignMsg, IUpdateNumericalMsg } from '../../../../../common/messageFormat';
+import { EMessageTypes, IAssignmentMsg, IBaseMsg, ICharacterUpdateMsg, IPlayerUpdateMsg, ISaveCampaignMsg, IUpdateNumericalMsg } from '../../../../../common/messageFormat';
 import { BladePipe, GunslingerPipe, ArcanistPipe, TacticianPipe } from "../classPipes";
 import { getStateCallbacks } from 'colyseus.js';
 import { GmSlayerSummary } from "./gm-slayer-summary/gm-slayer-summary";
@@ -171,6 +171,25 @@ export class GmScreen {
         };
         this.cjs.sendMessage(msg);
 
+      }
+
+      unassignSlayer(playerId: string) {
+        const msg: IAssignmentMsg = {
+          kind: EMessageTypes.Assignment,
+          action: "unassign",
+          playerId: playerId
+        };
+        this.cjs.sendMessage(msg);
+      }
+
+      assignSlayer(playerId: string, slayerId: string){
+        const msg: IAssignmentMsg = {
+          kind: EMessageTypes.Assignment,
+          action: "assign",
+          playerId: playerId,
+          slayerId: slayerId
+        };
+        this.cjs.sendMessage(msg);
       }
 
       // addDefaultRoster(){
