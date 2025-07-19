@@ -1,6 +1,9 @@
 <div class="unjoined" *ngIf="this.cjs.roomType == 'lobby'">
     <app-join-screen></app-join-screen>
 </div>
+<div class="playerSection">
+    <p>{{this.cs.player.displayName}} <span class="playerId">({{cs.player.id}})</span></p>
+</div>
 <div class="joined" *ngIf="this.cjs.roomType == 'gameplay'">
     @let slayer = cs.slayer;
     <div class="slayerDefined" *ngIf="slayer">
@@ -29,7 +32,7 @@
                 </div>
                 <div class="chekhov stackedStat">
                     <p class="statName">Chekhov</p>
-                    <p class="statNumber">{{cs.player?.chekhovPoints}}</p>
+                    <p class="statNumber">{{cs.player.chekhovPoints}}</p>
                 </div>
             </div>
             <div class="skills">
@@ -162,3 +165,5 @@
         <p>No Slayer assigned</p>
     </div>
 </div>
+
+<div class="FAB" (click)="null">+</div>

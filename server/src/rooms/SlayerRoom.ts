@@ -4,11 +4,13 @@ import { EPlaybooks, ICampaign, IJoinOptions, ISlayer, IBlade, IGunslinger, IArc
 import { Clint, Ryze, Cervantes, Gene} from "../../../common/examples";
 import { EMessageTypes, IBaseMsg, IArrayChangeMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg } from "../../../common/messageFormat";
 import { db } from "../firestoreConnection";
+import { v4 as uuidv4 } from "uuid";
 
 export class SlayerRoom extends Room<SlayerRoomState> {
   maxClients = 4;
   // db: Firestore | undefined;
   state = new SlayerRoomState();
+  sessionIDtoPlayerIdMap = new Map<string, string>()
   // campaign: ICampaign | undefined;
   campaign: ICampaign | undefined = {
     id: "",
@@ -111,14 +113,22 @@ export class SlayerRoom extends Room<SlayerRoomState> {
 
   }
   
+  sessionIdToPlayer(seshId: string){
+    const clientPlayerId = this.sessionIDtoPlayerIdMap.get(seshId);
+    return this.state.playerMap.get(clientPlayerId);
+
+  }
+
   isGM(client: Client){
-    const clientPlayer = this.state.playerMap.get(client.sessionId);
+    // const clientPlayer = this.state.playerMap.get(client.sessionId);
+    const clientPlayer = this.sessionIdToPlayer(client.sessionId);
     return clientPlayer && this.campaign.gms.includes(clientPlayer.id);
   }
 
   controlsCharacter(client: Client, slayer: Slayer){
-    const clientPlayer = this.state.playerMap.get(client.sessionId);
-    const assignment = this.state.currentAssignments.get(client.sessionId)
+    const clientPlayer = this.sessionIdToPlayer(client.sessionId);
+    const assignment = this.state.currentAssignments.get(clientPlayer.id)
+    return assignment.id == slayer.id;
   }
 
   onCreate (options: any) {
@@ -174,6 +184,17 @@ export class SlayerRoom extends Room<SlayerRoomState> {
               console.log("Setting speed");
               elem.speed = msg.newValue as 4 | 6 | 8 | 10 | 12;
             }
+            if (msg.field == "chekhov"){
+              console.log("Setting chekhov")
+              const player = this.state.playerMap.get(msg.slayerId);
+              // this is not a mistake, it's a janky way to 
+              // send the player id without making a new
+              // message type
+              if (player){
+                console.log("Setting chekhov points");
+                player.chekhovPoints += msg.newValue;
+              }
+            }
             if (["skillsAgile", "skillsBrawn", "skillsDeceive", "skillsHunt", "skillsMend", "skillsNegotiate", "skillsStealth", "skillsStreet", "skillsStudy", "skillsTactics"].includes(msg.field) && [4,6,8,10].includes(msg.newValue)){
 
               const field = msg.field as "skillsAgile" | "skillsBrawn" | "skillsDeceive" | "skillsHunt" | "skillsMend" | "skillsNegotiate" | "skillsStealth" | "skillsStreet" | "skillsStudy" | "skillsTactics";
@@ -190,32 +211,34 @@ export class SlayerRoom extends Room<SlayerRoomState> {
 
     
 
-    this.onMessage(EMessageTypes.CharacterUpdate, (client, msg: ICharacterUpdateMsg) => {
-      const clientPlayer = this.state.playerMap.get(client.sessionId);
-      if (clientPlayer) {
-        if (this.campaign.gms.includes(clientPlayer.id ) || this.state.currentAssignments.get(client.sessionId).id == msg.characterId){
-          for (const elem of this.state.roster){
-            if (elem.id == msg.characterId){
-              elem.currentHP = msg.data.currentHP;
-            }
-          }    
-        } else {
-          console.log(clientPlayer.displayName + " (" + clientPlayer.id + ") is not authorized to update character " + msg.characterId);
-          console.log(JSON.stringify(this.campaign.gms));
-          console.log(clientPlayer.id);
-        }
-      }
-    })
+    // this.onMessage(EMessageTypes.CharacterUpdate, (client, msg: ICharacterUpdateMsg) => {
+    //   const clientPlayer = this.sessionIdToPlayer(client.sessionId);
+    //   // const clientPlayer = this.state.playerMap.get(client.sessionId);
+    //   if (clientPlayer) {
+    //     if (this.campaign.gms.includes(clientPlayer.id ) || this.state.currentAssignments.get(clientPlayer.id).id == msg.characterId){
+    //       for (const elem of this.state.roster){
+    //         if (elem.id == msg.characterId){
+    //           elem.currentHP = msg.data.currentHP;
+    //         }
+    //       }    
+    //     } else {
+    //       console.log(clientPlayer.displayName + " (" + clientPlayer.id + ") is not authorized to update character " + msg.characterId);
+    //       console.log(JSON.stringify(this.campaign.gms));
+    //       console.log(clientPlayer.id);
+    //     }
+    //   }
+    // })
 
-    this.onMessage("addDefault", (client, msg) => {
-      for (const elem of exampleBand){
-        this.state.roster.push(elem);
-        // this.campaign.roster.push(elem);
-      }  
-    })
+    // this.onMessage("addDefault", (client, msg) => {
+    //   for (const elem of exampleBand){
+    //     this.state.roster.push(elem);
+    //     // this.campaign.roster.push(elem);
+    //   }  
+    // })
 
     this.onMessage(EMessageTypes.ArrayChange, (client, msg: IArrayChangeMsg) => {
-      const clientPlayer = this.state.playerMap.get(client.sessionId);
+      // const clientPlayer = this.state.playerMap.get(client.sessionId);
+      const clientPlayer = this.sessionIdToPlayer(client.sessionId);
       for (const slayer of this.state.roster){
         if (slayer.id == msg.characterId){
           if (clientPlayer && this.isGM(client) || this.controlsCharacter(client, slayer)) {
@@ -254,7 +277,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
   }
 
   async onJoin (client: Client, options: IJoinOptions) {
-    console.log(client.sessionId, "joined!");
+    console.log(client.sessionId, "joined: " + JSON.stringify(options));
 
     if (this.state.playerMap.size == 0){
       if (this.campaign.id == "" && options.campaignId != ""){
@@ -266,22 +289,27 @@ export class SlayerRoom extends Room<SlayerRoomState> {
 
     const player = new Player();
     player.displayName = options.displayName || "U.N. Owen";
-    player.id = options.id;
+    if (options.id == ""){
+      player.id = uuidv4().slice(0,4)
+    } else {
+      player.id = options.id;
+    }
     console.log("Checking for " + player.id + " in " + JSON.stringify(this.campaign.gms));
     const role: "gm" | "player" = this.campaign.gms.includes(player.id) ? "gm" : "player";
     const joinResponseMessage: IJoinResponseMsg = {
       kind: EMessageTypes.JoinResponse,
-      role: role
+      role: role,
+      player: player
     }
-    console.log("Sending join message with role=" + role);
+    console.log("Sending join message with role = " + role);
     client.send(EMessageTypes.JoinResponse, joinResponseMessage);
     
-    this.state.playerMap.set(client.sessionId, player);
+    this.state.playerMap.set(player.id, player);
     const ix = Math.floor(Math.random() * this.state.roster.length);
     // console.log(this.state.roster)
     console.log("Assigning " + this.state.roster[ix].name);
-    this.state.currentAssignments.set(client.sessionId, this.state.roster[ix]);
-    console.log("Added " + client.sessionId)
+    this.state.currentAssignments.set(player.id, this.state.roster[ix]);
+    console.log("Added " + player.id)
     console.log("Playermap:")
     this.state.playerMap.forEach((v, k) => {
       console.log(v.displayName);
@@ -293,20 +321,23 @@ export class SlayerRoom extends Room<SlayerRoomState> {
   }
 
   onLeave (client: Client, consented: boolean) {
-    console.log(client.sessionId, "left!");
-    if (this.state.currentAssignments.has(client.sessionId) ){
-      console.log("Assignment deleted? " + this.state.currentAssignments.delete(client.sessionId));
-
+    const clientPlayer = this.sessionIdToPlayer(client.sessionId);
+    if (clientPlayer){
+      console.log(clientPlayer.displayName + " (" + clientPlayer.id + "): " + client.sessionId, "left!");
+      if (this.state.currentAssignments.has(clientPlayer.id) ){
+        console.log("Assignment deleted? " + this.state.currentAssignments.delete(clientPlayer.id));
+  
+      }
+      if (this.state.playerMap.has(clientPlayer.id)){
+        console.log("Player deleted? " + this.state.playerMap.delete(clientPlayer.id));
+      }
+      console.log("Deleted " + clientPlayer.id)
+      console.log("Playermap:")
+      this.state.playerMap.forEach((v, k) => {
+        console.log(v.displayName);
+      } )
+      console.log("==========");  
     }
-    if (this.state.playerMap.has(client.sessionId)){
-      console.log("Player deleted? " + this.state.playerMap.delete(client.sessionId));
-    }
-    console.log("Deleted " + client.sessionId)
-    console.log("Playermap:")
-    this.state.playerMap.forEach((v, k) => {
-      console.log(v.displayName);
-    } )
-    console.log("==========");
   }
 
   onDispose() {

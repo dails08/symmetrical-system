@@ -58,5 +58,6 @@ export interface ISaveCampaignMsg extends IBaseMsg {
 
 export interface IJoinResponseMsg extends IBaseMsg {
     kind: EMessageTypes.JoinResponse,
-    role: "player" | "gm"
+    role: "player" | "gm",
+    player: Player
 }

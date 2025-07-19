@@ -11,14 +11,14 @@ import { Router } from '@angular/router';
 })
 export class CentralService {
 
-  public player: Player | undefined;
+  public player: Player;
   public slayer: Slayer | undefined;
-  public assignmentChange: Subject<Slayer>;
+  // public assignmentChange: Subject<Slayer>;
   public role: "player" | "gm" = "player";
 
 
   constructor(
-    private cjs: ColyseusService,
+    // private cjs: ColyseusService,
     private router: Router
   ) {
     this.player = new Player({
@@ -27,41 +27,44 @@ export class CentralService {
       chekhovPoints: 0
     });
 
-    this.assignmentChange = new Subject<Slayer>();
+    // this.assignmentChange = new Subject<Slayer>();
 
-    cjs.room.then((room) => {
-      console.log("Attaching join resp callback")
-      room.onMessage(EMessageTypes.JoinResponse, ((resp: IJoinResponseMsg) => {
-        console.log("Received join response message");
-        this.role = resp.role;
-        if (this.role == "gm"){
-          console.log("Navigating to gm screen");
-          this.router.navigate(["/gm"]);
-        }
-      }))
-    })
+    // cjs.room.then((room) => {
+    //   console.log("Attaching join resp callback")
+    //   room.onMessage(EMessageTypes.JoinResponse, ((resp: IJoinResponseMsg) => {
+    //     console.log("Received join response message");
+    //     this.role = resp.role;
+    //     if (this.role == "gm"){
+    //       console.log("Navigating to gm screen");
+    //       this.router.navigate(["/gm"]);
+    //     }
+    //     this.player = resp.player;
+    //     const $ = getStateCallbacks(room);
+    //     $(this.player).bindTo(this.player);
+    //   }))
+    // })
     
 
 
-    cjs.getAssignmentChange().subscribe(([newAssignment, ix]) => {
-      cjs.room.then((room) => {
-        const $ = getStateCallbacks(room);
-        console.log("Assignment change")
-        if (ix == room.sessionId){
-          console.log("Assigned " + newAssignment.name)
-          this.slayer = newAssignment;
-          $(this.slayer).bindTo(this.slayer);
-          this.assignmentChange.next(this.slayer);
-        } else {
-          console.log("Not our assignment: " + ix);
-        }
+    // cjs.getAssignmentChange().subscribe(([newAssignment, ix]) => {
+    //   cjs.room.then((room) => {
+    //     const $ = getStateCallbacks(room);
+    //     console.log("Assignment change")
+    //     if (ix == room.sessionId){
+    //       console.log("Assigned " + newAssignment.name)
+    //       this.slayer = newAssignment;
+    //       $(this.slayer).bindTo(this.slayer);
+    //       this.assignmentChange.next(this.slayer);
+    //     } else {
+    //       console.log("Not our assignment: " + ix);
+    //     }
   
-      })
-    })
+    //   })
+    // })
   }
 
-  getAssignmentChange() {
-    return this.assignmentChange.asObservable();
-  }
+  // getAssignmentChange() {
+  //   return this.assignmentChange.asObservable();
+  // }
 
 }

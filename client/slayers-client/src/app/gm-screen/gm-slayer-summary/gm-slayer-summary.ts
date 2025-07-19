@@ -16,6 +16,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { getStateCallbacks } from 'colyseus.js';
 @Component({
   selector: 'app-gm-slayer-summary',
   imports: [CommonModule, 
@@ -32,7 +33,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 export class GmSlayerSummary {
 
   @Input({required: true}) player!: Player;
-  @Input() slayer: Slayer | undefined;
+  @Input({required: true }) playerIx!: String;
+  slayer: Slayer | undefined;
 
   playbooks = EPlaybooks;
 
@@ -42,6 +44,21 @@ export class GmSlayerSummary {
     protected cjs: ColyseusService,
     protected cs: CentralService
   ) {
+
+    this.cjs.room.then((room) => {
+      // const tmpSessionId = room.state.playerMap.get(this.player);
+      const tmpSlayer = room.state.currentAssignments.get(this.player.id)
+      this.slayer = tmpSlayer
+      const $ = getStateCallbacks(room);
+      if (this.slayer){
+        console.log("Found assignment to " + this.slayer.name)
+        $(this.slayer).bindTo(this.slayer);
+      } else {
+        console.log("No slayer assigned here");
+      }  
+      
+    })
+
     this.dummyAdvances = [];
     let tmpAdv1 = new Advance();
     tmpAdv1.name = "test1";
@@ -54,9 +71,7 @@ export class GmSlayerSummary {
 
   }
 
-  alterChekhovPoints(delta: number) {
-    console.log("Altering chekhov by " + delta);
-  }
+
 
   addAdvance(slayer: Slayer, name: string, description: string){
     console.log(slayer.name, name, description);

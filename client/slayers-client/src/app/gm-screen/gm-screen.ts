@@ -160,6 +160,17 @@ export class GmScreen {
         }
         this.cjs.sendMessage(msg)
       }
+      
+      alterChekhovPoints(ix: String, delta: number) {
+        const msg: IUpdateNumericalMsg = {
+          kind: EMessageTypes.NumericalUpdate,
+          field: "chekhov",
+          newValue: delta,
+          slayerId: ix.toString()
+        };
+        this.cjs.sendMessage(msg);
+    
+      }
   
       // addDefaultRoster(){
       //   const msg = {

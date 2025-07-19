@@ -6,6 +6,8 @@ import { Subject } from 'rxjs';
 import { IJoinOptions } from '../../../../../common/common';
 import { EMessageTypes, IBaseMsg, IJoinResponseMsg, ISaveCampaignMsg, IUpdateNumericalMsg, ICharacterUpdateMsg, IArrayChangeMsg } from "../../../../../common/messageFormat";
 import { Router } from '@angular/router';
+import { CentralService } from './central-service';
+import { P } from '@angular/cdk/keycodes';
 @Injectable({
   providedIn: 'root'
 })
@@ -21,10 +23,10 @@ export class ColyseusService {
   private rosterChangeSubject = new Subject<Slayer>();
   private assignmentChangeSubject = new Subject<[Slayer, String]>();
 
-  public assignedSlayerSubject: Subject<Slayer> | undefined;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private cs: CentralService
   ) {
     this.client = new Client("http://localhost:2567");
     console.log(this.client);
@@ -52,19 +54,45 @@ export class ColyseusService {
 
     $(room.state).currentAssignments.onAdd((item, ix) => {
       this.assignmentChangeSubject.next([item, ix]);
-      for (const elem in room.state.currentAssignments) {
-
-      }
     })
     console.log("Attaching join resp callback")
     room.onMessage(EMessageTypes.JoinResponse, ((resp: IJoinResponseMsg) => {
       console.log("Received join response message");
       this.role = resp.role;
+      // this.cs.player = resp.player;
+      // const $ = getStateCallbacks<SlayerRoomState>(room);
       if (this.role == "gm"){
         console.log("Navigating to gm screen");
         this.router.navigate(["/gm"]);
+      };
+
+      this.cs.player = resp.player;
+      console.log(resp.player);
+      console.log(this.cs.player);
+      // const $ = getStateCallbacks(room);
+      // $(this.cs.player).bindTo(this.cs.player)
+      const refPlayer = room.state.playerMap.get(this.cs.player.id)
+      if (refPlayer){
+        $(refPlayer).bindTo(this.cs.player);
       }
-    }))
+    }));
+
+    this.getAssignmentChange().subscribe(([newAssignment, ix]) => {
+      this.room.then((room) => {
+        const $ = getStateCallbacks(room);
+        console.log("Assignment change: " + newAssignment.id + " to " + ix)
+        if (ix == this.cs.player.id){
+          console.log("Assigned " + newAssignment.name)
+          this.cs.slayer = newAssignment;
+          $(this.cs.slayer).bindTo(this.cs.slayer);
+          // this.assignmentChange.next(this.slayer);
+        } else {
+          console.log("Not our assignment: " + ix + " vs. " + this.cs.player.id);
+        }
+  
+      })
+    })
+
     
 
 

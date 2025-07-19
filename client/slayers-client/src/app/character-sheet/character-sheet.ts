@@ -6,7 +6,7 @@ import { CentralService } from '../services/central-service';
 import { CssSelector } from '@angular/compiler';
 import { EPlaybooks, IPlayer, ISlayer, IGunslinger, IBlade, IArcanist, ITactician } from "../../../../../common/common";
 import { Cervantes, Clint } from "../../../../../common/examples";
-import { Slayer, Blade, Gunslinger, Arcanist, Tactician, KnownSpell, Advance } from '../../../../../server/src/SlayerRoomState';
+import { Slayer, Blade, Gunslinger, Arcanist, Tactician, KnownSpell, Advance, Player } from '../../../../../server/src/SlayerRoomState';
 import { provideRouter } from '@angular/router';
 import { EMessageTypes, IBaseMsg, ICharacterUpdateMsg, ISaveCampaignMsg, IUpdateNumericalMsg } from '../../../../../common/messageFormat';
 import { BladePipe, GunslingerPipe, ArcanistPipe, TacticianPipe } from "../classPipes";
@@ -33,6 +33,7 @@ export class CharacterSheet implements AfterViewInit {
 
   playbooks = EPlaybooks;
   fresh: boolean;
+  player: Player | undefined;
 
   constructor(
     public cjs: ColyseusService,
@@ -75,7 +76,7 @@ export class CharacterSheet implements AfterViewInit {
 
 
     ngAfterViewInit(): void {
-      this.cs.getAssignmentChange().subscribe((newSlayer) => {
+      this.cjs.getAssignmentChange().subscribe(([newSlayer, pix]) => {
         const room = this.cjs.room.then((room) => {
           const $ = getStateCallbacks(room);
           console.log("Adding listeners")

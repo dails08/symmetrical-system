@@ -54,6 +54,14 @@
                     flex-direction: row;
                 }
             }
+
+            .speedSection {
+                margin: 10px 0px;
+                border: 1px solid black;
+                border-radius: 2px;
+                padding: 5px;   
+                box-sizing: content-box;
+            }
         }
     }
 }

@@ -1,184 +1,184 @@
-<div class="playerBar">
-    <p>{{player.displayName}}</p>
-    <div class="chekhov">
-        <p>Chekhov:</p>
-        <button  (click)="alterChekhovPoints(-1)">-</button>
-        <p>{{player.chekhovPoints}}</p>
-        <button  (click)="alterChekhovPoints(1)">+</button>    
-    </div>
-</div>
-    <div class="slayerDisplay" >
-        <mat-card *ngIf="slayer" appearance="outlined">
-        <mat-card-header>
-            <mat-card-title>{{slayer.name}}</mat-card-title>
-            <mat-card-subtitle>{{slayer.class | titlecase}}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-            <div class="commonElements">
-                <div class="statsRow">
-                    <div class="hpSection">
-                        <div class="hpModSection">
-                            <button (click)="modHp(slayer, hpDelta.value, -1)">Harm</button>
-                            <input class="smallInput" matInput #hpDelta>
-                            <button (click)="modHp(slayer, hpDelta.value, 1)">Heal</button>
-                        </div>
-                        <p>{{slayer.currentHP}}/{{slayer.maxHP}} HP</p>
-                        <div class="hpModSection">
-                            <input class="smallInput" matInput #newMaxHp>
-                            <button (click)="modMaxHp(slayer, newMaxHp.value)">Set Max HP</button>
-                        </div>
+
+<div class="slayerDisplay" >
+    <mat-card *ngIf="this.cs.slayer" appearance="outlined">
+        @let slayer = this.cs.slayer;
+    <mat-card-header>
+        <mat-card-title>{{slayer.name}}</mat-card-title>
+        <mat-card-subtitle>{{slayer.class | titlecase}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="commonElements">
+            <div class="statsRow">
+                <div class="hpSection">
+                    <div class="hpModSection">
+                        <button (click)="modHp(slayer, hpDelta.value, -1)">Harm</button>
+                        <input class="smallInput" matInput #hpDelta>
+                        <button (click)="modHp(slayer, hpDelta.value, 1)">Heal</button>
                     </div>
-                    <div class="dmgSection">
-                        <p>{{slayer.damage}} dmg</p>
-                        <div class="skillButtons">
-                            <button (click)="modStat(slayer, 'damage', -1)">-</button>
-                            <button (click)="modStat(slayer, 'damage', 1)">+</button>
-                        </div>
+                    <p>{{slayer.currentHP}}/{{slayer.maxHP}} HP</p>
+                    <div class="hpModSection">
+                        <input class="smallInput" matInput #newMaxHp>
+                        <button (click)="modMaxHp(slayer, newMaxHp.value)">Set Max HP</button>
                     </div>
                 </div>
-                <div class="skillsRow">
-                    <div class="skillRow">
-                        <div class="skillButtons">
-                            <button (click)="modStat(slayer, 'skillsAgile', -2)">-</button>
-                            <button (click)="modStat(slayer, 'skillsAgile', 2)">+</button>
-                        </div>
-                        <p>Agile: {{slayer.skillsAgile}}</p>
-                    </div>
-                    <div class="skillRow">
-                        <div class="skillButtons">
-                            <button (click)="modStat(slayer, 'skillsBrawn', -2)">-</button>
-                            <button (click)="modStat(slayer, 'skillsBrawn', 2)">+</button>
-                        </div>
-                        <p>Brawn: {{slayer.skillsBrawn}}</p>
-                    </div>
-                    <div class="skillRow">
-                        <div class="skillButtons">
-                            <button (click)="modStat(slayer, 'skillsDeceive', -2)">-</button>
-                            <button (click)="modStat(slayer, 'skillsDeceive', 2)">+</button>
-                        </div>
-                        <p>Deceive: {{slayer.skillsDeceive}}</p>
-                    </div>
-                    <div class="skillRow">
-                        <div class="skillButtons">
-                            <button (click)="modStat(slayer, 'skillsHunt', -2)">-</button>
-                            <button (click)="modStat(slayer, 'skillsHunt', 2)">+</button>
-                        </div>
-                        <p>Hunt: {{slayer.skillsHunt}}</p>
-                    </div>
-                    <div class="skillRow">
-                        <div class="skillButtons">
-                            <button (click)="modStat(slayer, 'skillsMend', -2)">-</button>
-                            <button (click)="modStat(slayer, 'skillsMend', 2)">+</button>
-                            <p>Mend: {{slayer.skillsMend}}</p>
-                        </div>
-                    </div>
-                    <div class="skillRow">
-                        <div class="skillButtons">
-                            <button (click)="modStat(slayer, 'skillsNegotiate', -2)">-</button>
-                            <button (click)="modStat(slayer, 'skillsNegotiate', 2)">+</button>
-                        </div>
-                        <p>Negotiate: {{slayer.skillsNegotiate}}</p>
-                    </div>
-                    <div class="skillRow">
-                        <div class="skillButtons">
-                            <button (click)="modStat(slayer, 'skillsStealth', -2)">-</button>
-                            <button (click)="modStat(slayer, 'skillsStealth', 2)">+</button>
-                        </div>
-                        <p>Stealth: {{slayer.skillsStealth}}</p>
-                    </div>
-                    <div class="skillRow">
-                        <div class="skillButtons">
-                            <button (click)="modStat(slayer, 'skillsStreet', -2)">-</button>
-                            <button (click)="modStat(slayer, 'skillsStreet', 2)">+</button>
-                        </div>
-                        <p>Street: {{slayer.skillsStreet}}</p>
-                    </div>
-                    <div class="skillRow">
-                        <div class="skillButtons">
-                            <button (click)="modStat(slayer, 'skillsStudy', -2)">-</button>
-                            <button (click)="modStat(slayer, 'skillsStudy', 2)">+</button>
-                        </div>
-                        <p>Study: {{slayer.skillsStudy}}</p>
-                    </div>
-                    <div class="skillRow">
-                        <div class="skillButtons">
-                            <button (click)="modStat(slayer, 'skillsTactics', -2)">-</button>
-                            <button (click)="modStat(slayer, 'skillsTactics', 2)">+</button>
-                        </div>
-                        <p>Tactics: {{slayer.skillsTactics}}</p>
+                <div class="dmgSection">
+                    <p>{{slayer.damage}} dmg</p>
+                    <div class="skillButtons">
+                        <button (click)="modStat(slayer, 'damage', -1)">-</button>
+                        <button (click)="modStat(slayer, 'damage', 1)">+</button>
                     </div>
                 </div>
-                <p>Advances</p>
-                <div class="advances">
-                    <mat-accordion>
-                        <mat-expansion-panel hideToggle *ngFor="let advance of slayer.advances.toArray(); let ix = index">
-                            <mat-expansion-panel-header>
-                                <mat-panel-title>{{advance.name}}</mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <p>{{advance.desc}}</p>
-                            <button  (click)="removeAdvance(slayer, ix)">Remove</button>
-                        </mat-expansion-panel>
-                        <mat-expansion-panel hideToggle>
-                            <mat-expansion-panel-header>
-                                <mat-panel-title>Add new advance</mat-panel-title>
-                            </mat-expansion-panel-header>
-                            
-                            <div class="newAdvanceSection">
-                                <form #newAdvance (ngSubmit)="addAdvance(slayer, newAdvanceName.value, newAdvanceDescription.value)" class="advance-form">
-                                    <label>Name</label>
-                                    <input type="text" pInputText #newAdvanceName placeholder="Ex. Quick Draw">
-                                    
-                                    <label>Description</label>
-                                    <textarea #newAdvanceDescription placeholder="Ex. Roll d8 for speed"></textarea>
-                                    <input type="submit" value="Add Advance">
-                                    </form>
-        
-                            </div>                        
-                        </mat-expansion-panel>
-                    </mat-accordion>
-                </div>
-                <p>Inventory</p>
-                <div class="inventory">
-                    <mat-accordion>
-                        <mat-expansion-panel hideToggle *ngFor="let invItem of slayer.inventory.toArray(); let ix = index">
-                            <mat-expansion-panel-header>
-                                <mat-panel-title>{{invItem.name}}</mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <p>{{invItem.desc}}</p>
-                            <button  (click)="removeInvItem(slayer, ix)">Remove</button>
-                        </mat-expansion-panel>
-                        <mat-expansion-panel hideToggle>
-                            <mat-expansion-panel-header>
-                                <mat-panel-title>Add new item</mat-panel-title>
-                            </mat-expansion-panel-header>
-                            
-                            <div class="newItemSection">
-                                <form #newInvItem (ngSubmit)="addInvItem(slayer, newInvItemName.value, newInvItemDescription.value)" class="advance-form">
-                                    <label>Name</label>
-                                    <input type="text" pInputText #newInvItemName placeholder="Ex. Quick Draw">
-                                    
-                                    <label>Description</label>
-                                    <textarea #newInvItemDescription placeholder="Ex. Roll d8 for speed"></textarea>
-                                    <input type="submit" value="Add Item">
-                                    </form>
-        
-                            </div>                        
-                        </mat-expansion-panel>
-                    </mat-accordion>
-                </div>            </div>
-            <div class="controls"></div>
-            <div class="classSpecific">
-                <div class="bladeSection" *ngIf="slayer.class == playbooks.Blade"></div>
-                <div class="arcanistSection" *ngIf="slayer.class == playbooks.Arcanist"></div>
-                <div class="tacticianSection" *ngIf="slayer.class == playbooks.Tactician"></div>
-                <div class="gunslingerSection" *ngIf="slayer.class == playbooks.Gunslinger"></div>
             </div>
-        </mat-card-content>
- 
-        </mat-card>
-    </div>
-    <div class="noSlayerDisplay" *ngIf="!slayer">
-        <p>No Slayer assigned!</p>
-    </div>
+            <div class="skillsRow">
+                <div class="skillRow">
+                    <div class="skillButtons">
+                        <button (click)="modStat(slayer, 'skillsAgile', -2)">-</button>
+                        <button (click)="modStat(slayer, 'skillsAgile', 2)">+</button>
+                    </div>
+                    <p>Agile: {{slayer.skillsAgile}}</p>
+                </div>
+                <div class="skillRow">
+                    <div class="skillButtons">
+                        <button (click)="modStat(slayer, 'skillsBrawn', -2)">-</button>
+                        <button (click)="modStat(slayer, 'skillsBrawn', 2)">+</button>
+                    </div>
+                    <p>Brawn: {{slayer.skillsBrawn}}</p>
+                </div>
+                <div class="skillRow">
+                    <div class="skillButtons">
+                        <button (click)="modStat(slayer, 'skillsDeceive', -2)">-</button>
+                        <button (click)="modStat(slayer, 'skillsDeceive', 2)">+</button>
+                    </div>
+                    <p>Deceive: {{slayer.skillsDeceive}}</p>
+                </div>
+                <div class="skillRow">
+                    <div class="skillButtons">
+                        <button (click)="modStat(slayer, 'skillsHunt', -2)">-</button>
+                        <button (click)="modStat(slayer, 'skillsHunt', 2)">+</button>
+                    </div>
+                    <p>Hunt: {{slayer.skillsHunt}}</p>
+                </div>
+                <div class="skillRow">
+                    <div class="skillButtons">
+                        <button (click)="modStat(slayer, 'skillsMend', -2)">-</button>
+                        <button (click)="modStat(slayer, 'skillsMend', 2)">+</button>
+                        <p>Mend: {{slayer.skillsMend}}</p>
+                    </div>
+                </div>
+                <div class="skillRow">
+                    <div class="skillButtons">
+                        <button (click)="modStat(slayer, 'skillsNegotiate', -2)">-</button>
+                        <button (click)="modStat(slayer, 'skillsNegotiate', 2)">+</button>
+                    </div>
+                    <p>Negotiate: {{slayer.skillsNegotiate}}</p>
+                </div>
+                <div class="skillRow">
+                    <div class="skillButtons">
+                        <button (click)="modStat(slayer, 'skillsStealth', -2)">-</button>
+                        <button (click)="modStat(slayer, 'skillsStealth', 2)">+</button>
+                    </div>
+                    <p>Stealth: {{slayer.skillsStealth}}</p>
+                </div>
+                <div class="skillRow">
+                    <div class="skillButtons">
+                        <button (click)="modStat(slayer, 'skillsStreet', -2)">-</button>
+                        <button (click)="modStat(slayer, 'skillsStreet', 2)">+</button>
+                    </div>
+                    <p>Street: {{slayer.skillsStreet}}</p>
+                </div>
+                <div class="skillRow">
+                    <div class="skillButtons">
+                        <button (click)="modStat(slayer, 'skillsStudy', -2)">-</button>
+                        <button (click)="modStat(slayer, 'skillsStudy', 2)">+</button>
+                    </div>
+                    <p>Study: {{slayer.skillsStudy}}</p>
+                </div>
+                <div class="skillRow">
+                    <div class="skillButtons">
+                        <button (click)="modStat(slayer, 'skillsTactics', -2)">-</button>
+                        <button (click)="modStat(slayer, 'skillsTactics', 2)">+</button>
+                    </div>
+                    <p>Tactics: {{slayer.skillsTactics}}</p>
+                </div>
+                <div class="skillRow speedSection">
+                    <div class="skillButtons">
+                        <button (click)="modStat(slayer, 'speed', -2)">-</button>
+                        <button (click)="modStat(slayer, 'speed', 2)">+</button>
+                    </div>
+                    <p>Speed: {{slayer.speed}}</p>
+                </div>
+            </div>
+            <p>Advances</p>
+            <div class="advances">
+                <mat-accordion>
+                    <mat-expansion-panel hideToggle *ngFor="let advance of slayer.advances.toArray(); let ix = index">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>{{advance.name}}</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p>{{advance.desc}}</p>
+                        <button  (click)="removeAdvance(slayer, ix)">Remove</button>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel hideToggle>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Add new advance</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        
+                        <div class="newAdvanceSection">
+                            <form #newAdvance (ngSubmit)="addAdvance(slayer, newAdvanceName.value, newAdvanceDescription.value)" class="advance-form">
+                                <label>Name</label>
+                                <input type="text" pInputText #newAdvanceName placeholder="Ex. Quick Draw">
+                                
+                                <label>Description</label>
+                                <textarea #newAdvanceDescription placeholder="Ex. Roll d8 for speed"></textarea>
+                                <input type="submit" value="Add Advance">
+                                </form>
+    
+                        </div>                        
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <p>Inventory</p>
+            <div class="inventory">
+                <mat-accordion>
+                    <mat-expansion-panel hideToggle *ngFor="let invItem of slayer.inventory.toArray(); let ix = index">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>{{invItem.name}}</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p>{{invItem.desc}}</p>
+                        <button  (click)="removeInvItem(slayer, ix)">Remove</button>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel hideToggle>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Add new item</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        
+                        <div class="newItemSection">
+                            <form #newInvItem (ngSubmit)="addInvItem(slayer, newInvItemName.value, newInvItemDescription.value)" class="advance-form">
+                                <label>Name</label>
+                                <input type="text" pInputText #newInvItemName placeholder="Ex. Quick Draw">
+                                
+                                <label>Description</label>
+                                <textarea #newInvItemDescription placeholder="Ex. Roll d8 for speed"></textarea>
+                                <input type="submit" value="Add Item">
+                                </form>
+    
+                        </div>                        
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>            </div>
+        <div class="controls"></div>
+        <div class="classSpecific">
+            <div class="bladeSection" *ngIf="slayer.class == playbooks.Blade"></div>
+            <div class="arcanistSection" *ngIf="slayer.class == playbooks.Arcanist"></div>
+            <div class="tacticianSection" *ngIf="slayer.class == playbooks.Tactician"></div>
+            <div class="gunslingerSection" *ngIf="slayer.class == playbooks.Gunslinger"></div>
+        </div>
+    </mat-card-content>
+
+    </mat-card>
+</div>
+<div class="noSlayerDisplay" *ngIf="!this.cs.slayer">
+    <p>No Slayer assigned!</p>
+</div>
 
 
