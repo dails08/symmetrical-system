@@ -3,19 +3,7 @@
     display:block;
 }
 
-.playerBar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    p {
-        margin: 0px 10px;
-    }
-    .chekhov {
-        display: flex;
-        justify-content: end;
-        align-items: center;
-    }
-}
+
 
 .slayerDisplay {
     .commonElements{
@@ -59,7 +47,7 @@
                 margin: 10px 0px;
                 border: 1px solid black;
                 border-radius: 2px;
-                padding: 5px;   
+                padding: 5px;
                 box-sizing: content-box;
             }
         }

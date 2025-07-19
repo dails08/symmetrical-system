@@ -2,18 +2,23 @@
 //       background-color: black;
 //       color: white;
 //   }
-  
+
+.playerSection {
+  background-color: black;
+  color: white;
+  height: 20px;
+}
 .slayerDefined {
   background-color: black;
   color: white;
   box-sizing: border-box;
-  min-height: 100vh;
+  min-height: calc(100vh - 20px);
 }
 .slayerUndefined {
   background-color: black;
   color: white;
   box-sizing: border-box;
-  min-height: 100vh;
+  min-height: calc(100vh - 20px);
 }
 
 :host {
@@ -104,7 +109,7 @@
       top:20%;
       bottom:20%;
 
-    }  
+    }
     .segment.halfhp {
       background-color: darkviolet;
       width: 4px;
@@ -112,9 +117,9 @@
       bottom: 10%;
     }
 
-    
+
   }
-  
+
 
   .misc {
     display: flex;
@@ -152,8 +157,8 @@
       }
     }
   }
-  
-  
+
+
   .skills {
     display: flex;
     overflow-x: scroll;

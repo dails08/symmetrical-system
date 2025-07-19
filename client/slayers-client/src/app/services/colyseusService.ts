@@ -7,7 +7,7 @@ import { IJoinOptions } from '../../../../../common/common';
 import { EMessageTypes, IBaseMsg, IJoinResponseMsg, ISaveCampaignMsg, IUpdateNumericalMsg, ICharacterUpdateMsg, IArrayChangeMsg } from "../../../../../common/messageFormat";
 import { Router } from '@angular/router';
 import { CentralService } from './central-service';
-import { P } from '@angular/cdk/keycodes';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -31,7 +31,7 @@ export class ColyseusService {
     this.client = new Client("http://localhost:2567");
     console.log(this.client);
     // const joinOptions: IJoinOptions = {
-    //   name: , 
+    //   name: ,
     //   displayName: "dails",
     //   campaignId: "1234"
     // }
@@ -48,13 +48,6 @@ export class ColyseusService {
     console.log("Joined " + room.name);
     const $ = getStateCallbacks<SlayerRoomState>(room);
 
-    $(room.state).roster.onChange((item, ix) => {
-      this.rosterChangeSubject.next(item);
-    })
-
-    $(room.state).currentAssignments.onAdd((item, ix) => {
-      this.assignmentChangeSubject.next([item, ix]);
-    })
     console.log("Attaching join resp callback")
     room.onMessage(EMessageTypes.JoinResponse, ((resp: IJoinResponseMsg) => {
       console.log("Received join response message");
@@ -75,9 +68,8 @@ export class ColyseusService {
       if (refPlayer){
         $(refPlayer).bindTo(this.cs.player);
       }
-    }));
 
-    this.getAssignmentChange().subscribe(([newAssignment, ix]) => {
+      this.getAssignmentChange().subscribe(([newAssignment, ix]) => {
       this.room.then((room) => {
         const $ = getStateCallbacks(room);
         console.log("Assignment change: " + newAssignment.id + " to " + ix)
@@ -89,11 +81,23 @@ export class ColyseusService {
         } else {
           console.log("Not our assignment: " + ix + " vs. " + this.cs.player.id);
         }
-  
+
       })
     })
 
-    
+    $(room.state).roster.onChange((item, ix) => {
+      this.rosterChangeSubject.next(item);
+    })
+
+    $(room.state).currentAssignments.onAdd((item, ix) => {
+      this.assignmentChangeSubject.next([item, ix]);
+    })
+
+    }));
+
+
+
+
 
 
   }
@@ -127,7 +131,7 @@ export class ColyseusService {
   async sendMessage(msg: IBaseMsg) {
     if (this.room){
       console.log("CJS sending " + JSON.stringify(msg));
-      return (await this.room).send(msg.kind, msg)  
+      return (await this.room).send(msg.kind, msg)
     } else {
       console.log("Room is undefined");
     }
