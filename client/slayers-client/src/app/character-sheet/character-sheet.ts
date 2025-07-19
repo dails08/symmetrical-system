@@ -18,13 +18,13 @@ import { JoinScreen } from "../join-screen/join-screen";
 @Component({
   selector: 'app-character-sheet',
   imports: [
-    CommonModule, 
-    BladePipe, 
-    GunslingerPipe, 
-    ArcanistPipe, 
-    TacticianPipe, 
-    TippyDirective, 
-    Roller, 
+    CommonModule,
+    BladePipe,
+    GunslingerPipe,
+    ArcanistPipe,
+    TacticianPipe,
+    TippyDirective,
+    Roller,
     JoinScreen],
   templateUrl: './character-sheet.html',
   styleUrl: './character-sheet.scss'
@@ -51,9 +51,9 @@ export class CharacterSheet implements AfterViewInit {
     //         animate(".barcontent", {
     //           flex: this.cs.slayer.currentHP/this.cs.slayer.maxHP,
     //           duration: 1000
-    //         });  
+    //         });
     //       }
-        
+
     //     })
     //   });
     this.fresh = true;
@@ -76,7 +76,7 @@ export class CharacterSheet implements AfterViewInit {
 
 
     ngAfterViewInit(): void {
-      this.cjs.getAssignmentChange().subscribe(([newSlayer, pix]) => {
+      this.cjs.getAssignmentChange().subscribe(([newSlayer]) => {
         const room = this.cjs.room.then((room) => {
           const $ = getStateCallbacks(room);
           console.log("Adding listeners")
@@ -85,7 +85,7 @@ export class CharacterSheet implements AfterViewInit {
             console.log("Automatically changing hp: " + this.cs.slayer!.currentHP + "/" + this.cs.slayer!.maxHP);
             // this.cs.slayer!.currentHP = newValue;
             console.log("Damage: " + this.cs.slayer!.currentHP);
-            
+
             if (this.fresh){
               setTimeout(()=> {
                 this.animateHPChange();
@@ -95,10 +95,10 @@ export class CharacterSheet implements AfterViewInit {
             }
 
         })
-            
-            
-            
-          
+
+
+
+
           });
         });
     }

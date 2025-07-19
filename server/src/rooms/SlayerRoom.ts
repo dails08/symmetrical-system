@@ -305,6 +305,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     client.send(EMessageTypes.JoinResponse, joinResponseMessage);
     
     this.state.playerMap.set(player.id, player);
+    this.sessionIDtoPlayerIdMap.set(client.sessionId, player.id);
     const ix = Math.floor(Math.random() * this.state.roster.length);
     // console.log(this.state.roster)
     console.log("Assigning " + this.state.roster[ix].name);
@@ -330,6 +331,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
       }
       if (this.state.playerMap.has(clientPlayer.id)){
         console.log("Player deleted? " + this.state.playerMap.delete(clientPlayer.id));
+        console.log("Session removed? " + this.sessionIDtoPlayerIdMap.delete(client.sessionId));
       }
       console.log("Deleted " + clientPlayer.id)
       console.log("Playermap:")
@@ -337,6 +339,9 @@ export class SlayerRoom extends Room<SlayerRoomState> {
         console.log(v.displayName);
       } )
       console.log("==========");  
+    } else {
+      console.log(client.sessionId + " not in playermap: ");
+      console.log(JSON.stringify(this.state.playerMap));
     }
   }
 

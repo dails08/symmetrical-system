@@ -21,7 +21,7 @@ export class ColyseusService {
 
   private roomStateSubject = new Subject<SlayerRoomState>();
   private rosterChangeSubject = new Subject<Slayer>();
-  private assignmentChangeSubject = new Subject<[Slayer, String]>();
+  private assignmentChangeSubject = new Subject<[Slayer]>();
 
 
   constructor(
@@ -69,28 +69,21 @@ export class ColyseusService {
         $(refPlayer).bindTo(this.cs.player);
       }
 
-      this.getAssignmentChange().subscribe(([newAssignment, ix]) => {
-      this.room.then((room) => {
-        const $ = getStateCallbacks(room);
-        console.log("Assignment change: " + newAssignment.id + " to " + ix)
-        if (ix == this.cs.player.id){
-          console.log("Assigned " + newAssignment.name)
-          this.cs.slayer = newAssignment;
+      $(room.state).currentAssignments.onAdd((slayer, playerId) => {
+        console.log("Assignment change: " + slayer.id + " to " + playerId)
+        if (playerId == this.cs.player.id){
+          console.log("Assigned " + slayer.name)
+          this.cs.slayer = slayer;
           $(this.cs.slayer).bindTo(this.cs.slayer);
           // this.assignmentChange.next(this.slayer);
+          this.assignmentChangeSubject.next([slayer]);
         } else {
-          console.log("Not our assignment: " + ix + " vs. " + this.cs.player.id);
+          console.log("Not our assignment: " + playerId + " vs. " + this.cs.player.id);
         }
-
       })
-    })
 
     $(room.state).roster.onChange((item, ix) => {
       this.rosterChangeSubject.next(item);
-    })
-
-    $(room.state).currentAssignments.onAdd((item, ix) => {
-      this.assignmentChangeSubject.next([item, ix]);
     })
 
     }));

@@ -19,9 +19,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { getStateCallbacks } from 'colyseus.js';
 @Component({
   selector: 'app-gm-slayer-summary',
-  imports: [CommonModule, 
-    MatButtonModule, 
-    MatCardModule, 
+  imports: [CommonModule,
+    MatButtonModule,
+    MatCardModule,
     MatExpansionModule,
     MatInputModule,
     MatFormFieldModule,
@@ -47,16 +47,39 @@ export class GmSlayerSummary {
 
     this.cjs.room.then((room) => {
       // const tmpSessionId = room.state.playerMap.get(this.player);
+      let report: string = ""
+      report += "Starting slayer summary for " + this.player.displayName + " (" + this.player.id + ")\n";
       const tmpSlayer = room.state.currentAssignments.get(this.player.id)
       this.slayer = tmpSlayer
+      if (this.slayer){
+        report += "Found asignment: " + this.slayer.name  + "\n";
+      } else {
+        report += "Found no assignment\n";
+      }
+
       const $ = getStateCallbacks(room);
       if (this.slayer){
-        console.log("Found assignment to " + this.slayer.name)
+        // console.log("Found assignment to " + this.slayer.name)
+        report += "Binding\n";
         $(this.slayer).bindTo(this.slayer);
+
       } else {
-        console.log("No slayer assigned here");
-      }  
-      
+         report += "No slayer assigned here for binding\n";
+      }
+
+      report += "Attaching listeners\n";
+      $(room.state).currentAssignments.onRemove((slayer, ix) => {
+        if (ix == this.player.id) {
+          this.slayer = undefined;
+        }
+      })
+      $(room.state).currentAssignments.onAdd((slayer, ix) => {
+        if (ix == this.player.id){
+          this.slayer = slayer;
+          $(slayer).bindTo(this.slayer);
+        }
+      })
+      console.log(report);
     })
 
     this.dummyAdvances = [];
@@ -138,8 +161,8 @@ export class GmSlayerSummary {
   }
 
   modStat(
-    slayer: Slayer, 
-    stat: "damage" | "speed" | "skillsAgile" | "skillsBrawn" | "skillsDeceive" | "skillsHunt" | "skillsMend" | "skillsNegotiate" | "skillsStealth" | "skillsStreet" | "skillsStudy" | "skillsTactics", 
+    slayer: Slayer,
+    stat: "damage" | "speed" | "skillsAgile" | "skillsBrawn" | "skillsDeceive" | "skillsHunt" | "skillsMend" | "skillsNegotiate" | "skillsStealth" | "skillsStreet" | "skillsStudy" | "skillsTactics",
     delta: number){
       let newVal: number;
       if (stat == "damage") {
@@ -147,7 +170,7 @@ export class GmSlayerSummary {
       } else {
         newVal = Math.min(Math.max(slayer[stat] + delta, 4), 10);
       }
-      
+
       const msg: IUpdateNumericalMsg = {
         kind: EMessageTypes.NumericalUpdate,
         field: stat,

@@ -1,7 +1,7 @@
 
 <div class="slayerDisplay" >
-    <mat-card *ngIf="this.cs.slayer" appearance="outlined">
-        @let slayer = this.cs.slayer;
+    <mat-card *ngIf="this.slayer" appearance="outlined">
+        @let slayer = this.slayer;
     <mat-card-header>
         <mat-card-title>{{slayer.name}}</mat-card-title>
         <mat-card-subtitle>{{slayer.class | titlecase}}</mat-card-subtitle>
@@ -122,18 +122,18 @@
                         <mat-expansion-panel-header>
                             <mat-panel-title>Add new advance</mat-panel-title>
                         </mat-expansion-panel-header>
-                        
+
                         <div class="newAdvanceSection">
                             <form #newAdvance (ngSubmit)="addAdvance(slayer, newAdvanceName.value, newAdvanceDescription.value)" class="advance-form">
                                 <label>Name</label>
                                 <input type="text" pInputText #newAdvanceName placeholder="Ex. Quick Draw">
-                                
+
                                 <label>Description</label>
                                 <textarea #newAdvanceDescription placeholder="Ex. Roll d8 for speed"></textarea>
                                 <input type="submit" value="Add Advance">
                                 </form>
-    
-                        </div>                        
+
+                        </div>
                     </mat-expansion-panel>
                 </mat-accordion>
             </div>
@@ -151,18 +151,18 @@
                         <mat-expansion-panel-header>
                             <mat-panel-title>Add new item</mat-panel-title>
                         </mat-expansion-panel-header>
-                        
+
                         <div class="newItemSection">
                             <form #newInvItem (ngSubmit)="addInvItem(slayer, newInvItemName.value, newInvItemDescription.value)" class="advance-form">
                                 <label>Name</label>
                                 <input type="text" pInputText #newInvItemName placeholder="Ex. Quick Draw">
-                                
+
                                 <label>Description</label>
                                 <textarea #newInvItemDescription placeholder="Ex. Roll d8 for speed"></textarea>
                                 <input type="submit" value="Add Item">
                                 </form>
-    
-                        </div>                        
+
+                        </div>
                     </mat-expansion-panel>
                 </mat-accordion>
             </div>            </div>
