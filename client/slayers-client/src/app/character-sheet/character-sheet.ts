@@ -93,7 +93,19 @@ export class CharacterSheet implements AfterViewInit {
             } else {
               this.animateHPChange();
             }
+        })
+        $(newSlayer).listen("maxHP", (newValue, previousValue) => {
+            console.log("Correcting max hp: " + this.cs.slayer!.currentHP + "/" + this.cs.slayer!.maxHP);
+            // this.cs.slayer!.currentHP = newValue;
+            // console.log("Damage: " + this.cs.slayer!.currentHP);
 
+            if (this.fresh){
+              setTimeout(()=> {
+                this.animateHPChange();
+              }, 100);
+            } else {
+              this.animateHPChange();
+            }
         })
 
 

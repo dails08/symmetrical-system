@@ -5,7 +5,7 @@ import { Cervantes, Clint } from "../../../../../common/examples";
 import { ColyseusService } from '../services/colyseusService';
 import { Slayer, Blade, Gunslinger, Arcanist, Tactician, KnownSpell, Advance, Player } from '../../../../../server/src/SlayerRoomState';
 import { CentralService } from '../services/central-service';
-import { EMessageTypes, IBaseMsg, ICharacterUpdateMsg, ISaveCampaignMsg, IUpdateNumericalMsg } from '../../../../../common/messageFormat';
+import { EMessageTypes, IBaseMsg, ICharacterUpdateMsg, IPlayerUpdateMsg, ISaveCampaignMsg, IUpdateNumericalMsg } from '../../../../../common/messageFormat';
 import { BladePipe, GunslingerPipe, ArcanistPipe, TacticianPipe } from "../classPipes";
 import { getStateCallbacks } from 'colyseus.js';
 import { GmSlayerSummary } from "./gm-slayer-summary/gm-slayer-summary";
@@ -92,7 +92,7 @@ export class GmScreen {
             } else {
               console.log("Can't find assigned player to add assignment")
             }
-  
+
           }
       });
 
@@ -117,13 +117,13 @@ export class GmScreen {
         characterId: room.state?.currentAssignments?.get(this.cs.player!.id)?.id!,
         data: updatedChar,
         kind: EMessageTypes.CharacterUpdate
-        
+
       }
       this.cjs.sendMessage(msg);
 
     })
       }
-  
+
       sendTakeDamage(dmg: number) {
         this.cjs.room.then((room) => {
           console.log(this.cs.slayer?.name);
@@ -135,7 +135,7 @@ export class GmScreen {
               newValue: Math.min(Math.max(this.cs.slayer?.currentHP - dmg, 0), this.cs.slayer?.maxHP)
             }
             this.cjs.sendMessage(msg);
-          }  
+          }
         })
       }
 
@@ -150,28 +150,29 @@ export class GmScreen {
               newValue: Math.min(Math.max(target.currentHP + delta, 0), target.maxHP)
             };
             this.cjs.sendMessage(msg);
-          }  
+          }
         })
       }
-  
+
       sendSaveCampaign(){
         const msg: ISaveCampaignMsg = {
           kind: EMessageTypes.SaveCampaign
         }
         this.cjs.sendMessage(msg)
       }
-      
-      alterChekhovPoints(ix: String, delta: number) {
-        const msg: IUpdateNumericalMsg = {
-          kind: EMessageTypes.NumericalUpdate,
+
+      alterChekhovPoints(playerId: String, newValue: number) {
+        const msg: IPlayerUpdateMsg = {
+          kind: EMessageTypes.PlayerUpdate,
           field: "chekhov",
-          newValue: delta,
-          slayerId: ix.toString()
+          newValueInt: newValue,
+          newValueStr: "",
+          playerId: playerId.toString()
         };
         this.cjs.sendMessage(msg);
-    
+
       }
-  
+
       // addDefaultRoster(){
       //   const msg = {
       //     kind: "addDefault"

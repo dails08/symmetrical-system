@@ -42,7 +42,10 @@ export interface IKillMsg extends IBaseMsg {
 
 export interface IPlayerUpdateMsg extends IBaseMsg {
     kind: EMessageTypes.PlayerUpdate,
-    playerData: IPlayer
+    playerId: string,
+    field: string,
+    newValueInt: number,
+    newValueStr: string
 }
 
 export interface IUpdateNumericalMsg extends IBaseMsg {

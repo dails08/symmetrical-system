@@ -202,6 +202,13 @@ export class GmSlayerSummary {
     slayer: Slayer,
     newMax_str: string
   ){
+    const msg: IUpdateNumericalMsg = {
+      kind: EMessageTypes.NumericalUpdate,
+      field: "maxHp",
+      newValue: parseInt(newMax_str),
+      slayerId: slayer.id
+    };
+    this.cjs.sendMessage(msg);
 
   }
 

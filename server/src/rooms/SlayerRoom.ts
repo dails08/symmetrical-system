@@ -2,7 +2,7 @@ import { Room, Client, logger } from "@colyseus/core";
 import { SlayerRoomState, Advance, Player, Slayer, Blade, Tactician, Gunslinger, Arcanist, InventoryItem } from "../SlayerRoomState";
 import { EPlaybooks, ICampaign, IJoinOptions, ISlayer, IBlade, IGunslinger, IArcanist, ITactician } from "../../../common/common";
 import { Clint, Ryze, Cervantes, Gene} from "../../../common/examples";
-import { EMessageTypes, IBaseMsg, IArrayChangeMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg } from "../../../common/messageFormat";
+import { EMessageTypes, IBaseMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg } from "../../../common/messageFormat";
 import { db } from "../firestoreConnection";
 import { v4 as uuidv4 } from "uuid";
 
@@ -164,7 +164,10 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     // })
     
 
-
+ this.onMessage(EMessageTypes.SaveCampaign, (client, msg) => {
+      console.log("Saving campaign " + this.campaign.id);
+      this.saveCampaign();
+    })
     
 
     this.onMessage(EMessageTypes.NumericalUpdate, (client, msg: IUpdateNumericalMsg) => {
@@ -184,16 +187,9 @@ export class SlayerRoom extends Room<SlayerRoomState> {
               console.log("Setting speed");
               elem.speed = msg.newValue as 4 | 6 | 8 | 10 | 12;
             }
-            if (msg.field == "chekhov"){
-              console.log("Setting chekhov")
-              const player = this.state.playerMap.get(msg.slayerId);
-              // this is not a mistake, it's a janky way to 
-              // send the player id without making a new
-              // message type
-              if (player){
-                console.log("Setting chekhov points");
-                player.chekhovPoints += msg.newValue;
-              }
+            if (msg.field == "maxHp"){
+              console.log("Setting maxHp")
+              elem.maxHP = msg.newValue;
             }
             if (["skillsAgile", "skillsBrawn", "skillsDeceive", "skillsHunt", "skillsMend", "skillsNegotiate", "skillsStealth", "skillsStreet", "skillsStudy", "skillsTactics"].includes(msg.field) && [4,6,8,10].includes(msg.newValue)){
 
@@ -204,10 +200,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
           }
       }
     })
-    this.onMessage(EMessageTypes.SaveCampaign, (client, msg) => {
-      console.log("Saving campaign " + this.campaign.id);
-      this.saveCampaign();
-    })
+   
 
     
 
@@ -274,6 +267,20 @@ export class SlayerRoom extends Room<SlayerRoomState> {
         }
       }
     });
+
+    this.onMessage(EMessageTypes.PlayerUpdate, (client, msg: IPlayerUpdateMsg) => {
+      if (this.isGM(client)){
+        const targetPlayer = this.state.playerMap.get(msg.playerId);
+        if (targetPlayer) {
+          if (msg.field == "chekhov") {
+            targetPlayer.chekhovPoints = Math.max(msg.newValueInt, 0);
+          }
+        } else {
+          console.log("Target player " + msg.playerId + " not found");
+        }
+
+      }
+    })
   }
 
   async onJoin (client: Client, options: IJoinOptions) {

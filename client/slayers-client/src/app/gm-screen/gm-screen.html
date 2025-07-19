@@ -9,9 +9,9 @@
             <p>{{player.value.displayName}} ({{player.value.id}})</p>
             <div class="chekhov">
                 <p>Chekhov:</p>
-                <button  (click)="alterChekhovPoints(player.key, -1)">-</button>
+                <button  (click)="alterChekhovPoints(player.key, player.value.chekhovPoints - 1)">-</button>
                 <p>{{player.value.chekhovPoints}}</p>
-                <button  (click)="alterChekhovPoints(player.key, 1)">+</button>    
+                <button  (click)="alterChekhovPoints(player.key, player.value.chekhovPoints + 1)">+</button>
             </div>
         </div>
         <app-gm-slayer-summary [player]="player.value" [playerIx]="player.key" class="individualCard"></app-gm-slayer-summary>
