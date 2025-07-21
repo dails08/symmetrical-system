@@ -1,7 +1,7 @@
 @let slayer = cs.slayer;
 <div class="slayerDefined" *ngIf="slayer">
     <div class="topHalf">
-        <p>{{cs.player?.displayName}}</p>
+        <p>{{cs.player.displayName}}</p>
         <p>{{slayer.name}}</p>
         <p>{{slayer.class}}</p>
         <p>HP: {{slayer.currentHP}}/{{slayer.maxHP}}</p>

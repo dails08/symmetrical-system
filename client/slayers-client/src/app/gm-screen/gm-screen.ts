@@ -9,9 +9,11 @@ import { EMessageTypes, IAssignmentMsg, IBaseMsg, ICharacterUpdateMsg, IPlayerUp
 import { BladePipe, GunslingerPipe, ArcanistPipe, TacticianPipe } from "../classPipes";
 import { getStateCallbacks } from 'colyseus.js';
 import { GmSlayerSummary } from "./gm-slayer-summary/gm-slayer-summary";
+import { CdkDrag, CdkDropList, CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
+
 @Component({
   selector: 'app-gm-screen',
-  imports: [CommonModule, GmSlayerSummary],
+  imports: [CommonModule, GmSlayerSummary, DragDropModule, CdkDrag, CdkDropList ],
   templateUrl: './gm-screen.html',
   styleUrl: './gm-screen.scss'
 })
@@ -19,6 +21,7 @@ export class GmScreen {
 
   playbooks = EPlaybooks;
   roster: Slayer[];
+  kia: Slayer[];
 
   players: Map<String, Player>;
 
@@ -30,6 +33,7 @@ export class GmScreen {
     ){
 
       this.roster = [];
+      this.kia = []
       this.assignments = new Map<Player, Slayer>();
       this.players = new Map<String, Player>();
       // this.assignments: {player: Player, slayer: Slayer}[] = []
@@ -45,6 +49,15 @@ export class GmScreen {
         });
         $(room.state).roster.onRemove((item, ix) => {
           this.roster.splice(ix);
+        });
+        $(room.state).kia.onAdd((item, ix) => {
+          console.log("Adding to gm kia: " + item.name)
+          this.kia.push(item);
+          $(item).bindTo(this.kia[ix]);
+          // $(item).bindTo(item);
+        });
+        $(room.state).kia.onRemove((item, ix) => {
+          this.kia.splice(ix);
         });
 
         $(room.state).playerMap.onAdd((item, ix) => {

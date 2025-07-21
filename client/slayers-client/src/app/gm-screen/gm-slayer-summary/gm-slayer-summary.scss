@@ -1,6 +1,8 @@
 :host {
     padding: 10px;
     display:block;
+    min-height: 200px;
+
 }
 
 
@@ -52,4 +54,10 @@
             }
         }
     }
+}
+
+.noSlayerDisplay {
+  border: 1px solid rosybrown;
+  border-radius: 5px;
+  height: 100%;
 }

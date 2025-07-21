@@ -31,3 +31,21 @@
         align-items: center;
     }
 }
+
+.rostersSection {
+  .roster {
+    border: 1px solid gray;
+    border-radius: 3px;
+    padding: 2px;
+    height: 200px;
+    overflow-y: scroll;
+    margin: 10px 0px;
+
+    .slayer {
+      border: 1px solid rosybrown;
+      border-radius: 2px;
+      margin: 4px 0px;
+
+    }
+  }
+}
