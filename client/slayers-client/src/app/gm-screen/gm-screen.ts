@@ -191,6 +191,7 @@ export class GmScreen {
         if (event.previousContainer.id == "rosterList"){
           const droppedSlayer: Slayer = event.item.data as Slayer;
           console.log("Assigning " + droppedSlayer.name + " to " + event.container.id)
+          this.assignSlayer(event.container.id, droppedSlayer.id);
         }
       }
 
