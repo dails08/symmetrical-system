@@ -3,30 +3,36 @@
         <app-gm-slayer-summary [player]="assignment.key" [slayer]="assignment.value" class="individualCard"></app-gm-slayer-summary>
     </div>
 </div> -->
-<div class="slayerCards"  cdkDropListGroup>
-    <div cdkDropList id="playerSlot-{{player.value.id}}" *ngFor="let player of players | keyvalue">
-        <div class="playerBar">
-            <p>{{player.value.displayName}} ({{player.value.id}})</p>
-            <button (click)="unassignSlayer(player.value.id)">Unassign</button>
-            <div class="chekhov">
-                <p>Chekhov:</p>
-                <button  (click)="alterChekhovPoints(player.key, player.value.chekhovPoints - 1)">-</button>
-                <p>{{player.value.chekhovPoints}}</p>
-                <button  (click)="alterChekhovPoints(player.key, player.value.chekhovPoints + 1)">+</button>
+<div class="crossDrop" cdkDropListGroup>
+    <div class="slayerCards"   >
+        <div cdkDropList 
+        [id]="player.value.id"
+        (cdkDropListDropped)="dropAssign($event)" 
+        *ngFor="let player of players | keyvalue">
+            <div class="playerBar">
+                <p>{{player.value.displayName}} ({{player.value.id}})</p>
+                <button (click)="unassignSlayer(player.value.id)">Unassign</button>
+                <div class="chekhov">
+                    <p>Chekhov:</p>
+                    <button  (click)="alterChekhovPoints(player.key, player.value.chekhovPoints - 1)">-</button>
+                    <p>{{player.value.chekhovPoints}}</p>
+                    <button  (click)="alterChekhovPoints(player.key, player.value.chekhovPoints + 1)">+</button>
+                </div>
             </div>
+            <app-gm-slayer-summary  cdkDropList [player]="player.value" [playerIx]="player.key" class="individualCard"></app-gm-slayer-summary>
         </div>
-        <app-gm-slayer-summary  cdkDropList [player]="player.value" [playerIx]="player.key" class="individualCard"></app-gm-slayer-summary>
     </div>
-</div>
-
-<div class="rostersSection">
-  <div cdkDropList #rosterList="cdkDropList" [cdkDropListConnectedTo]="[players.forEach()]" class="roster">
-      <div cdkDrag class="slayer" *ngFor="let slayer of roster">
-          <p>{{slayer.name}}, {{slayer.class}}</p>
+    
+    <div class="rostersSection">
+      <div cdkDropList id="rosterList" class="roster">
+          <div cdkDrag [cdkDragData]="slayer" class="slayer" *ngFor="let slayer of roster">
+              <p>{{slayer.name}}, {{slayer.class}}</p>
+          </div>
       </div>
-  </div>
-
-  <div cdkDropList class="roster">
-    <div class="slayer" *ngFor="let slayer of kia"></div>
-  </div>
+    
+      <div cdkDropList class="roster">
+        <div class="slayer" *ngFor="let slayer of kia"></div>
+      </div>
+    </div>
+    
 </div>

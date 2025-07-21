@@ -1,4 +1,4 @@
-:host {
+.crossDrop {
   display: flex;
   max-height: 100vh
 }
@@ -48,4 +48,8 @@
 
     }
   }
+}
+
+.cdk-drop-list-receiving {
+  border: 4px dashed darkred;
 }

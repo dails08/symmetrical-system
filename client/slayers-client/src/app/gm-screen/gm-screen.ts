@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EPlaybooks, IPlayer, ISlayer, IGunslinger, IBlade, IArcanist, ITactician } from "../../../../../common/common";
 import { Cervantes, Clint } from "../../../../../common/examples";
@@ -26,6 +26,7 @@ export class GmScreen {
   players: Map<String, Player>;
 
   assignments: Map<Player, Slayer>;
+  @ViewChild("playerSlot") playerDropSlots!: CdkDropList;
 
     constructor(
       protected cjs: ColyseusService,
@@ -184,6 +185,13 @@ export class GmScreen {
         };
         this.cjs.sendMessage(msg);
 
+      }
+
+      dropAssign(event: CdkDragDrop<Slayer[]>) {
+        if (event.previousContainer.id == "rosterList"){
+          const droppedSlayer: Slayer = event.item.data as Slayer;
+          console.log("Assigning " + droppedSlayer.name + " to " + event.container.id)
+        }
       }
 
       unassignSlayer(playerId: string) {
