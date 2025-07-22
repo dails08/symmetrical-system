@@ -41,10 +41,11 @@
             </div>
         </div>
         <div class="characterCreation">
-            <button (click)="createNew('blade')">Add Blade</button>
-            <button (click)="createNew('gunslinger')">Add Gunslinger</button>
-            <button (click)="createNew('arcanist')">Add Arcanist</button>
-            <button (click)="createNew('tactician')">Add Tactician</button>
+            <input matInput #newCharacterName placeholder="Slayer Name" >
+            <button matButton (click)="createNew('blade', newCharacterName.value)">Add Blade</button>
+            <button matButton (click)="createNew('gunslinger', newCharacterName.value)">Add Gunslinger</button>
+            <button matButton (click)="createNew('arcanist', newCharacterName.value)">Add Arcanist</button>
+            <button matButton (click)="createNew('tactician', newCharacterName.value)">Add Tactician</button>
         </div>
     </div>
     

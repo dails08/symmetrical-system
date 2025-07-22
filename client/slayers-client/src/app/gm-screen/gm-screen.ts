@@ -10,12 +10,18 @@ import { BladePipe, GunslingerPipe, ArcanistPipe, TacticianPipe } from "../class
 import { getStateCallbacks } from 'colyseus.js';
 import { GmSlayerSummary } from "./gm-slayer-summary/gm-slayer-summary";
 import { CdkDrag, CdkDropList, CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 import { PARENT_OR_NEW_INLINE_MENU_STACK_PROVIDER } from '@angular/cdk/menu';
 import { P } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-gm-screen',
-  imports: [CommonModule, GmSlayerSummary, DragDropModule, CdkDrag, CdkDropList ],
+  imports: [CommonModule, 
+    GmSlayerSummary, 
+    DragDropModule, CdkDrag, CdkDropList,
+    MatButtonModule,
+    MatInputModule ],
   templateUrl: './gm-screen.html',
   styleUrl: './gm-screen.scss'
 })
@@ -228,7 +234,7 @@ export class GmScreen {
         this.cjs.sendMessage(msg);
       }
 
-      createNew(playbook: string){
+      createNew(playbook: string, name: string){
         const baseSlayer: Slayer = new Slayer();
         let newSlayer;
 
@@ -242,6 +248,7 @@ export class GmScreen {
           newSlayer = new Tactician().toITactician();
         } 
         if (newSlayer){
+          newSlayer.name = name == "" ? "Nameless" : name
           const addMsg: IRosterAddMsg = {
             kind: EMessageTypes.RosterAdd,
             slayer: newSlayer
