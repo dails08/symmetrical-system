@@ -1,5 +1,5 @@
 import { Player, Slayer } from "../server/src/SlayerRoomState"
-import { IPlayer } from "./common"
+import { IPlayer, ISlayer } from "./common"
 
 export enum EMessageTypes {
     CharacterUpdate,
@@ -7,6 +7,7 @@ export enum EMessageTypes {
     ArrayChange,
     Assignment, 
     Kill,
+    RosterAdd,
     Roll,
     OptionsChoice,
     OptionsSelection,
@@ -27,7 +28,11 @@ export interface IArrayChangeMsg extends IBaseMsg {
     action: "add" | "remove",
     ix?: number,
     data?: {name: string, description: string}
+}
 
+export interface IRosterAddMsg extends IBaseMsg {
+    kind: EMessageTypes.RosterAdd,
+    slayer: ISlayer
 }
 
 export interface ICharacterUpdateMsg extends IBaseMsg {

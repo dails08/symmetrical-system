@@ -1,15 +1,17 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EPlaybooks, IPlayer, ISlayer, IGunslinger, IBlade, IArcanist, ITactician } from "../../../../../common/common";
+import { EPlaybooks, IPlayer, ISlayer, IGunslinger, IBlade, IArcanist, ITactician, ERunes } from "../../../../../common/common";
 import { Cervantes, Clint } from "../../../../../common/examples";
 import { ColyseusService } from '../services/colyseusService';
 import { Slayer, Blade, Gunslinger, Arcanist, Tactician, KnownSpell, Advance, Player } from '../../../../../server/src/SlayerRoomState';
 import { CentralService } from '../services/central-service';
-import { EMessageTypes, IAssignmentMsg, IBaseMsg, ICharacterUpdateMsg, IPlayerUpdateMsg, ISaveCampaignMsg, IUpdateNumericalMsg } from '../../../../../common/messageFormat';
+import { EMessageTypes, IAssignmentMsg, IBaseMsg, ICharacterUpdateMsg, IKillMsg, IPlayerUpdateMsg, IRosterAddMsg, ISaveCampaignMsg, IUpdateNumericalMsg } from '../../../../../common/messageFormat';
 import { BladePipe, GunslingerPipe, ArcanistPipe, TacticianPipe } from "../classPipes";
 import { getStateCallbacks } from 'colyseus.js';
 import { GmSlayerSummary } from "./gm-slayer-summary/gm-slayer-summary";
 import { CdkDrag, CdkDropList, CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
+import { PARENT_OR_NEW_INLINE_MENU_STACK_PROVIDER } from '@angular/cdk/menu';
+import { P } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-gm-screen',
@@ -195,6 +197,18 @@ export class GmScreen {
         }
       }
 
+      dropKill(event: CdkDragDrop<Slayer[]>){
+        if (event.previousContainer.id == "rosterList"){
+          const droppedSlayer: Slayer = event.item.data as Slayer;
+          console.log("Killing " + droppedSlayer.name);
+          const killMsg: IKillMsg = {
+            kind:EMessageTypes.Kill,
+            characterId: droppedSlayer.id
+          };
+          this.cjs.sendMessage(killMsg);
+        }
+      }
+
       unassignSlayer(playerId: string) {
         const msg: IAssignmentMsg = {
           kind: EMessageTypes.Assignment,
@@ -212,6 +226,28 @@ export class GmScreen {
           slayerId: slayerId
         };
         this.cjs.sendMessage(msg);
+      }
+
+      createNew(playbook: string){
+        const baseSlayer: Slayer = new Slayer();
+        let newSlayer;
+
+        if (playbook == "blade"){
+          newSlayer = new Blade().toIBlade();
+        } else if (playbook == "gunslinger"){
+          newSlayer = new Gunslinger().toIGunslinger();
+        } else if (playbook == "arcanist"){
+          newSlayer = new Arcanist().toIArcanist();
+        } else if (playbook == "tactician"){
+          newSlayer = new Tactician().toITactician();
+        } 
+        if (newSlayer){
+          const addMsg: IRosterAddMsg = {
+            kind: EMessageTypes.RosterAdd,
+            slayer: newSlayer
+          };
+          this.cjs.sendMessage(addMsg);
+        }
       }
 
       // addDefaultRoster(){

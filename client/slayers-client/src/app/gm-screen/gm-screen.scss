@@ -1,13 +1,25 @@
 .crossDrop {
-  display: flex;
+  // display: flex;
   max-height: 100vh
 }
 .slayerCards {
     // max-width: 300px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: start;
     overflow: scroll;
+
+}
+
+.bottomHalf {
+  display: flex;
+  justify-content: start;
+}
+
+.playerCard {
+  border: 1px solid gray;
+  border-radius: 3px;
+  margin: 5px;
 }
 
 .individualCard {
@@ -52,4 +64,9 @@
 
 .cdk-drop-list-receiving {
   border: 4px dashed darkred;
+}
+
+.characterCreation {
+  display: flex;
+  flex-direction: column;
 }

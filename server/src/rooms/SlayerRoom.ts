@@ -2,7 +2,7 @@ import { Room, Client, logger } from "@colyseus/core";
 import { SlayerRoomState, Advance, Player, Slayer, Blade, Tactician, Gunslinger, Arcanist, InventoryItem } from "../SlayerRoomState";
 import { EPlaybooks, ICampaign, IJoinOptions, ISlayer, IBlade, IGunslinger, IArcanist, ITactician } from "../../../common/common";
 import { Clint, Ryze, Cervantes, Gene} from "../../../common/examples";
-import { EMessageTypes, IBaseMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg } from "../../../common/messageFormat";
+import { EMessageTypes, IBaseMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg } from "../../../common/messageFormat";
 import { db } from "../firestoreConnection";
 import { v4 as uuidv4 } from "uuid";
 
@@ -247,6 +247,39 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     //     // this.campaign.roster.push(elem);
     //   }  
     // })
+
+    this.onMessage(EMessageTypes.Kill, (client, msg: IKillMsg) => {
+      if (this.isGM(client)){
+        console.log("Killing " + msg.characterId);
+        const ix = this.state.roster.findIndex((slayer, ix) => {
+          return slayer.id == msg.characterId;
+        });
+        if (ix) {
+          this.state.kia.push(this.state.roster.splice(ix)[0]);
+        } else {
+          console.log("No slayer found with id " + msg.characterId);
+        }  
+      } else {
+        console.log("Not authorized to kill " + msg.characterId);
+      }
+    })
+
+    this.onMessage(EMessageTypes.RosterAdd, (client, msg: IRosterAddMsg) => {
+      if (this.isGM(client)) {
+        console.log("Adding to roster " + msg.slayer.name);
+        if (msg.slayer.class == EPlaybooks.Blade) {
+          this.state.roster.push(new Blade(msg.slayer as IBlade))
+        } else if (msg.slayer.class == EPlaybooks.Gunslinger) {
+          this.state.roster.push(new Gunslinger(msg.slayer as IGunslinger))
+        } else if (msg.slayer.class == EPlaybooks.Arcanist) {
+          this.state.roster.push(new Arcanist(msg.slayer as IArcanist))
+        } else if (msg.slayer.class == EPlaybooks.Tactician) {
+          this.state.roster.push(new Tactician(msg.slayer as ITactician))
+        }
+      }
+    })
+
+
 
     this.onMessage(EMessageTypes.ArrayChange, (client, msg: IArrayChangeMsg) => {
       // const clientPlayer = this.state.playerMap.get(client.sessionId);

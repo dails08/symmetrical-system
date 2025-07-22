@@ -5,7 +5,7 @@
 </div> -->
 <div class="crossDrop" cdkDropListGroup>
     <div class="slayerCards"   >
-        <div cdkDropList 
+        <div cdkDropList class="playerCard"
         [id]="player.value.id"
         (cdkDropListDropped)="dropAssign($event)" 
         *ngFor="let player of players | keyvalue">
@@ -19,20 +19,33 @@
                     <button  (click)="alterChekhovPoints(player.key, player.value.chekhovPoints + 1)">+</button>
                 </div>
             </div>
-            <app-gm-slayer-summary  cdkDropList [player]="player.value" [playerIx]="player.key" class="individualCard"></app-gm-slayer-summary>
+            <app-gm-slayer-summary   [player]="player.value" [playerIx]="player.key" class="individualCard"></app-gm-slayer-summary>
+            <ng-template *cdkDragPlaceholder></ng-template>
         </div>
     </div>
-    
-    <div class="rostersSection">
-      <div cdkDropList id="rosterList" class="roster">
-          <div cdkDrag [cdkDragData]="slayer" class="slayer" *ngFor="let slayer of roster">
-              <p>{{slayer.name}}, {{slayer.class}}</p>
-          </div>
-      </div>
-    
-      <div cdkDropList class="roster">
-        <div class="slayer" *ngFor="let slayer of kia"></div>
-      </div>
+    <div class="bottomHalf">
+        <div class="rostersSection">
+            <div cdkDropList id="rosterList" class="roster">
+                <div cdkDrag [cdkDragData]="slayer" class="slayer" *ngFor="let slayer of roster">
+                    <p>{{slayer.name}}, {{slayer.class}}</p>
+                </div>
+            </div>
+          
+            <div cdkDropList 
+            (cdkDropListDropped)="dropKill($event)"
+            id="kiaList" 
+            class="roster">
+              <div class="slayer" *ngFor="let slayer of kia">
+                  <p>{{slayer.name}}, {{slayer.class}}</p>
+              </div>
+            </div>
+        </div>
+        <div class="characterCreation">
+            <button (click)="createNew('blade')">Add Blade</button>
+            <button (click)="createNew('gunslinger')">Add Gunslinger</button>
+            <button (click)="createNew('arcanist')">Add Arcanist</button>
+            <button (click)="createNew('tactician')">Add Tactician</button>
+        </div>
     </div>
     
 </div>
