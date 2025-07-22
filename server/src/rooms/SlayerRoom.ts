@@ -2,7 +2,7 @@ import { Room, Client, logger } from "@colyseus/core";
 import { SlayerRoomState, Advance, Player, Slayer, Blade, Tactician, Gunslinger, Arcanist, InventoryItem } from "../SlayerRoomState";
 import { EPlaybooks, ICampaign, IJoinOptions, ISlayer, IBlade, IGunslinger, IArcanist, ITactician } from "../../../common/common";
 import { Clint, Ryze, Cervantes, Gene} from "../../../common/examples";
-import { EMessageTypes, IBaseMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg } from "../../../common/messageFormat";
+import { EMessageTypes, IBaseMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg } from "../../../common/messageFormat";
 import { db } from "../firestoreConnection";
 import { v4 as uuidv4 } from "uuid";
 
@@ -276,6 +276,27 @@ export class SlayerRoom extends Room<SlayerRoomState> {
         } else if (msg.slayer.class == EPlaybooks.Tactician) {
           this.state.roster.push(new Tactician(msg.slayer as ITactician))
         }
+      }
+    })
+
+    this.onMessage(EMessageTypes.StanceChange, (client, msg: IStanceChangeMsg) => {
+      console.log("Changing stance of " + msg.characterId + " to " + msg.stance);
+      const slayer = this.state.roster.find((slayer) => {
+        return slayer.id == msg.characterId;
+      })
+      if ( slayer){
+        if (slayer.class == EPlaybooks.Blade){
+          if (this.isGM(client) || this.controlsCharacter(client, slayer)){
+            const bladeSlayer = slayer as Blade;
+            bladeSlayer.stance = msg.stance
+          } else {
+            console.log("Not authorized to!");
+          }
+        } else {
+          console.log("Not a blade!");
+        } 
+      } else {
+        console.log("Slayer not found in roster!");
       }
     })
 

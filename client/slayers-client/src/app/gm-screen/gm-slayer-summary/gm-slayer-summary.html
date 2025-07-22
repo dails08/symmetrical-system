@@ -168,7 +168,7 @@
             </div>            </div>
         <div class="controls"></div>
         <div class="classSpecific">
-            <div class="bladeSection" *ngIf="slayer.class == playbooks.Blade"></div>
+            <app-gm-controls-blade [player]="player" [playerIx]="playerIx" [slayer]="slayer | asBlade" class="bladeSection" *ngIf="slayer.class == playbooks.Blade"></app-gm-controls-blade>
             <div class="arcanistSection" *ngIf="slayer.class == playbooks.Arcanist"></div>
             <div class="tacticianSection" *ngIf="slayer.class == playbooks.Tactician"></div>
             <div class="gunslingerSection" *ngIf="slayer.class == playbooks.Gunslinger"></div>

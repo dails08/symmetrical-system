@@ -1,0 +1,14 @@
+<!-- <p>Blade Controls</p> -->
+
+<div class="stanceName">
+    <p>Current stance</p>
+    <p>{{slayer.stance | titlecase}}</p>
+</div>
+<mat-form-field>
+    <mat-label>Select Stance</mat-label>
+    <mat-select (selectionChange)="setStance($event)">
+        <mat-option [value]="EStances.Flow">{{EStances.Flow | titlecase}}</mat-option>
+        <mat-option [value]="EStances.Parry">{{EStances.Parry | titlecase}}</mat-option>
+        <mat-option [value]="EStances.Slay">{{EStances.Slay | titlecase}}</mat-option>
+    </mat-select>
+</mat-form-field>

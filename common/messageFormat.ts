@@ -1,5 +1,5 @@
 import { Player, Slayer } from "../server/src/SlayerRoomState"
-import { IPlayer, ISlayer } from "./common"
+import { EStances, IPlayer, ISlayer } from "./common"
 
 export enum EMessageTypes {
     CharacterUpdate,
@@ -14,7 +14,8 @@ export enum EMessageTypes {
     Kick,
     PlayerUpdate,
     SaveCampaign,
-    JoinResponse
+    JoinResponse,
+    StanceChange
 }
 
 export interface IBaseMsg {
@@ -77,3 +78,10 @@ export interface IJoinResponseMsg extends IBaseMsg {
     role: "player" | "gm",
     player: Player
 }
+
+export interface IStanceChangeMsg extends IBaseMsg {
+    kind: EMessageTypes.StanceChange,
+    stance: EStances,
+    characterId: string
+}
+

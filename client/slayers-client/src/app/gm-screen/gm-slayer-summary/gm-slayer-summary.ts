@@ -11,12 +11,15 @@ import { EPlaybooks } from '../../../../../../common/common';
 import { ColyseusService } from '../../services/colyseusService';
 import { CentralService } from '../../services/central-service';
 import { EMessageTypes, IArrayChangeMsg, IUpdateNumericalMsg } from '../../../../../../common/messageFormat';
+import { BladePipe } from '../../classPipes';
+
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { getStateCallbacks } from 'colyseus.js';
+import { GmControlsBlade } from "./gm-controls-blade/gm-controls-blade";
 @Component({
   selector: 'app-gm-slayer-summary',
   imports: [CommonModule,
@@ -25,7 +28,8 @@ import { getStateCallbacks } from 'colyseus.js';
     MatExpansionModule,
     MatInputModule,
     MatFormFieldModule,
-    FormsModule
+    FormsModule, 
+    GmControlsBlade, BladePipe,
   ],
   templateUrl: './gm-slayer-summary.html',
   styleUrl: './gm-slayer-summary.scss'
@@ -38,7 +42,6 @@ export class GmSlayerSummary {
 
   playbooks = EPlaybooks;
 
-  dummyAdvances: Advance[];
 
   constructor(
     protected cjs: ColyseusService,
@@ -82,15 +85,6 @@ export class GmSlayerSummary {
       console.log(report);
     })
 
-    this.dummyAdvances = [];
-    let tmpAdv1 = new Advance();
-    tmpAdv1.name = "test1";
-    tmpAdv1.desc = "desc1";
-    this.dummyAdvances.push(tmpAdv1);
-    let tmpAdv2 = new Advance();
-    tmpAdv2.name = "test2";
-    tmpAdv2.desc = "desc2";
-    this.dummyAdvances.push(tmpAdv2);
 
   }
 
