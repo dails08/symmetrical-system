@@ -1,0 +1,105 @@
+<table class="slingerTable">
+    <tr>
+        <th class="chamberCol">Ch.</th>
+        <th class="loadedCol">Loaded</th>
+        <th class="runeCol">Rune</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td><p><mat-slide-toggle [(ngModel)]="slayer.chamber1Loaded"></mat-slide-toggle></p></td>
+        <td>
+            <mat-select [(value)]="slayer.chamber1Rune" #chamber1Rune (selectionChange)="setRune(player.id, 1, chamber1Rune.value)">
+                <mat-option *ngFor="let rune of runes | keyvalue" [value]="rune.value">{{rune.value | titlecase}}</mat-option>
+            </mat-select>
+        </td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td><p><mat-slide-toggle [(ngModel)]="slayer.chamber2Loaded"></mat-slide-toggle></p></td>
+        <td>
+            <mat-select [(value)]="slayer.chamber2Rune" #chamber2Rune (selectionChange)="setRune(player.id, 2, chamber2Rune.value)">
+                <mat-option *ngFor="let rune of runes | keyvalue" [value]="rune.value">{{rune.value | titlecase}}</mat-option>
+            </mat-select>
+        </td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td><p><mat-slide-toggle [(ngModel)]="slayer.chamber3Loaded"></mat-slide-toggle></p></td>
+        <td>
+            <mat-select [(value)]="slayer.chamber3Rune" #chamber3Rune (selectionChange)="setRune(player.id, 3, chamber3Rune.value)">
+                <mat-option *ngFor="let rune of runes | keyvalue" [value]="rune.value">{{rune.value | titlecase}}</mat-option>
+            </mat-select>
+        </td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td><p><mat-slide-toggle [(ngModel)]="slayer.chamber4Loaded"></mat-slide-toggle></p></td>
+        <td>
+            <mat-select [(value)]="slayer.chamber4Rune" #chamber4Rune (selectionChange)="setRune(player.id, 4, chamber4Rune.value)">
+                <mat-option *ngFor="let rune of runes | keyvalue" [value]="rune.value">{{rune.value | titlecase}}</mat-option>
+            </mat-select>
+        </td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td><p><mat-slide-toggle [(ngModel)]="slayer.chamber5Loaded"></mat-slide-toggle></p></td>
+        <td>
+            <mat-select [(value)]="slayer.chamber5Rune" #chamber5Rune (selectionChange)="setRune(player.id, 5, chamber5Rune.value)">
+                <mat-option *ngFor="let rune of runes | keyvalue" [value]="rune.value">{{rune.value | titlecase}}</mat-option>
+            </mat-select>
+        </td>
+    </tr>
+    <tr>
+        <td>6</td>
+        <td><p><mat-slide-toggle [(ngModel)]="slayer.chamber6Loaded"></mat-slide-toggle></p></td>
+        <td>
+            <mat-select [(value)]="slayer.chamber6Rune" #chamber6Rune (selectionChange)="setRune(player.id, 6, chamber6Rune.value)">
+                <mat-option *ngFor="let rune of runes | keyvalue" [value]="rune.value">{{rune.value | titlecase}}</mat-option>
+            </mat-select>
+        </td>
+    </tr>
+</table>
+
+<!-- 
+<div class="chamber">
+    <p>1: </p>
+    <p><mat-slide-toggle [(ngModel)]="slayer.chamber1Loaded">Loaded</mat-slide-toggle></p>
+    <mat-select [(value)]="slayer.chamber1Rune" #chamber1Rune (selectionChange)="setRune(player.id, 1, chamber1Rune.value)">
+        <mat-option *ngFor="let rune of runes | keyvalue" [value]="rune.value">{{rune.value | titlecase}}</mat-option>
+    </mat-select>
+</div>
+<div class="chamber">
+    <p>2: </p>
+    <p><mat-slide-toggle [(ngModel)]="slayer.chamber2Loaded">Loaded</mat-slide-toggle></p>
+    <mat-select [(value)]="slayer.chamber2Rune" #chamber2Rune (selectionChange)="setRune(player.id, 2, chamber2Rune.value)">
+        <mat-option *ngFor="let rune of runes | keyvalue" [value]="rune.value">{{rune.value | titlecase}}</mat-option>
+    </mat-select>
+</div>
+<div class="chamber">
+    <p>3: </p>
+    <p><mat-slide-toggle [(ngModel)]="slayer.chamber3Loaded">Loaded</mat-slide-toggle></p>
+    <mat-select [(value)]="slayer.chamber3Rune" #chamber3Rune (selectionChange)="setRune(player.id, 3, chamber3Rune.value)">
+        <mat-option *ngFor="let rune of runes | keyvalue" [value]="rune.value">{{rune.value | titlecase}}</mat-option>
+    </mat-select>
+</div>
+<div class="chamber">
+    <p>4: </p>
+    <p><mat-slide-toggle [(ngModel)]="slayer.chamber4Loaded">Loaded</mat-slide-toggle></p>
+    <mat-select [(value)]="slayer.chamber4Rune" #chamber4Rune (selectionChange)="setRune(player.id, 4, chamber4Rune.value)">
+        <mat-option *ngFor="let rune of runes | keyvalue" [value]="rune.value">{{rune.value | titlecase}}</mat-option>
+    </mat-select>
+</div>
+<div class="chamber">
+    <p>5: </p>
+    <p><mat-slide-toggle [(ngModel)]="slayer.chamber5Loaded">Loaded</mat-slide-toggle></p>
+    <mat-select [(value)]="slayer.chamber5Rune" #chamber5Rune (selectionChange)="setRune(player.id, 5, chamber5Rune.value)">
+        <mat-option *ngFor="let rune of runes | keyvalue" [value]="rune.value">{{rune.value | titlecase}}</mat-option>
+    </mat-select>
+</div>
+<div class="chamber">
+    <p>6: </p>
+    <p><mat-slide-toggle [(ngModel)]="slayer.chamber6Loaded">Loaded</mat-slide-toggle></p>
+    <mat-select [(value)]="slayer.chamber6Rune" #chamber6Rune (selectionChange)="setRune(player.id, 6, chamber6Rune.value)">
+        <mat-option *ngFor="let rune of runes | keyvalue" [value]="rune.value">{{rune.value | titlecase}}</mat-option>
+    </mat-select>
+</div> -->

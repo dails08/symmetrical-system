@@ -11,7 +11,7 @@ import { EPlaybooks } from '../../../../../../common/common';
 import { ColyseusService } from '../../services/colyseusService';
 import { CentralService } from '../../services/central-service';
 import { EMessageTypes, IArrayChangeMsg, IUpdateNumericalMsg } from '../../../../../../common/messageFormat';
-import { BladePipe } from '../../classPipes';
+import { BladePipe, GunslingerPipe, ArcanistPipe, TacticianPipe } from '../../classPipes';
 
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
@@ -20,6 +20,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { getStateCallbacks } from 'colyseus.js';
 import { GmControlsBlade } from "./gm-controls-blade/gm-controls-blade";
+import { GmSlayerGunslinger } from "./gm-slayer-gunslinger/gm-slayer-gunslinger";
 @Component({
   selector: 'app-gm-slayer-summary',
   imports: [CommonModule,
@@ -28,9 +29,13 @@ import { GmControlsBlade } from "./gm-controls-blade/gm-controls-blade";
     MatExpansionModule,
     MatInputModule,
     MatFormFieldModule,
-    FormsModule, 
-    GmControlsBlade, BladePipe,
-  ],
+    FormsModule,
+    GmControlsBlade, 
+    BladePipe, 
+    GmSlayerGunslinger, 
+    GunslingerPipe, 
+    ArcanistPipe, 
+    TacticianPipe],
   templateUrl: './gm-slayer-summary.html',
   styleUrl: './gm-slayer-summary.scss'
 })

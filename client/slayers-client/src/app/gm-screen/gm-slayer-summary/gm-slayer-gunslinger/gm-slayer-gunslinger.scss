@@ -1,0 +1,19 @@
+.chamber {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.slingerTable {
+    width: 100%;
+    text-align: center;
+}
+.chamberCol {
+    width: 50px;
+}
+.loadedCol {
+    width: 100px;
+}
+.runeCol {
+    width: calc(100% - 150px);
+}
