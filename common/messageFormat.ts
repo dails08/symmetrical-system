@@ -17,7 +17,8 @@ export enum EMessageTypes {
     JoinResponse,
     StanceChange,
     RuneChange,
-    LoadedChange
+    LoadedChange,
+    setWeapon
 }
 
 export interface IBaseMsg {
@@ -99,5 +100,12 @@ export interface ILoadedChangeMsg extends IBaseMsg {
     loaded: boolean,
     slayerId: string,
     chamber: number
+}
+
+export interface IWeaponChangeMsg extends IBaseMsg {
+    kind: EMessageTypes.setWeapon,
+    dmgN: number,
+    dmgS: number,
+    slayerId: string
 }
 

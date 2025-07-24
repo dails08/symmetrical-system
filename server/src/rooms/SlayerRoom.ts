@@ -1,8 +1,8 @@
-import { Room, Client, logger } from "@colyseus/core";
+import { Room, Client, logger, debugMessage } from "@colyseus/core";
 import { SlayerRoomState, Advance, Player, Slayer, Blade, Tactician, Gunslinger, Arcanist, InventoryItem } from "../SlayerRoomState";
 import { EPlaybooks, ICampaign, IJoinOptions, ISlayer, IBlade, IGunslinger, IArcanist, ITactician } from "../../../common/common";
 import { Clint, Ryze, Cervantes, Gene} from "../../../common/examples";
-import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg } from "../../../common/messageFormat";
+import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg, IWeaponChangeMsg } from "../../../common/messageFormat";
 import { db } from "../firestoreConnection";
 import { v4 as uuidv4 } from "uuid";
 
@@ -415,6 +415,29 @@ export class SlayerRoom extends Room<SlayerRoomState> {
           }
         } else {
           console.log("Not a gunslinger!");
+        } 
+      } else {
+        console.log("Slayer not found in roster!");
+      }
+    })
+
+    this.onMessage(EMessageTypes.setWeapon, (client, msg: IWeaponChangeMsg) => {
+      console.log("Setting weapon stats:")
+      console.log(msg);
+      const slayer = this.state.roster.find((slayer) => {
+        return slayer.id == msg.slayerId;
+      })
+      if ( slayer){
+        if (slayer.class == EPlaybooks.Blade){
+          if (this.isGM(client) || this.controlsCharacter(client, slayer)){
+            const classedSlayer = slayer as Blade;
+            classedSlayer.weaponNumber = msg.dmgN || classedSlayer.weaponNumber;
+            classedSlayer.weaponSides = msg.dmgS || classedSlayer.weaponSides;
+          } else {
+            console.log("Not authorized to!");
+          }
+        } else {
+          console.log("Not a blade!");
         } 
       } else {
         console.log("Slayer not found in roster!");

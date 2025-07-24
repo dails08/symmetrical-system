@@ -5,7 +5,7 @@ import { EStances } from '../../../../../../../common/common';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TitleCasePipe } from '@angular/common';
-import { EMessageTypes, IStanceChangeMsg } from '../../../../../../../common/messageFormat';
+import { EMessageTypes, IStanceChangeMsg, IWeaponChangeMsg } from '../../../../../../../common/messageFormat';
 import { ColyseusService } from '../../../services/colyseusService';
 @Component({
   selector: 'app-gm-controls-blade',
@@ -40,9 +40,18 @@ export class GmControlsBlade {
       stance: event.value
     };
     this.cjs.sendMessage(stanceChangeMsg);
-
-
   }
 
+  setDamage(dmgN: number, dmgS: number) {
+    console.log("Changing weapon to " + dmgN + " " + dmgS);
+    const msg: IWeaponChangeMsg = {
+      kind: EMessageTypes.setWeapon,
+      dmgN: dmgN,
+      dmgS: dmgS,
+      slayerId: this.slayer.id
+    };
+
+    this.cjs.sendMessage(msg);
+  }
 
 }

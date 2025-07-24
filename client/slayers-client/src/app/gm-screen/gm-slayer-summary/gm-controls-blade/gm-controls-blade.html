@@ -12,3 +12,25 @@
         <mat-option [value]="EStances.Slay">{{EStances.Slay | titlecase}}</mat-option>
     </mat-select>
 </mat-form-field>
+<div class="stanceName">
+    <p>Current damage</p>
+    <p>{{slayer.weaponNumber}}d{{slayer.weaponSides}}</p>
+</div>
+
+<mat-form-field>
+    <mat-label>Dmg Dice N</mat-label>
+    <mat-select [value]="slayer.weaponNumber" #dmgN (selectionChange)="setDamage(dmgN.value, dmgS.value)">
+        <mat-option [value]="1">1</mat-option>
+        <mat-option [value]="2">2</mat-option>
+        <mat-option [value]="3">3</mat-option>
+    </mat-select>    
+</mat-form-field>
+<mat-form-field >
+    <mat-label>Dmg Dice S</mat-label>
+    <mat-select [value]="slayer.weaponSides" #dmgS (selectionChange)="setDamage(dmgN.value, dmgS.value)">
+        <mat-option [value]="6">6</mat-option>
+        <mat-option [value]="8">8</mat-option>
+        <mat-option [value]="10">10</mat-option>
+    </mat-select>    
+</mat-form-field>
+
