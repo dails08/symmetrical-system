@@ -20,7 +20,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { getStateCallbacks } from 'colyseus.js';
 import { GmControlsBlade } from "./gm-controls-blade/gm-controls-blade";
-import { GmSlayerGunslinger } from "./gm-slayer-gunslinger/gm-slayer-gunslinger";
+import { GmSlayerGunslinger } from "./gm-controls-gunslinger/gm-slayer-gunslinger";
+import { GmControlsTactician } from './gm-controls-tactician/gm-controls-tactician';
 @Component({
   selector: 'app-gm-slayer-summary',
   imports: [CommonModule,
@@ -33,6 +34,7 @@ import { GmSlayerGunslinger } from "./gm-slayer-gunslinger/gm-slayer-gunslinger"
     GmControlsBlade, 
     BladePipe, 
     GmSlayerGunslinger, 
+    GmControlsTactician,
     GunslingerPipe, 
     ArcanistPipe, 
     TacticianPipe],

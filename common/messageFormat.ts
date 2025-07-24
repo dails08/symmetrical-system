@@ -18,7 +18,9 @@ export enum EMessageTypes {
     StanceChange,
     RuneChange,
     LoadedChange,
-    setWeapon
+    setWeapon,
+    addPlan,
+    removePlan
 }
 
 export interface IBaseMsg {
@@ -107,5 +109,17 @@ export interface IWeaponChangeMsg extends IBaseMsg {
     dmgN: number,
     dmgS: number,
     slayerId: string
+}
+
+export interface IAddPlanMsg extends IBaseMsg {
+    kind: EMessageTypes.addPlan,
+    slayerId: string,
+    planVal: number
+}
+
+export interface IRemovePlanMsg extends IBaseMsg {
+    kind: EMessageTypes.removePlan,
+    slayerId: string,
+    planIx: number
 }
 

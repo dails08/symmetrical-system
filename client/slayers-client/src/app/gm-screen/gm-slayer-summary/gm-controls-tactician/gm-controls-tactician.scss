@@ -1,0 +1,36 @@
+.topHalf {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.newPlans {
+    display: flex;
+}
+
+.newPlan {
+    border: 1px solid black;
+    border-radius: 3px;
+    width: 1.5rem;
+    height: 1.5rem;
+    text-align: center;
+    padding: 2px;
+    margin: 0px 3px;
+    background-color: white;
+}
+.divider {
+    border-bottom: 1px solid black;
+}
+
+.bottomHalf {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.plans {
+    border: 1px solid black;
+    border-radius: 3px;
+    min-height: 1.5rem;
+    min-width: 100%;
+}

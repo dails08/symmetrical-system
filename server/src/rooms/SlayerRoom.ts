@@ -2,7 +2,7 @@ import { Room, Client, logger, debugMessage } from "@colyseus/core";
 import { SlayerRoomState, Advance, Player, Slayer, Blade, Tactician, Gunslinger, Arcanist, InventoryItem } from "../SlayerRoomState";
 import { EPlaybooks, ICampaign, IJoinOptions, ISlayer, IBlade, IGunslinger, IArcanist, ITactician } from "../../../common/common";
 import { Clint, Ryze, Cervantes, Gene} from "../../../common/examples";
-import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg, IWeaponChangeMsg } from "../../../common/messageFormat";
+import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg, IWeaponChangeMsg, IAddPlanMsg, IRemovePlanMsg } from "../../../common/messageFormat";
 import { db } from "../firestoreConnection";
 import { v4 as uuidv4 } from "uuid";
 
@@ -438,6 +438,50 @@ export class SlayerRoom extends Room<SlayerRoomState> {
           }
         } else {
           console.log("Not a blade!");
+        } 
+      } else {
+        console.log("Slayer not found in roster!");
+      }
+    })
+
+    this.onMessage(EMessageTypes.addPlan, (client, msg: IAddPlanMsg) => {
+      console.log("Adding plan:")
+      console.log(msg);
+      const slayer = this.state.roster.find((slayer) => {
+        return slayer.id == msg.slayerId;
+      })
+      if ( slayer){
+        if (slayer.class == EPlaybooks.Tactician){
+          if (this.isGM(client) || this.controlsCharacter(client, slayer)){
+            const classedSlayer = slayer as Tactician;
+            classedSlayer.plans.push(msg.planVal);
+          } else {
+            console.log("Not authorized to!");
+          }
+        } else {
+          console.log("Not a tactician!");
+        } 
+      } else {
+        console.log("Slayer not found in roster!");
+      }
+    })
+
+    this.onMessage(EMessageTypes.removePlan, (client, msg: IRemovePlanMsg) => {
+      console.log("Removing plan:")
+      console.log(msg);
+      const slayer = this.state.roster.find((slayer) => {
+        return slayer.id == msg.slayerId;
+      })
+      if ( slayer){
+        if (slayer.class == EPlaybooks.Tactician){
+          if (this.isGM(client) || this.controlsCharacter(client, slayer)){
+            const classedSlayer = slayer as Tactician;
+            classedSlayer.plans.splice(msg.planIx);
+          } else {
+            console.log("Not authorized to!");
+          }
+        } else {
+          console.log("Not a tactician!");
         } 
       } else {
         console.log("Slayer not found in roster!");

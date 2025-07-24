@@ -1,0 +1,21 @@
+<div class="topHalf">
+    <div cdkDropList id="newPlans" [cdkDropListConnectedTo]="[currentPlans]" #newPlans="cdkDropList" class="newPlans">
+        <div cdkDrag [cdkDragData]="planVal" class="newPlan" *ngFor="let planVal of [1,2,3,4,5,6,7,8]">
+            {{planVal}}
+        </div>
+    </div>
+    <p>Draggable contingencies</p>    
+</div>
+<div class="divider"></div>
+<div class="bottomHalf">
+    <p>Current contingencies:</p>
+    <div cdkDropList (cdkDropListDropped)="addPlan($event)" [cdkDropListConnectedTo]="[newPlans]" id="currentPlans" #currentPlans="cdkDropList" class="plans">
+        <mat-chip-set #chipGrid>
+            <mat-chip cdkDrag *ngFor="let plan of slayer.plans.toArray(); let ix = index">
+                {{plan}}
+                <button matChipRemove (click)="removePlan(ix)"><mat-icon>cancel</mat-icon></button>
+            </mat-chip>
+    
+        </mat-chip-set>
+    </div>
+</div>
