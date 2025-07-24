@@ -1,5 +1,5 @@
 import { Player, Slayer } from "../server/src/SlayerRoomState"
-import { EStances, IPlayer, ISlayer } from "./common"
+import { EStances, IPlayer, ISlayer, ERunes } from "./common"
 
 export enum EMessageTypes {
     CharacterUpdate,
@@ -15,7 +15,9 @@ export enum EMessageTypes {
     PlayerUpdate,
     SaveCampaign,
     JoinResponse,
-    StanceChange
+    StanceChange,
+    RuneChange,
+    LoadedChange
 }
 
 export interface IBaseMsg {
@@ -83,5 +85,19 @@ export interface IStanceChangeMsg extends IBaseMsg {
     kind: EMessageTypes.StanceChange,
     stance: EStances,
     characterId: string
+}
+
+export interface IRuneChangeMsg extends IBaseMsg {
+    kind: EMessageTypes.RuneChange,
+    rune: ERunes,
+    slayerId: string,
+    chamber: number
+}
+
+export interface ILoadedChangeMsg extends IBaseMsg {
+    kind: EMessageTypes.LoadedChange,
+    loaded: boolean,
+    slayerId: string,
+    chamber: number
 }
 

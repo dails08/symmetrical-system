@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { ERunes } from '../../../../../../../common/common';
 import { Gunslinger, Player } from '../../../../../../../server/src/SlayerRoomState';
 import { ColyseusService } from '../../../services/colyseusService';
+import { EMessageTypes, ILoadedChangeMsg, IRuneChangeMsg } from '../../../../../../../common/messageFormat';
 @Component({
   selector: 'app-gm-slayer-gunslinger',
   imports: [
@@ -37,7 +38,24 @@ export class GmSlayerGunslinger {
 
   runes = ERunes;
 
-  setRune(playerId: string, chamber: number, rune: ERunes){
-    console.log("Setting chamber " + chamber + " to rune " + rune + " for player " + playerId);
+  setRune(slayerId: string, chamber: number, rune: ERunes){
+    console.log("Setting chamber " + chamber + " to rune " + rune + " for slayer " + slayerId);
+    const msg: IRuneChangeMsg = {
+      kind: EMessageTypes.RuneChange,
+      chamber: chamber,
+      rune: rune,
+      slayerId: slayerId
+    };
+    this.cjs.sendMessage(msg);
+  }
+
+  setLoaded(slayerId: string, chamber: number, loaded: boolean) {
+    const msg: ILoadedChangeMsg = {
+      kind: EMessageTypes.LoadedChange,
+      chamber: chamber,
+      loaded: loaded,
+      slayerId: slayerId
+    };
+    this.cjs.sendMessage(msg);
   }
 }

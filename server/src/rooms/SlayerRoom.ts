@@ -2,7 +2,7 @@ import { Room, Client, logger } from "@colyseus/core";
 import { SlayerRoomState, Advance, Player, Slayer, Blade, Tactician, Gunslinger, Arcanist, InventoryItem } from "../SlayerRoomState";
 import { EPlaybooks, ICampaign, IJoinOptions, ISlayer, IBlade, IGunslinger, IArcanist, ITactician } from "../../../common/common";
 import { Clint, Ryze, Cervantes, Gene} from "../../../common/examples";
-import { EMessageTypes, IBaseMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg } from "../../../common/messageFormat";
+import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg } from "../../../common/messageFormat";
 import { db } from "../firestoreConnection";
 import { v4 as uuidv4 } from "uuid";
 
@@ -353,8 +353,79 @@ export class SlayerRoom extends Room<SlayerRoomState> {
         }
 
       }
+    });
+
+    this.onMessage(EMessageTypes.RuneChange, (client, msg: IRuneChangeMsg) => {
+      const slayer = this.state.roster.find((slayer) => {
+        return slayer.id == msg.slayerId;
+      })
+      if ( slayer){
+        if (slayer.class == EPlaybooks.Gunslinger){
+          if (this.isGM(client) || this.controlsCharacter(client, slayer)){
+            const gunslingerSlayer = slayer as Gunslinger;
+
+            if (msg.chamber == 1){
+              gunslingerSlayer.chamber1Rune = msg.rune
+            } else if (msg.chamber == 2){
+              gunslingerSlayer.chamber2Rune = msg.rune
+            } else if (msg.chamber == 3){
+              gunslingerSlayer.chamber3Rune = msg.rune
+            } else if (msg.chamber == 4){
+              gunslingerSlayer.chamber4Rune = msg.rune
+            } else if (msg.chamber == 5){
+              gunslingerSlayer.chamber5Rune = msg.rune
+            } else if (msg.chamber == 6){
+              gunslingerSlayer.chamber6Rune = msg.rune
+            }
+          } else {
+            console.log("Not authorized to!");
+          }
+        } else {
+          console.log("Not a gunslinger!");
+        } 
+      } else {
+        console.log("Slayer not found in roster!");
+      }
     })
+
+    this.onMessage(EMessageTypes.LoadedChange, (client, msg: ILoadedChangeMsg) => {
+      const slayer = this.state.roster.find((slayer) => {
+        return slayer.id == msg.slayerId;
+      })
+      if ( slayer){
+        if (slayer.class == EPlaybooks.Gunslinger){
+          if (this.isGM(client) || this.controlsCharacter(client, slayer)){
+            const gunslingerSlayer = slayer as Gunslinger;
+
+            if (msg.chamber == 1){
+              gunslingerSlayer.chamber1Loaded = msg.loaded
+            } else if (msg.chamber == 2){
+              gunslingerSlayer.chamber2Loaded = msg.loaded
+            } else if (msg.chamber == 3){
+              gunslingerSlayer.chamber3Loaded = msg.loaded
+            } else if (msg.chamber == 4){
+              gunslingerSlayer.chamber4Loaded = msg.loaded
+            } else if (msg.chamber == 5){
+              gunslingerSlayer.chamber5Loaded = msg.loaded
+            } else if (msg.chamber == 6){
+              gunslingerSlayer.chamber6Loaded = msg.loaded
+            }
+          } else {
+            console.log("Not authorized to!");
+          }
+        } else {
+          console.log("Not a gunslinger!");
+        } 
+      } else {
+        console.log("Slayer not found in roster!");
+      }
+    })
+
+
+
   }
+
+  
 
   async onJoin (client: Client, options: IJoinOptions) {
     console.log(client.sessionId, "joined: " + JSON.stringify(options));
@@ -431,3 +502,21 @@ export class SlayerRoom extends Room<SlayerRoomState> {
 
 }
 
+// template
+// const slayer = this.state.roster.find((slayer) => {
+//   return slayer.id == msg.characterId;
+// })
+// if ( slayer){
+//   if (slayer.class == EPlaybooks.Blade){
+//     if (this.isGM(client) || this.controlsCharacter(client, slayer)){
+//       const bladeSlayer = slayer as Blade;
+//       bladeSlayer.stance = msg.stance
+//     } else {
+//       console.log("Not authorized to!");
+//     }
+//   } else {
+//     console.log("Not a blade!");
+//   } 
+// } else {
+//   console.log("Slayer not found in roster!");
+// }
