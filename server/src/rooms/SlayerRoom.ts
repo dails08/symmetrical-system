@@ -21,7 +21,6 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     kia: []
   }
 
-  lastRollResult: number = 1;
 
   constructor(){
     super();
@@ -140,11 +139,6 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     const exampleBand = [clint, ryze, cervantes, gene];
 
 
-    this.state.recentRolls.push(
-      new RecentRoll("Clint", "Hollowpoint", 6),
-      new RecentRoll("Clint", "Bullet", 4),
-      new RecentRoll("Clint", "Seeker", 2)
-    );
     // for (const elem of exampleBand){
     //   this.state.roster.push(elem);
     //   // this.campaign.roster.push(elem);
@@ -607,6 +601,13 @@ export class SlayerRoom extends Room<SlayerRoomState> {
       if (this.campaign.id == "" && options.campaignId != ""){
         console.log("On join, loading campaign " + options.campaignId);
         await this.loadCampaign(options.campaignId);
+        this.state.recentRolls.push(
+          new RecentRoll("Clint", "Hollowpoint", 6),
+          new RecentRoll("Clint", "Bullet", 4),
+          new RecentRoll("Clint", "Seeker", 2)
+        );
+        console.log(JSON.stringify(this.state.recentRolls));
+    
         // console.log("Onjoin loaded campaign: " + JSON.stringify(this.campaign));
       }
     }

@@ -1,3 +1,7 @@
+:host {
+    max-height:100%;
+}
+
 .topRow {
     display: flex;
     height: 100px;
@@ -21,8 +25,11 @@
 
 .controlsRow {
     display: flex;
+    justify-content: space-between;
 
     .plansDisplay {
+        display: flex;
+        flex-direction: column;
         flex-flow: column wrap;
         justify-content: start;
         
@@ -35,40 +42,52 @@
         }
     }
 
-    .actions {
+    .controlRightHalf {
         display: flex;
-        flex-direction: column;
-
-        div {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #add {
-            background-color: darkgreen;
-        }
-        #swap {
-            background-color: yellowgreen;
-            color: black;
-        }
-        #subtract {
-            background-color: darkred;
-        }
-        .action {
-            color: white;
-            padding: 10px;
-        }
     }
 
-    .recentRolls {
+
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+
+    div {
+        flex: 1;
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 
-        .recentRoll {
-            text-align: center;
-        }
+    #add {
+        background-color: darkgreen;
+    }
+    #swap {
+        background-color: yellowgreen;
+        color: black;
+    }
+    #subtract {
+        background-color: darkred;
+    }
+    .action {
+        color: white;
+        padding: 10px;
+    }
+}
+.recentRolls {
+    display: flex;
+    flex-direction: column;
+
+
+    .recentRoll {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid darkgrey;
     }
 }

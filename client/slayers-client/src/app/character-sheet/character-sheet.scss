@@ -2,7 +2,9 @@
 //       background-color: black;
 //       color: white;
 //   }
-
+:host {
+  max-height: 100%;
+}
 .playerSection {
   background-color: black;
   color: white;
@@ -234,4 +236,8 @@
         margin: 0px 5px;
       }
     }
+  }
+
+  .bottomHalf {
+    height: 500px;
   }

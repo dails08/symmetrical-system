@@ -9,15 +9,17 @@
     <div class="plansDisplay">
         <div class="plan" *ngFor="let plan of slayer.plans">{{plan}}</div>
     </div>
-    <div class="actions">
-        <div id="add" *ngIf="this.hasShift" class="action"><p>Add</p></div>
-        <div id="swap" class="action"><p>Swap</p></div>
-        <div id="subtract" *ngIf="this.hasShift" class="action"><p>Sub</p></div>
-    </div>
-    <div class="recentRolls">
-        <div class="recentRoll" *ngFor="let recentRoll of state.recentRolls.toArray()">
-            <p>{{recentRoll.actor}}: {{recentRoll.rollName}}</p>
-            <p>{{recentRoll.value}}</p>
+    <div class="controlRightHalf">
+        <div class="actions">
+            <div id="add" *ngIf="this.hasShift" class="action"><p>Add</p></div>
+            <div id="swap" class="action"><p>Swap</p></div>
+            <div id="subtract" *ngIf="this.hasShift" class="action"><p>Sub</p></div>
         </div>
+        <div class="recentRolls">
+            <div class="recentRoll" *ngFor="let recentRoll of recentRolls">
+                <p>{{recentRoll.actor}}: {{recentRoll.rollName}}</p>
+                <p>{{recentRoll.value}}</p>
+            </div>
+        </div>    
     </div>
 </div>

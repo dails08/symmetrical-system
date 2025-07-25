@@ -183,6 +183,10 @@ export class GmScreen {
         this.cjs.sendMessage(msg)
       }
 
+      sendRecentRolls(actor: string, name: string, value: string, multiple: string){
+
+      }
+
       alterChekhovPoints(playerId: String, newValue: number) {
         const msg: IPlayerUpdateMsg = {
           kind: EMessageTypes.PlayerUpdate,

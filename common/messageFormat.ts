@@ -1,4 +1,4 @@
-import { Player, Slayer } from "../server/src/SlayerRoomState"
+import { Player, RecentRoll, Slayer } from "../server/src/SlayerRoomState"
 import { EStances, IPlayer, ISlayer, ERunes } from "./common"
 
 export enum EMessageTypes {
@@ -25,6 +25,7 @@ export enum EMessageTypes {
     removeSpell,
     setEnhanced,
     setFavoredSpell,
+    setRecentRolls
 }
 
 export interface IBaseMsg {
@@ -153,4 +154,11 @@ export interface ISetFavoredSpell extends IBaseMsg {
     kind: EMessageTypes.setFavoredSpell,
     slayerId: string,
     favoredSpell: string
+}
+
+export interface ISetRecentRolls extends IBaseMsg {
+    kind: EMessageTypes.setRecentRolls,
+    rolls: {
+        
+    }
 }

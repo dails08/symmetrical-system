@@ -288,7 +288,4 @@ export class SlayerRoomState extends Schema {
   @type({ map: Slayer }) currentAssignments = new MapSchema<Slayer>();
   @type([RecentRoll]) recentRolls = new ArraySchema<RecentRoll>();
 
-  export(){
-    
-  }
 }

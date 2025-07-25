@@ -100,5 +100,5 @@
         box-sizing: border-box;
         margin: 0px;
 }
-html, body { height: 100%; }
+html, body { height: 100%; overscroll-behavior: none;}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

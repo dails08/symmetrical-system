@@ -45,6 +45,14 @@
         <div class="saveAndLoad">
             <button (click)="sendSaveCampaign()">Save Campaign</button>
         </div>
+        <div class="recentRolls">
+            <input matInput #rollActor placeholder="Actor" >
+            <input matInput #rollName placeholder="Name" >
+            <input matInput #rollValue placeholder="Value" >
+            <input matInput #rollTimes placeholder="Multiple" >
+            <button (click)="sendRecentRolls(rollActor.value, rollName.value, rollValue.value, rollTimes.value)">Send rolls</button>
+
+        </div>
     </div>
     
 </div>

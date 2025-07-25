@@ -24,7 +24,7 @@ export class CharSheetTactician {
   prepCount: number = 0;
 
   recentRolls: RecentRoll[] = [];
-  state: SlayerRoomState = new SlayerRoomState();
+  
 
   checkAdvances(){
     if (this.slayer){
@@ -73,13 +73,13 @@ export class CharSheetTactician {
       $(this.slayer).advances.onRemove((item, ix) => {
         this.checkAdvances();
       })
-      // $(room.state).recentRolls.onAdd((elem, ix) => {
-      //   this.recentRolls.push(elem);
-      // })
-      // $(room.state).recentRolls.onRemove((elem, ix) => {
-      //   this.recentRolls.splice(ix);
-      // })
-      $(room.state).bindTo(this.state);
+      $(room.state).recentRolls.onAdd((elem, ix) => {
+        this.recentRolls.push(elem);
+      })
+      $(room.state).recentRolls.onRemove((elem, ix) => {
+        this.recentRolls.splice(ix);
+      })
+      // $(room.state).bindTo(this.recentRolls,["recentRolls"]);
     })  
     
   }
