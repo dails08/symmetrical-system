@@ -268,6 +268,17 @@ export class Tactician extends Slayer {
   @type(["number"]) plans = new ArraySchema<Number>();
 }
 
+export class RecentRoll extends Schema {
+  constructor(actor: string, rollName: string, value: number){
+    super();
+    this.actor = actor;
+    this.rollName = rollName;
+    this.value = value;
+  }
+  @type("string") actor: string;
+  @type("string") rollName: string;
+  @type("number") value: number;
+}
 
 export class SlayerRoomState extends Schema {
 
@@ -275,6 +286,7 @@ export class SlayerRoomState extends Schema {
   @type([Slayer]) roster = new ArraySchema<Slayer>();
   @type([Slayer]) kia = new ArraySchema<Slayer>();
   @type({ map: Slayer }) currentAssignments = new MapSchema<Slayer>();
+  @type([RecentRoll]) recentRolls = new ArraySchema<RecentRoll>();
 
   export(){
     
