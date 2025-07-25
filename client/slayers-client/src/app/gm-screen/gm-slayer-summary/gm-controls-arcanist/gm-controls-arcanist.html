@@ -1,0 +1,58 @@
+<div class="skillRow">
+    <div class="skillButtons">
+        <button (click)="modCorruption(-1)">-</button>
+        <button (click)="modCorruption(1)">+</button>
+    </div>
+    <p>Corruption: {{slayer.corruption}}</p>
+</div>
+
+<div class="favoredSpellName">
+    <p>Current favored spell</p>
+    <p>{{slayer.favoredSpell | titlecase}}</p>
+</div>
+<mat-form-field>
+    <mat-label>Select Favored Spell</mat-label>
+    <mat-select (selectionChange)="setFavoredSpell($event)">
+        <mat-option *ngFor="let spell of slayer.knownSpells.toArray()" [value]="spell.name">{{spell.name | titlecase}}</mat-option>
+    </mat-select>
+</mat-form-field>
+
+<div class="knownSpellsHeader">
+    <p>Known spells</p>
+</div>
+<div class="knownSpells">
+    <mat-accordion>
+        <mat-expansion-panel hideToggle *ngFor="let spell of slayer.knownSpells.toArray(); let ix = index">
+            <mat-expansion-panel-header>
+                <mat-panel-title>{{spell.name}}</mat-panel-title>
+            </mat-expansion-panel-header>
+            <p><em>Effect:</em>{{spell.effect}}</p>
+            <p><em>Boosted:</em>{{spell.boostedEffect}}</p>
+            <p><em>Enhanced:</em>{{spell.enhancedEffect}}</p>
+            <mat-slide-toggle #spellData [checked]="spell.enhanced" (click)="setEnhanced(ix, spellData.checked)"></mat-slide-toggle>
+            <button  (click)="removeSpell(ix)">Remove</button>
+        </mat-expansion-panel>
+        <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Add new spell</mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="newSpellSection">
+                <form class="newSpellForm" #newSpell (ngSubmit)="addSpell(newSpellName.value, newSpellEffect.value, newSpellBoostedEffect.value, newSpellEnhancedEffect.value)">
+                    <!-- <label for="newSpellName">Name</label> -->
+                    <input matInput pInputText id="newSpellName" #newSpellName placeholder="Spell name">
+
+                    <!-- <label for="newSpellEffect">Effect</label> -->
+                    <textarea id="newSpellEffect" #newSpellEffect placeholder="Effect"></textarea>
+                    <!-- <label>Boosted</label> -->
+                    <textarea #newSpellBoostedEffect placeholder="Boosted effect"></textarea>
+                    <!-- <label>Enhanced</label> -->
+                    <textarea #newSpellEnhancedEffect placeholder="Enhanced effect"></textarea>
+                    <input type="submit" value="Add Spell">
+                </form>
+
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>
+

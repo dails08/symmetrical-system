@@ -1,0 +1,34 @@
+.newSpellForm {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+    * {
+        margin: 2px 0px;
+    }
+
+    #newSpellName{
+        width: 300px;
+    }
+
+    textarea {
+        width: 100%;
+        height: 100px;
+    }
+}
+
+.favoredSpellName {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.skillRow {
+    display: flex;
+    justify-content: start;
+
+    .skillButtons{
+        display: flex;
+        flex-direction: row;
+    }
+}

@@ -181,7 +181,13 @@ export class Blade extends Slayer {
 }
 
 export class KnownSpell extends Schema {
-  constructor(newSpell: {name: string, desc: string, enhanced: boolean}){
+  constructor(
+    newSpell: {
+      name: string, 
+      effect: string,
+      boostedEffect: string,
+      enhancedEffect: string,
+      enhanced: boolean}){
     super();
     Object.assign(this, newSpell);
   }
@@ -189,12 +195,16 @@ export class KnownSpell extends Schema {
   toObject(){
     return {
       name: this.name,
-      desc: this.desc,
+      effect: this.effect,
+      boostedEffect: this.boostedEffect,
+      enhancedEffect: this.enhancedEffect,
       enhanced: this.enhanced
     }
   }
   @type("string") name = "";
-  @type("string") desc = "";
+  @type("string") effect = "";
+  @type("string") boostedEffect = "";
+  @type("string") enhancedEffect = "";
   @type("boolean") enhanced = false;
 }
 
@@ -210,7 +220,9 @@ export class Arcanist extends Slayer {
       for (let knownSpell of data.knownSpells){
         const newKnownSpell = new KnownSpell(knownSpell);
         newKnownSpell.name = knownSpell.name;
-        newKnownSpell.desc = knownSpell.desc;
+        newKnownSpell.effect = knownSpell.effect;
+        newKnownSpell.boostedEffect = knownSpell.boostedEffect;
+        newKnownSpell.enhancedEffect = knownSpell.enhancedEffect;
         newKnownSpell.enhanced = knownSpell.enhanced;
         this.knownSpells.push(newKnownSpell);
       }

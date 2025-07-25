@@ -66,7 +66,7 @@ export interface IGunslinger extends ISlayer {
 export interface IArcanist extends ISlayer {
     corruption: number,
     favoredSpell: string,
-    knownSpells: {name: string, desc: string, enhanced: boolean}[]
+    knownSpells: {name: string, effect: string, boostedEffect: string, enhancedEffect: string, enhanced: boolean}[]
 }
 
 export interface ITactician extends ISlayer {

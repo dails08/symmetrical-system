@@ -22,6 +22,7 @@ import { getStateCallbacks } from 'colyseus.js';
 import { GmControlsBlade } from "./gm-controls-blade/gm-controls-blade";
 import { GmSlayerGunslinger } from "./gm-controls-gunslinger/gm-slayer-gunslinger";
 import { GmControlsTactician } from './gm-controls-tactician/gm-controls-tactician';
+import { GmControlsArcanist } from "./gm-controls-arcanist/gm-controls-arcanist";
 @Component({
   selector: 'app-gm-slayer-summary',
   imports: [CommonModule,
@@ -31,13 +32,13 @@ import { GmControlsTactician } from './gm-controls-tactician/gm-controls-tactici
     MatInputModule,
     MatFormFieldModule,
     FormsModule,
-    GmControlsBlade, 
-    BladePipe, 
-    GmSlayerGunslinger, 
+    GmControlsBlade,
+    BladePipe,
+    GmSlayerGunslinger,
     GmControlsTactician,
-    GunslingerPipe, 
-    ArcanistPipe, 
-    TacticianPipe],
+    GunslingerPipe,
+    ArcanistPipe,
+    TacticianPipe, GmControlsArcanist],
   templateUrl: './gm-slayer-summary.html',
   styleUrl: './gm-slayer-summary.scss'
 })

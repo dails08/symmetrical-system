@@ -20,7 +20,11 @@ export enum EMessageTypes {
     LoadedChange,
     setWeapon,
     addPlan,
-    removePlan
+    removePlan,
+    addSpell,
+    removeSpell,
+    setEnhanced,
+    setFavoredSpell,
 }
 
 export interface IBaseMsg {
@@ -123,3 +127,30 @@ export interface IRemovePlanMsg extends IBaseMsg {
     planIx: number
 }
 
+export interface IAddSpellMsg extends IBaseMsg {
+    kind: EMessageTypes.addSpell,
+    slayerId: string,
+    name: string,
+    effect: string,
+    boostedEffect: string,
+    enhancedEffect: string
+}
+
+export interface IRemoveSpellMsg extends IBaseMsg {
+    kind: EMessageTypes.removeSpell,
+    slayerId: string,
+    ix: number
+}
+
+export interface ISetEnhancedMsg extends IBaseMsg {
+    kind: EMessageTypes.setEnhanced,
+    slayerId: string,
+    ix: number,
+    enhanced: boolean
+}
+
+export interface ISetFavoredSpell extends IBaseMsg {
+    kind: EMessageTypes.setFavoredSpell,
+    slayerId: string,
+    favoredSpell: string
+}

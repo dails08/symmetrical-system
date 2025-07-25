@@ -98,7 +98,9 @@ export const Ryze: IArcanist = {
     knownSpells: [
         {
             name: "Create Potato",
-            desc: "Creates a potato",
+            effect: "Creates a potato",
+            boostedEffect: "Creates two potatoes",
+            enhancedEffect: "Creates baked potatoes",
             enhanced: false
         }
     ]

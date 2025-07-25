@@ -170,9 +170,8 @@
         <div class="classSpecific">
             <app-gm-controls-blade    [player]="player" [playerIx]="playerIx" [slayer]="slayer | asBlade"      class="bladeSection"      *ngIf="slayer.class == playbooks.Blade">     </app-gm-controls-blade>
             <app-gm-controls-tactician    [player]="player" [playerIx]="playerIx" [slayer]="slayer | asTactician"      class="tacticianSection"      *ngIf="slayer.class == playbooks.Tactician">     </app-gm-controls-tactician>
-            <app-gm-slayer-gunslinger [player]="player" [playerIx]="playerIx" [slayer]="slayer | asGunslinger" class="gunslingerSection" *ngIf="slayer.class == playbooks.Gunslinger"></app-gm-slayer-gunslinger>
-            <div class="arcanistSection" *ngIf="slayer.class == playbooks.Arcanist"></div>
-            <div class="tacticianSection" *ngIf="slayer.class == playbooks.Tactician"></div>
+            <app-gm-controls-gunslinger [player]="player" [playerIx]="playerIx" [slayer]="slayer | asGunslinger" class="gunslingerSection" *ngIf="slayer.class == playbooks.Gunslinger"></app-gm-controls-gunslinger>
+            <app-gm-controls-arcanist [player]="player" [playerIx]="playerIx" [slayer]="slayer | asArcanist" class="arcanistSection" *ngIf="slayer.class == playbooks.Arcanist"></app-gm-controls-arcanist>
         </div>
     </mat-card-content>
 

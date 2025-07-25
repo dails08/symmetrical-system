@@ -11,7 +11,7 @@ import { Gunslinger, Player } from '../../../../../../../server/src/SlayerRoomSt
 import { ColyseusService } from '../../../services/colyseusService';
 import { EMessageTypes, ILoadedChangeMsg, IRuneChangeMsg } from '../../../../../../../common/messageFormat';
 @Component({
-  selector: 'app-gm-slayer-gunslinger',
+  selector: 'app-gm-controls-gunslinger',
   imports: [
     CommonModule,
     MatSlideToggleModule,

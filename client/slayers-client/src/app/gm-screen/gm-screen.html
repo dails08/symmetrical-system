@@ -1,8 +1,3 @@
-<!-- <div class="slayerCards">
-    <div *ngFor="let assignment of this.assignments | keyvalue">
-        <app-gm-slayer-summary [player]="assignment.key" [slayer]="assignment.value" class="individualCard"></app-gm-slayer-summary>
-    </div>
-</div> -->
 <div class="crossDrop" cdkDropListGroup>
     <div class="slayerCards"   >
         <div cdkDropList class="playerCard"
@@ -46,6 +41,9 @@
             <button matButton (click)="createNew('gunslinger', newCharacterName.value)">Add Gunslinger</button>
             <button matButton (click)="createNew('arcanist', newCharacterName.value)">Add Arcanist</button>
             <button matButton (click)="createNew('tactician', newCharacterName.value)">Add Tactician</button>
+        </div>
+        <div class="saveAndLoad">
+            <button (click)="sendSaveCampaign()">Save Campaign</button>
         </div>
     </div>
     

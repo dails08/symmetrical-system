@@ -1,8 +1,8 @@
 import { Room, Client, logger, debugMessage } from "@colyseus/core";
-import { SlayerRoomState, Advance, Player, Slayer, Blade, Tactician, Gunslinger, Arcanist, InventoryItem } from "../SlayerRoomState";
+import { SlayerRoomState, Advance, Player, Slayer, Blade, Tactician, Gunslinger, Arcanist, InventoryItem, KnownSpell } from "../SlayerRoomState";
 import { EPlaybooks, ICampaign, IJoinOptions, ISlayer, IBlade, IGunslinger, IArcanist, ITactician } from "../../../common/common";
 import { Clint, Ryze, Cervantes, Gene} from "../../../common/examples";
-import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg, IWeaponChangeMsg, IAddPlanMsg, IRemovePlanMsg } from "../../../common/messageFormat";
+import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg, IWeaponChangeMsg, IAddPlanMsg, IRemovePlanMsg, IAddSpellMsg, IRemoveSpellMsg, ISetEnhancedMsg, ISetFavoredSpell } from "../../../common/messageFormat";
 import { db } from "../firestoreConnection";
 import { v4 as uuidv4 } from "uuid";
 
@@ -214,6 +214,12 @@ export class SlayerRoom extends Room<SlayerRoomState> {
 
               const field = msg.field as "skillsAgile" | "skillsBrawn" | "skillsDeceive" | "skillsHunt" | "skillsMend" | "skillsNegotiate" | "skillsStealth" | "skillsStreet" | "skillsStudy" | "skillsTactics";
               elem[field] = msg.newValue as 4 | 6 | 8 | 10 | 12;
+            }
+            if (msg.field == "corruption") {
+              if (elem.class == EPlaybooks.Arcanist){
+                const arcanistElem = elem as Arcanist;
+                arcanistElem.corruption = msg.newValue;
+              }
             }
           }  
           }
@@ -487,6 +493,99 @@ export class SlayerRoom extends Room<SlayerRoomState> {
         console.log("Slayer not found in roster!");
       }
     })
+
+    this.onMessage(EMessageTypes.setEnhanced, (client, msg: ISetEnhancedMsg) => {
+      console.log("Setting enhanced:")
+      console.log(msg);
+      const slayer = this.state.roster.find((slayer) => {
+        return slayer.id == msg.slayerId;
+      })
+      if ( slayer){
+        if (slayer.class == EPlaybooks.Arcanist){
+          if (this.isGM(client) || this.controlsCharacter(client, slayer)){
+            const classedSlayer = slayer as Arcanist;
+            classedSlayer.knownSpells.at(msg.ix).enhanced = msg.enhanced;
+          } else {
+            console.log("Not authorized to!");
+          }
+        } else {
+          console.log("Not an arcanist!");
+        } 
+      } else {
+        console.log("Slayer not found in roster!");
+      }
+    })
+    this.onMessage(EMessageTypes.addSpell, (client, msg: IAddSpellMsg) => {
+      console.log("Adding spell:")
+      console.log(msg);
+      const slayer = this.state.roster.find((slayer) => {
+        return slayer.id == msg.slayerId;
+      })
+      if ( slayer){
+        if (slayer.class == EPlaybooks.Arcanist){
+          if (this.isGM(client) || this.controlsCharacter(client, slayer)){
+            const classedSlayer = slayer as Arcanist;
+            const newSpell: KnownSpell = new KnownSpell({
+              name: msg.name,
+              effect: msg.effect,
+              boostedEffect: msg.boostedEffect,
+              enhancedEffect: msg.enhancedEffect,
+              enhanced: false
+            })
+            classedSlayer.knownSpells.push(newSpell);
+          } else {
+            console.log("Not authorized to!");
+          }
+        } else {
+          console.log("Not an arcanist!");
+        } 
+      } else {
+        console.log("Slayer not found in roster!");
+      }
+    })
+    this.onMessage(EMessageTypes.removeSpell, (client, msg: IRemoveSpellMsg) => {
+      console.log("Removing spell:")
+      console.log(msg);
+      const slayer = this.state.roster.find((slayer) => {
+        return slayer.id == msg.slayerId;
+      })
+      if ( slayer){
+        if (slayer.class == EPlaybooks.Arcanist){
+          if (this.isGM(client) || this.controlsCharacter(client, slayer)){
+            const classedSlayer = slayer as Arcanist;
+            classedSlayer.knownSpells.splice(msg.ix);
+          } else {
+            console.log("Not authorized to!");
+          }
+        } else {
+          console.log("Not an arcanist!");
+        } 
+      } else {
+        console.log("Slayer not found in roster!");
+      }
+    })
+    this.onMessage(EMessageTypes.setFavoredSpell, (client, msg: ISetFavoredSpell) => {
+      console.log("Setting favored spell:")
+      console.log(msg);
+      const slayer = this.state.roster.find((slayer) => {
+        return slayer.id == msg.slayerId;
+      })
+      if ( slayer){
+        if (slayer.class == EPlaybooks.Arcanist){
+          if (this.isGM(client) || this.controlsCharacter(client, slayer)){
+            const classedSlayer = slayer as Arcanist;
+            classedSlayer.favoredSpell = msg.favoredSpell || "None"
+          } else {
+            console.log("Not authorized to!");
+          }
+        } else {
+          console.log("Not an arcanist!");
+        } 
+      } else {
+        console.log("Slayer not found in roster!");
+      }
+    })
+    
 
 
 
