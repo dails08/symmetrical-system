@@ -14,6 +14,7 @@ import { getStateCallbacks } from 'colyseus.js';
 import { Roller } from '../roller/roller';
 import { TippyDirective } from '@ngneat/helipopper';
 import { JoinScreen } from "../join-screen/join-screen";
+import { CharSheetTactician } from "./char-sheet-tactician/char-sheet-tactician";
 
 @Component({
   selector: 'app-character-sheet',
@@ -25,7 +26,9 @@ import { JoinScreen } from "../join-screen/join-screen";
     TacticianPipe,
     TippyDirective,
     Roller,
-    JoinScreen],
+    JoinScreen,
+    CharSheetTactician
+],
   templateUrl: './character-sheet.html',
   styleUrl: './character-sheet.scss'
 })

@@ -1,0 +1,23 @@
+<!-- <div class="plans">
+    <p>plans: <span class="plan" *ngFor="let plan of slayer.plans">{{plan}} </span></p>
+</div> -->
+<div class="topRow">
+    <div class="shootStab topOption"><p>Shoot/Stab</p></div>
+    <div class="roll topOption" *ngIf="hasRally"><p>Roll Plan</p></div>
+</div>
+<div class="controlsRow">
+    <div class="plansDisplay">
+        <div class="plan" *ngFor="let plan of slayer.plans">{{plan}}</div>
+    </div>
+    <div class="actions">
+        <div id="add" *ngIf="this.hasShift" class="action"><p>Add</p></div>
+        <div id="swap" class="action"><p>Swap</p></div>
+        <div id="subtract" *ngIf="this.hasShift" class="action"><p>Sub</p></div>
+    </div>
+    <div class="recentRolls">
+        <div class="recentRoll" *ngFor="let recentRoll of state.recentRolls.toArray()">
+            <p>{{recentRoll.actor}}: {{recentRoll.rollName}}</p>
+            <p>{{recentRoll.value}}</p>
+        </div>
+    </div>
+</div>

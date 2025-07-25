@@ -106,7 +106,9 @@
                     <ng-template class="advancePopover" #advancePopover>{{invItem.desc}}</ng-template>
                     <p [tp]="advancePopover" tpVariation="popover" tpTrigger="click" class="itemName">{{invItem.name}}</p>
                 </div>
-            </div>
+            </div>    
+        </div>
+        <div class="bottomHalf">
             <div class="bladeData" *ngIf="slayer.class == playbooks.Blade">
                 @let castSlayer = slayer | asBlade;
                 <div class="stance">
@@ -151,14 +153,8 @@
             </div>
             <div class="tacticianData" *ngIf="slayer.class == playbooks.Tactician">
                 @let castSlayer = slayer | asTactician;
-                <div class="plans">
-                    <p>plans: <span class="plan" *ngFor="let plan of castSlayer.plans">{{plan}} </span></p>
-                </div>
+                <app-char-sheet-tactician [slayer]="castSlayer"></app-char-sheet-tactician>
             </div>
-    
-        </div>
-        <div class="bottomHalf">
-    
         </div>
     </div>
     <div class="slayerUndefined" *ngIf="!cs.slayer">
