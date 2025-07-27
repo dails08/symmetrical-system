@@ -5,6 +5,9 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build-dev": "ng build --configuration development",
+    "clean": "gsutil -m rm gs://slayers.dails.net/*",
+    "push": "gsutil -m cp -r ./dist/slayers-client/browser/* gs://slayers.dails.net",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

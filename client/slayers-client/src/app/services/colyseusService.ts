@@ -29,7 +29,7 @@ export class ColyseusService {
     private cs: CentralService
   ) {
     // this.client = new Client("http://localhost:2567");
-    this.client = new Client("http://192.168.99.137:2567");
+    this.client = new Client("https://us-ewr-a693c475.colyseus.cloud");
     console.log(this.client);
     // const joinOptions: IJoinOptions = {
     //   name: ,
