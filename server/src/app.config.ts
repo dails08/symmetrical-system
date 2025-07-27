@@ -11,7 +11,7 @@ import express from "express";
  */
 import { SlayerRoom } from "./rooms/SlayerRoom";
 
-const allowedOrigins = ["http://localhost:4200"];
+const allowedOrigins = ["http://localhost:4200", "https://slayers.dails.net"];
 
 const corsMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const origin = req.headers.origin;

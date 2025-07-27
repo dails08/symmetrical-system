@@ -5,3 +5,6 @@ build
 creds/*
 .env
 .env*
+
+# colyseus
+.colyseus-cloud.json
