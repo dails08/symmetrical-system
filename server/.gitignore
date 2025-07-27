@@ -4,3 +4,4 @@ build
 .devmode.json
 creds/*
 .env
+.env*
