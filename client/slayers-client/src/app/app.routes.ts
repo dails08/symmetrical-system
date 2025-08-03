@@ -13,7 +13,7 @@ export const routes: Routes = [
         component: CharacterSheet
     },
     {
-        path: "*",
+        path: "**",
         component: JoinScreen
     }
 ];

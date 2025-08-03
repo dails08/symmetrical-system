@@ -10,5 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "phaser": "^3.90.0"
+  },
+  "devDependencies": {
+    "vite": "^7.0.5"
   }
 }
