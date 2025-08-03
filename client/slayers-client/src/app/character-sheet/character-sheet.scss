@@ -1,0 +1,244 @@
+// html {
+//       background-color: black;
+//       color: white;
+//   }
+:host {
+  max-height:100vh;
+}
+.playerSection {
+  background-color: black;
+  color: white;
+  height: 20px;
+}
+.slayerDefined {
+  background-color: black;
+  color: white;
+  box-sizing: border-box;
+  height: calc(100vh - 20px);
+}
+.slayerUndefined {
+  background-color: black;
+  color: white;
+  box-sizing: border-box;
+  min-height: calc(100vh - 20px);
+}
+
+:host {
+  background-color: black;
+  color: white;
+  box-sizing: border-box;
+  flex: 1;
+  height: calc(100vh);
+}
+
+.title {
+  position: relative;
+  width: 100%;
+  height: 30px;
+  border-bottom: 1px solid gray;
+
+  .slayerName {
+    position: absolute;
+    font-family: "sarina";
+    color: white;
+    z-index: 5;
+    bottom: -20%;
+    font-size: 1.5rem;
+  }
+
+  .slayerClass {
+    font-family: "trickr-logo";
+    font-size: 2rem;
+    position: absolute;
+    height: 100%;
+    right: 0;
+    top: 0px;
+    color: slategray;
+    z-index: 0;
+  }
+
+  .slayerSpeed {
+    position: absolute;
+    font-family: "trickr-logo";
+    font-size: 2rem;
+    right: 0%;
+    height:100%;
+    top:0px;
+    color: slategray;
+
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+.healthbar {
+  // margin: 10px 10px;
+  // box-sizing: content-box;
+  // border-bottom: 1px solid gray;
+  padding: 5px 5px;
+    position: relative;
+    width: 98%;
+    height: 30px;
+    // display: flex;
+    // justify-content: start;
+
+    .barcontent {
+      position: absolute;
+      background-color: purple;
+    /*   border: 1px solid gray; */
+      flex: 1 1 auto;
+      transform: skewX(-20deg);
+    /*   margin: 0px 10px; */
+    top: 20%;
+    bottom: 20%;
+    left: 0;
+    right: 0;
+    }
+    .segment {
+      background-color: black;
+      // height: 90%;
+    /*   transform: skewX(-20deg); */
+      width: 6px;
+      position: absolute;
+      transform: skewX(-20deg);
+      top:20%;
+      bottom:20%;
+
+    }
+    .segment.halfhp {
+      background-color: darkviolet;
+      width: 4px;
+      top: 10%;
+      bottom: 10%;
+    }
+
+
+  }
+
+
+  .misc {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 10px;
+    // width: 100%;
+    // height: 30px;
+    // position: relative;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+
+    .stackedStat {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .statName {
+        // position: absolute;
+        // left: 0;
+        // right: 0;
+        // top: 0;
+        // bottom: 0;
+        color: slategray
+      }
+      .statNumber {
+        // position: absolute;
+        // left: 0;
+        // right: 0;
+        // top: 0;
+        // bottom: 0;
+        font-family: "trickr-logo";
+        font-size: 2rem;
+        color: white;
+        opacity: 0.8;
+      }
+    }
+  }
+
+
+  .skills {
+    display: flex;
+    overflow-x: scroll;
+    position: relative;
+    // height: 100px;
+    width: 100%;
+    border-bottom: 1px solid gray;
+
+    .skillsLabel {
+      font-family: "sarina";
+      font-size:1rem;
+      color: white;
+      // opacity: 0.2;
+      position: sticky;
+      left: 0;
+      top: 0;
+      z-index: -1;
+
+    }
+
+    .skill {
+      // position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 100px;
+      height: 100%;
+
+      p {
+        // position:absolute;
+        // bottom: 15%;
+        // left: 25%;
+        font-size: 1rem;
+        text-align: center;
+      }
+
+      p.deceive {
+        left: 20%;
+      }
+
+      p.hunt {
+        left: 30%;
+      }
+
+      p.negotiate {
+        left: 18%;
+        font-size: 0.9rem;
+      }
+
+      img {
+        // position: absolute;
+        // height: 100%;
+        // width: 100%;
+        // top: 0px;
+        // left: 0px;
+        height: 50px;
+        width: 50px;
+        filter: invert(100%) sepia(100%) saturate(1%) hue-rotate(307deg) brightness(110%) contrast(101%);
+      }
+    }
+  }
+
+  .advances {
+    display: flex;
+    justify-content: start;
+    padding: 10px;
+    .advance{
+      flex-grow: 0;
+      .advanceName {
+        border: 1px solid white;
+        border-radius: 2px;
+        padding: 3px;
+        margin: 0px 5px;
+      }
+    }
+  }
+
+  .bottomHalf {
+    // height: 500px;
+  }

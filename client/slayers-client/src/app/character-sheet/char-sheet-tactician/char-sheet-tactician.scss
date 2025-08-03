@@ -1,0 +1,105 @@
+:host {
+    // max-height:100%;
+    aspect-ratio: 1/1;
+}
+
+.topRow {
+    display: flex;
+    height: 100px;
+    align-items: center;
+    border-bottom: 1px solid gray;
+    :not(:first-child) {
+        border-left: 1px solid gray;
+    }
+    .topOption {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+        height: 100%;
+    }
+
+    .shootStab {
+        background-color: darkred;
+    }
+}
+
+.controlsRow {
+    display: flex;
+    justify-content: space-between;
+    height: calc(100vh - 372px);
+    overflow-y: scroll;
+
+    .plansDisplay {
+        display: flex;
+        flex-direction: column;
+        // flex-flow: column wrap;
+        justify-content: start;
+        height: calc(100vh - 372px);
+    overflow-y: scroll;
+    width: 100%;
+    flex-flow: wrap;
+
+        
+        .plan {
+            height: 4rem;
+            width: 4rem;
+            font-size: 4rem;
+            text-align: center;
+            margin: 10px;
+        }
+    }
+
+    .controlRightHalf {
+        display: flex;
+        height: calc(100vh - 372px);
+    overflow-y: scroll;
+        max-width: 200px;
+    width: 100%;
+    }
+
+
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+
+    div {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #add {
+        background-color: darkgreen;
+    }
+    #swap {
+        background-color: yellowgreen;
+        color: black;
+    }
+    #subtract {
+        background-color: darkred;
+    }
+    .action {
+        color: white;
+        padding: 10px;
+    }
+}
+.recentRolls {
+    display: flex;
+    flex-direction: column;
+
+
+    .recentRoll {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid darkgrey;
+    }
+}
