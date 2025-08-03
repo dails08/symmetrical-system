@@ -22,19 +22,19 @@ export class OverlayScene extends Scene {
 
     preload(){
         this.load.bitmapFont("angel-red","assets/fonts/Angel-red/Angel-red.png", "assets/fonts/Angel-red/Angel-red.xml");
-        this.load.spritesheet("testAnim", "assets/spritesheets/test2.png", {
-            frameWidth: 500,
-            frameHeight: 500
-        });
-        this.load.spritesheet("testAnim2", "assets/spritesheets/explosion 4.png", {
-            frameWidth: 500,
-            frameHeight: 500
-        });
-        this.load.spritesheet("coin", "assets/spritesheets/coin.png", {
-            frameWidth: 32,
-            frameHeight: 32,
-          });
-          this.load.spritesheet("altTest", "assets/spritesheets/altTest.png", {
+        // this.load.spritesheet("testAnim", "assets/spritesheets/test2.png", {
+        //     frameWidth: 500,
+        //     frameHeight: 500
+        // });
+        // this.load.spritesheet("testAnim2", "assets/spritesheets/explosion 4.png", {
+        //     frameWidth: 500,
+        //     frameHeight: 500
+        // });
+        // this.load.spritesheet("coin", "assets/spritesheets/coin.png", {
+        //     frameWidth: 32,
+        //     frameHeight: 32,
+        //   });
+          this.load.spritesheet("altTest", "https://storage.googleapis.com/slayers-media/spritesheets/soulSiphon1.png", {
             frameWidth: 816,
             frameHeight: 624,
           });
@@ -62,10 +62,13 @@ export class OverlayScene extends Scene {
         // this.SPACE.addListener("down", this.cc.incrementCombo, this.cc);
 
         const testAnimSprite = this.add.sprite(this.center_width, this.center_height, "testAnimSprite");
+        testAnimSprite.setVisible(false);
+        testAnimSprite.setScale(3, 3);
+        
         testAnimSprite.anims.create({
                 key: "cycle",
                 frames: "altTest",
-                duration: 1000,
+                duration: 2000,
                 hideOnComplete: true,
                 repeat: 0,
                 showOnStart: true
