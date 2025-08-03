@@ -13,6 +13,8 @@ export class OverlayScene extends Scene {
 
     cc: ComboCounter;
 
+    testAnim: Phaser.Animations.Animation;
+
 
     constructor(){
         super({key: "overlay"})
@@ -20,6 +22,23 @@ export class OverlayScene extends Scene {
 
     preload(){
         this.load.bitmapFont("angel-red","assets/fonts/Angel-red/Angel-red.png", "assets/fonts/Angel-red/Angel-red.xml");
+        this.load.spritesheet("testAnim", "assets/spritesheets/test2.png", {
+            frameWidth: 500,
+            frameHeight: 500
+        });
+        this.load.spritesheet("testAnim2", "assets/spritesheets/explosion 4.png", {
+            frameWidth: 500,
+            frameHeight: 500
+        });
+        this.load.spritesheet("coin", "assets/spritesheets/coin.png", {
+            frameWidth: 32,
+            frameHeight: 32,
+          });
+          this.load.spritesheet("altTest", "assets/spritesheets/altTest.png", {
+            frameWidth: 816,
+            frameHeight: 624,
+          });
+      
 
     }
 
@@ -40,7 +59,22 @@ export class OverlayScene extends Scene {
         // this.add.bitmapText(this.center_width + 100, this.center_height - 50, "angel-red", "2!", 250);
         this.cc = new ComboCounter(this, this.center_width, this.center_height);
         this.add.existing(this.cc);
-        this.SPACE.addListener("down", this.cc.incrementCombo, this.cc);
+        // this.SPACE.addListener("down", this.cc.incrementCombo, this.cc);
+
+        const testAnimSprite = this.add.sprite(this.center_width, this.center_height, "testAnimSprite");
+        testAnimSprite.anims.create({
+                key: "cycle",
+                frames: "altTest",
+                duration: 1000,
+                hideOnComplete: true,
+                repeat: 0,
+                showOnStart: true
+        })
+
+        this.SPACE.addListener("down", () => {testAnimSprite.play("cycle")});
+
+        
+
 
     }
 
