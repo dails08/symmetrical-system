@@ -2,7 +2,7 @@
     <div class="slayerCards"   >
         <div cdkDropList class="playerCard"
         [id]="player.value.id"
-        (cdkDropListDropped)="dropAssign($event)" 
+        (cdkDropListDropped)="dropAssign($event)"
         *ngFor="let player of players | keyvalue">
             <div class="playerBar">
                 <p>{{player.value.displayName}} ({{player.value.id}})</p>
@@ -25,10 +25,10 @@
                     <p>{{slayer.name}}, {{slayer.class}}</p>
                 </div>
             </div>
-          
-            <div cdkDropList 
+
+            <div cdkDropList
             (cdkDropListDropped)="dropKill($event)"
-            id="kiaList" 
+            id="kiaList"
             class="roster">
               <div class="slayer" *ngFor="let slayer of kia">
                   <p>{{slayer.name}}, {{slayer.class}}</p>
@@ -51,8 +51,10 @@
             <input matInput #rollValue placeholder="Value" >
             <input matInput #rollTimes placeholder="Multiple" >
             <button (click)="sendRecentRolls(rollActor.value, rollName.value, rollValue.value, rollTimes.value)">Send rolls</button>
-
+        </div>
+        <div class="overlay">
+          <button (click)="playAnimation()">Play Animation</button>
         </div>
     </div>
-    
+
 </div>

@@ -25,7 +25,9 @@ export enum EMessageTypes {
     removeSpell,
     setEnhanced,
     setFavoredSpell,
-    setRecentRolls
+    setRecentRolls,
+    // overlay message types
+    playAnimation
 }
 
 export interface IBaseMsg {
@@ -161,4 +163,11 @@ export interface ISetRecentRolls extends IBaseMsg {
     rolls: {
         
     }
+}
+
+// Overlay message format
+
+export interface IPlayAnimationMsg extends IBaseMsg {
+    kind: EMessageTypes.playAnimation,
+    key: string
 }

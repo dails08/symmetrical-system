@@ -10,7 +10,7 @@ import { Request, Response, NextFunction } from "express";
  */
 import { SlayerRoom } from "./rooms/SlayerRoom";
 
-const allowedOrigins = ["http://localhost:4200"];
+const allowedOrigins = ["http://localhost:4200", "http://localhost:5173"];
 
 const corsMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const origin = req.headers.origin;

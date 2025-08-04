@@ -2,15 +2,16 @@ import { Room, Client, logger, debugMessage } from "@colyseus/core";
 import { SlayerRoomState, Advance, Player, Slayer, Blade, Tactician, Gunslinger, Arcanist, InventoryItem, KnownSpell, RecentRoll } from "../SlayerRoomState";
 import { EPlaybooks, ICampaign, IJoinOptions, ISlayer, IBlade, IGunslinger, IArcanist, ITactician } from "../../../common/common";
 import { Clint, Ryze, Cervantes, Gene} from "../../../common/examples";
-import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg, IWeaponChangeMsg, IAddPlanMsg, IRemovePlanMsg, IAddSpellMsg, IRemoveSpellMsg, ISetEnhancedMsg, ISetFavoredSpell } from "../../../common/messageFormat";
+import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg, IWeaponChangeMsg, IAddPlanMsg, IRemovePlanMsg, IAddSpellMsg, IRemoveSpellMsg, ISetEnhancedMsg, ISetFavoredSpell, IPlayAnimationMsg } from "../../../common/messageFormat";
 import { db } from "../firestoreConnection";
 import { v4 as uuidv4 } from "uuid";
 
 export class SlayerRoom extends Room<SlayerRoomState> {
-  maxClients = 4;
+  maxClients = 10;
   // db: Firestore | undefined;
   state = new SlayerRoomState();
   sessionIDtoPlayerIdMap = new Map<string, string>()
+  overlayClients: Client[] = [];
   // campaign: ICampaign | undefined;
   campaign: ICampaign | undefined = {
     id: "",
@@ -122,6 +123,10 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     // const clientPlayer = this.state.playerMap.get(client.sessionId);
     const clientPlayer = this.sessionIdToPlayer(client.sessionId);
     return clientPlayer && this.campaign.gms.includes(clientPlayer.id);
+  }
+
+  isOverlay(client: Client){
+    return this.overlayClients.includes(client);
   }
 
   controlsCharacter(client: Client, slayer: Slayer){
@@ -586,6 +591,18 @@ export class SlayerRoom extends Room<SlayerRoomState> {
         console.log("Slayer not found in roster!");
       }
     })
+
+    this.onMessage(EMessageTypes.playAnimation, (client, msg: IPlayAnimationMsg) => {
+      console.log(msg);
+      if (this.isGM(client)){
+        for (let overlay of this.overlayClients){
+          console.log("Forwarding message to overlay");
+          overlay.send(EMessageTypes.playAnimation, msg);
+        }
+      } else {
+        console.log("Not authorized!");
+      }
+    })
     
 
 
@@ -596,6 +613,9 @@ export class SlayerRoom extends Room<SlayerRoomState> {
 
   async onJoin (client: Client, options: IJoinOptions) {
     console.log(client.sessionId, "joined: " + JSON.stringify(options));
+    if (options.id == "overlay"){
+      this.overlayClients.push(client);
+    }
 
     if (this.state.playerMap.size == 0){
       if (this.campaign.id == "" && options.campaignId != ""){
@@ -631,15 +651,19 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     
     this.state.playerMap.set(player.id, player);
     this.sessionIDtoPlayerIdMap.set(client.sessionId, player.id);
-    const ix = Math.floor(Math.random() * this.state.roster.length);
-    // console.log(this.state.roster)
-    console.log("Assigning " + this.state.roster[ix].name);
-    this.state.currentAssignments.set(player.id, this.state.roster[ix]);
-    console.log("Added " + player.id)
-    console.log("Playermap:")
-    this.state.playerMap.forEach((v, k) => {
-      console.log(v.displayName);
-    } )
+    if (!this.isGM(client) && !this.isOverlay(client)){
+      const ix = Math.floor(Math.random() * this.state.roster.length);
+      // console.log(this.state.roster)
+      console.log("Assigning " + this.state.roster[ix].name);
+      this.state.currentAssignments.set(player.id, this.state.roster[ix]);
+      console.log("Added " + player.id)
+      console.log("Playermap:")
+      this.state.playerMap.forEach((v, k) => {
+        console.log(v.displayName);
+      } )
+    } else {
+      console.log("Not assigning to overlay or GM.");
+    }
 
     if (this.campaign.gms)
     console.log("==========");

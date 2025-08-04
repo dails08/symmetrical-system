@@ -1,4 +1,6 @@
 import { Scene } from "phaser";
+import { room } from "../src/colyseus";
+import { EMessageTypes, IBaseMsg, IPlayAnimationMsg } from "../../common/messageFormat";
 
 export class OverlayScene extends Scene {
 
@@ -34,10 +36,14 @@ export class OverlayScene extends Scene {
         //     frameWidth: 32,
         //     frameHeight: 32,
         //   });
-          this.load.spritesheet("altTest", "https://storage.googleapis.com/slayers-media/spritesheets/soulSiphon1.png", {
-            frameWidth: 816,
-            frameHeight: 624,
-          });
+        //   this.load.spritesheet("altTest", "https://storage.googleapis.com/slayers-media/spritesheets/soulSiphon2.png", {
+        //     frameWidth: 700,
+        //     frameHeight: 600,
+        //   });
+
+          for(let i = 0; i < 121; i++){
+            this.load.image("soulSiphon" + i, "https://storage.googleapis.com/slayers-media/spritesheets/soulSiphon1/soulSiphon2." + i + ".png");
+          }
       
 
     }
@@ -64,17 +70,27 @@ export class OverlayScene extends Scene {
         const testAnimSprite = this.add.sprite(this.center_width, this.center_height, "testAnimSprite");
         testAnimSprite.setVisible(false);
         testAnimSprite.setScale(3, 3);
+        const soulSiphonFrames: Phaser.Types.Animations.AnimationFrame[] = [];
+
+        for (let i = 0; i < 121; i++){
+            soulSiphonFrames.push({
+                key: "soulSiphon" + i
+            })
+        }
         
         testAnimSprite.anims.create({
-                key: "cycle",
-                frames: "altTest",
+                key: "soulSiphon1",
+                frames: soulSiphonFrames,
                 duration: 2000,
                 hideOnComplete: true,
                 repeat: 0,
                 showOnStart: true
         })
 
-        this.SPACE.addListener("down", () => {testAnimSprite.play("cycle")});
+        this.SPACE.addListener("down", () => {testAnimSprite.play("soulSiphon1")});
+        room.onMessage(EMessageTypes.playAnimation, (msg: IPlayAnimationMsg) => {
+            testAnimSprite.play("soulSiphon1");
+        })
 
         
 

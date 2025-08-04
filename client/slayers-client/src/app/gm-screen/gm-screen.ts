@@ -5,7 +5,7 @@ import { Cervantes, Clint } from "../../../../../common/examples";
 import { ColyseusService } from '../services/colyseusService';
 import { Slayer, Blade, Gunslinger, Arcanist, Tactician, KnownSpell, Advance, Player } from '../../../../../server/src/SlayerRoomState';
 import { CentralService } from '../services/central-service';
-import { EMessageTypes, IAssignmentMsg, IBaseMsg, ICharacterUpdateMsg, IKillMsg, IPlayerUpdateMsg, IRosterAddMsg, ISaveCampaignMsg, IUpdateNumericalMsg } from '../../../../../common/messageFormat';
+import { EMessageTypes, IAssignmentMsg, IBaseMsg, ICharacterUpdateMsg, IKillMsg, IPlayAnimationMsg, IPlayerUpdateMsg, IRosterAddMsg, ISaveCampaignMsg, IUpdateNumericalMsg } from '../../../../../common/messageFormat';
 import { BladePipe, GunslingerPipe, ArcanistPipe, TacticianPipe } from "../classPipes";
 import { getStateCallbacks } from 'colyseus.js';
 import { GmSlayerSummary } from "./gm-slayer-summary/gm-slayer-summary";
@@ -17,8 +17,8 @@ import { P } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-gm-screen',
-  imports: [CommonModule, 
-    GmSlayerSummary, 
+  imports: [CommonModule,
+    GmSlayerSummary,
     DragDropModule, CdkDrag, CdkDropList,
     MatButtonModule,
     MatInputModule ],
@@ -250,7 +250,7 @@ export class GmScreen {
           newSlayer = new Arcanist().toIArcanist();
         } else if (playbook == "tactician"){
           newSlayer = new Tactician().toITactician();
-        } 
+        }
         if (newSlayer){
           newSlayer.name = name == "" ? "Nameless" : name
           const addMsg: IRosterAddMsg = {
@@ -259,6 +259,14 @@ export class GmScreen {
           };
           this.cjs.sendMessage(addMsg);
         }
+      }
+
+      playAnimation() {
+        const msg: IPlayAnimationMsg = {
+          kind: EMessageTypes.playAnimation,
+          key: "soulSiphon1"
+        };
+        this.cjs.sendMessage(msg);
       }
 
       // addDefaultRoster(){
