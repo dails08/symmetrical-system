@@ -12,9 +12,9 @@
                 <p class="slayerClass">{{slayer.class}}</p>
                 <p class="slayerName">{{slayer.name}}</p>
             </div>
-    
-            <div class="healthbar"> 
-              <div class="barcontent"> 
+
+            <div class="healthbar">
+              <div class="barcontent">
               </div>
               <!-- <div class="gutters"> -->
                   <div *ngFor="let _ of [].constructor(slayer.maxHP + 1); let ix = index" class="segment" [style.left]="'calc('+100*(ix)/slayer.maxHP+'%)'"></div>
@@ -42,7 +42,7 @@
                 <ng-template #rollerPopover let-item="data">
                     <app-roller [name]="item.name" [size]="item.size"></app-roller>
                 </ng-template>
-    
+
                 <div class="skill" [tp]="rollerPopover" [tpInteractive]="true" [tpData]="{name: 'Agile', size: slayer.skillsAgile}" tpTrigger="click">
                     <img src="/assets/shapes/{{slayer.skillsAgile}}.svg">
                     <p class="skillName agile">Agile</p>
@@ -93,8 +93,8 @@
                 <div class="skill">Study: {{slayer.skillsStudy}} </div>
                 <div class="skill">Tactics: {{slayer.skillsTactics}} </div> -->
             </div>
-    
-    
+
+
             <div class="advances">
                 <div class="advance" *ngFor="let advance of slayer.advances.toArray()">
                     <ng-template class="advancePopover" #advancePopover>{{advance.desc}}</ng-template>
@@ -102,11 +102,11 @@
                 </div>
             </div>
             <div class="inventory" *ngIf="slayer.inventory.length > 0">
-                <div class="invItem" *ngFor="let invItem of slayer.inventory.toArray()">
+                <div class="advance" *ngFor="let invItem of slayer.inventory.toArray()">
                     <ng-template class="advancePopover" #advancePopover>{{invItem.desc}}</ng-template>
-                    <p [tp]="advancePopover" tpVariation="popover" tpTrigger="click" class="itemName">{{invItem.name}}</p>
+                    <p [tp]="advancePopover" tpVariation="popover" tpTrigger="click" class="advanceName">{{invItem.name}}</p>
                 </div>
-            </div>    
+            </div>
         </div>
         <div class="bottomHalf">
             <div class="bladeData" *ngIf="slayer.class == playbooks.Blade">
@@ -151,10 +151,8 @@
                     <p *ngFor="let knownSpell of castSlayer.knownSpells">{{knownSpell | json}}</p>
                 </div>
             </div>
-            <div class="tacticianData" *ngIf="slayer.class == playbooks.Tactician">
-                @let castSlayer = slayer | asTactician;
-                <app-char-sheet-tactician [slayer]="castSlayer"></app-char-sheet-tactician>
-            </div>
+              <!-- @let castSlayer = slayer | asTactician; -->
+              <app-char-sheet-tactician *ngIf="slayer.class == playbooks.Tactician" [slayer]="slayer | asTactician"></app-char-sheet-tactician>
         </div>
     </div>
     <div class="slayerUndefined" *ngIf="!cs.slayer">

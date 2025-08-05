@@ -4,32 +4,45 @@
 //   }
 :host {
   max-height:100vh;
-}
-.playerSection {
-  background-color: black;
-  color: white;
-  height: 20px;
-}
-.slayerDefined {
-  background-color: black;
-  color: white;
-  box-sizing: border-box;
-  height: calc(100vh - 20px);
-}
-.slayerUndefined {
-  background-color: black;
-  color: white;
-  box-sizing: border-box;
-  min-height: calc(100vh - 20px);
-}
-
-:host {
+  display: flex;
+  flex-direction: column;
   background-color: black;
   color: white;
   box-sizing: border-box;
   flex: 1;
   height: calc(100vh);
+
 }
+
+.joined {
+  // height: min-content;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+.playerSection {
+  background-color: black;
+  color: white;
+  // height: 20px;
+  height: min-content;
+}
+.slayerDefined {
+  background-color: black;
+  color: white;
+  box-sizing: border-box;
+  // height: calc(100vh - 20px);
+  // height: min-content;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+.slayerUndefined {
+  background-color: black;
+  color: white;
+  box-sizing: border-box;
+  // min-height: calc(100vh - 20px);
+}
+
 
 .title {
   position: relative;
@@ -224,10 +237,14 @@
     }
   }
 
-  .advances {
+
+
+  .advances, .inventory {
     display: flex;
     justify-content: start;
     padding: 10px;
+      border-bottom: 1px solid gray;
+
     .advance{
       flex-grow: 0;
       .advanceName {
@@ -239,6 +256,11 @@
     }
   }
 
+
   .bottomHalf {
     // height: 500px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
   }

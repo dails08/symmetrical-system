@@ -7,6 +7,7 @@ import { IJoinOptions } from '../../../../../common/common';
 import { EMessageTypes, IBaseMsg, IJoinResponseMsg, ISaveCampaignMsg, IUpdateNumericalMsg, ICharacterUpdateMsg, IArrayChangeMsg } from "../../../../../common/messageFormat";
 import { Router } from '@angular/router';
 import { CentralService } from './central-service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +29,8 @@ export class ColyseusService {
     private router: Router,
     private cs: CentralService
   ) {
-    this.client = new Client("http://localhost:2567");
-    // this.client = new Client("http://192.168.99.137:2567");
+    // this.client = new Client("http://localhost:2567");
+    this.client = new Client(environment.colyseusServer);
 
     console.log(this.client);
     // const joinOptions: IJoinOptions = {

@@ -1,6 +1,9 @@
 :host {
     // max-height:100%;
-    aspect-ratio: 1/1;
+    // aspect-ratio: 1/1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .topRow {
@@ -25,9 +28,10 @@
 }
 
 .controlsRow {
+  flex: 1;
     display: flex;
     justify-content: space-between;
-    height: calc(100vh - 372px);
+    // height: calc(100vh - 372px);
     overflow-y: scroll;
 
     .plansDisplay {
@@ -35,7 +39,7 @@
         flex-direction: column;
         // flex-flow: column wrap;
         justify-content: start;
-        height: calc(100vh - 372px);
+        // height: calc(100vh - 372px);
     overflow-y: scroll;
     width: 100%;
     flex-flow: wrap;
@@ -51,11 +55,11 @@
     }
 
     .controlRightHalf {
-        display: flex;
-        height: calc(100vh - 372px);
-    overflow-y: scroll;
-        max-width: 200px;
-    width: 100%;
+      display: flex;
+      // height: calc(100vh - 372px);
+      overflow-y: scroll;
+      max-width: 200px;
+      width: 100%;
     }
 
 
