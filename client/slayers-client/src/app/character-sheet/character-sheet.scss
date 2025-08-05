@@ -14,7 +14,7 @@
   background-color: black;
   color: white;
   box-sizing: border-box;
-  min-height: calc(100vh - 20px);
+  height: calc(100vh - 20px);
 }
 .slayerUndefined {
   background-color: black;
@@ -28,6 +28,7 @@
   color: white;
   box-sizing: border-box;
   flex: 1;
+  height: calc(100vh);
 }
 
 .title {
@@ -239,5 +240,5 @@
   }
 
   .bottomHalf {
-    height: 500px;
+    // height: 500px;
   }

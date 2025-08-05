@@ -27,13 +27,20 @@
 .controlsRow {
     display: flex;
     justify-content: space-between;
+    height: calc(100vh - 372px);
+    overflow-y: scroll;
 
     .plansDisplay {
         display: flex;
         flex-direction: column;
-        flex-flow: column wrap;
+        // flex-flow: column wrap;
         justify-content: start;
-        
+        height: calc(100vh - 372px);
+    overflow-y: scroll;
+    width: 100%;
+    flex-flow: wrap;
+
+
         .plan {
             height: 4rem;
             width: 4rem;
@@ -45,6 +52,10 @@
 
     .controlRightHalf {
         display: flex;
+        height: calc(100vh - 372px);
+    overflow-y: scroll;
+        max-width: 200px;
+    width: 100%;
     }
 
 
