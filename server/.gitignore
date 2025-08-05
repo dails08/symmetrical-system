@@ -3,4 +3,9 @@ build
 .colyseus-cloud.json
 .devmode.json
 creds/*
+<<<<<<< HEAD
+.env
 .env*
+
+# colyseus
+.colyseus-cloud.json
