@@ -4,6 +4,7 @@ import { monitor } from "@colyseus/monitor";
 import { playground } from "@colyseus/playground";
 import { logger } from "colyseus";
 import { Request, Response, NextFunction } from "express";
+import express from "express";
 
 /**
  * Import your Room files

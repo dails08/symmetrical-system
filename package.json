@@ -1,0 +1,23 @@
+{
+  "name": "symmetrical-system",
+  "version": "1.0.0",
+  "description": "Slayer character sheet app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-webapp": "cd client/slayers-client && ng build",
+    "build-server": "cd server && npm run build",
+    "copy-webapp-files": "cp -r client/slayers-client/dist/slayers-client server/build/webapp",
+    "build-deployment": "npm run build-webapp && npm run build-server && npm run copy-webapp-files"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dails08/symmetrical-system.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dails08/symmetrical-system/issues"
+  },
+  "homepage": "https://github.com/dails08/symmetrical-system#readme"
+}
