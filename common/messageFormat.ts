@@ -26,8 +26,10 @@ export enum EMessageTypes {
     setEnhanced,
     setFavoredSpell,
     setRecentRolls,
+    swapRoll,
     // overlay message types
-    playAnimation
+    playAnimation,
+    playRollSwap,
 }
 
 export interface IBaseMsg {
@@ -170,4 +172,21 @@ export interface ISetRecentRolls extends IBaseMsg {
 export interface IPlayAnimationMsg extends IBaseMsg {
     kind: EMessageTypes.playAnimation,
     key: string
+}
+
+export interface IPlayRollSwapMsg extends IBaseMsg {
+    kind: EMessageTypes.playRollSwap,
+    actor: string,
+    action: string,
+    oldValue: number,
+    newValue: number
+}
+
+// Tactician related
+
+export interface ISwapRollMsg extends IBaseMsg {
+    kind: EMessageTypes.swapRoll,
+    rollIx: number,
+    planValue: number,
+    action: string,
 }

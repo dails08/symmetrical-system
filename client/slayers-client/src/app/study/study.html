@@ -1,89 +1,119 @@
 @let slayer = cs.slayer;
-<div class="slayerDefined" *ngIf="slayer">
+@if (slayer) {
+  <div class="slayerDefined">
     <div class="topHalf">
-        <p>{{cs.player.displayName}}</p>
-        <p>{{slayer.name}}</p>
-        <p>{{slayer.class}}</p>
-        <p>HP: {{slayer.currentHP}}/{{slayer.maxHP}}</p>
-        <p>{{slayer.speed}}</p>
-        <p>{{slayer.damage}}</p>
-        <div class="skills">
-            <span>Agile: {{slayer.skillsAgile}} </span>
-            <span>Brawn: {{slayer.skillsBrawn}} </span>
-            <span>Deceive: {{slayer.skillsDeceive}} </span>
-            <span>Hunt: {{slayer.skillsHunt}} </span>
-            <span>Mend: {{slayer.skillsMend}} </span>
-            <span>Negotiate: {{slayer.skillsNegotiate}} </span>
-            <span>Street: {{slayer.skillsStreet}} </span>
-            <span>Stealth: {{slayer.skillsStealth}} </span>
-            <span>Study: {{slayer.skillsStudy}} </span>
-            <span>Tactics: {{slayer.skillsTactics}} </span>
+      <p>{{cs.player.displayName}}</p>
+      <p>{{slayer.name}}</p>
+      <p>{{slayer.class}}</p>
+      <p>HP: {{slayer.currentHP}}/{{slayer.maxHP}}</p>
+      <p>{{slayer.speed}}</p>
+      <p>{{slayer.damage}}</p>
+      <div class="skills">
+        <span>Agile: {{slayer.skillsAgile}} </span>
+        <span>Brawn: {{slayer.skillsBrawn}} </span>
+        <span>Deceive: {{slayer.skillsDeceive}} </span>
+        <span>Hunt: {{slayer.skillsHunt}} </span>
+        <span>Mend: {{slayer.skillsMend}} </span>
+        <span>Negotiate: {{slayer.skillsNegotiate}} </span>
+        <span>Street: {{slayer.skillsStreet}} </span>
+        <span>Stealth: {{slayer.skillsStealth}} </span>
+        <span>Study: {{slayer.skillsStudy}} </span>
+        <span>Tactics: {{slayer.skillsTactics}} </span>
+      </div>
+      @if (slayer.class == playbooks.Blade) {
+        <div class="bladeData">
+          @let castSlayer = slayer | asBlade;
+          <div class="stance">
+            <p>Stance: {{castSlayer.stance}}</p>
+            <p>{{castSlayer.weaponNumber}}d{{castSlayer.weaponSides}}</p>
+          </div>
         </div>
-        <div class="bladeData" *ngIf="slayer.class == playbooks.Blade">
-            @let castSlayer = slayer | asBlade;
-            <div class="stance">
-                <p>Stance: {{castSlayer.stance}}</p>
-                <p>{{castSlayer.weaponNumber}}d{{castSlayer.weaponSides}}</p>
+      }
+      @if (slayer.class == playbooks.Gunslinger) {
+        <div class="gunslingerData">
+          @let castSlayer = slayer | asGunslinger;
+          <div class="chambers">
+            <div class="chamber1">
+              <p>1: @if (castSlayer.chamber1Rune != 'none') {
+                <span>{{castSlayer.chamber1Rune}}: </span>
+              }{{castSlayer.chamber1Loaded}}</p>
             </div>
+            <div class="chamber1">
+              <p>2: @if (castSlayer.chamber2Rune != 'none') {
+                <span>{{castSlayer.chamber2Rune}}: </span>
+              }{{castSlayer.chamber2Loaded}}</p>
+            </div>
+            <div class="chamber1">
+              <p>3: @if (castSlayer.chamber3Rune != 'none') {
+                <span>{{castSlayer.chamber3Rune}}: </span>
+              }{{castSlayer.chamber3Loaded}}</p>
+            </div>
+            <div class="chamber1">
+              <p>4: @if (castSlayer.chamber4Rune != 'none') {
+                <span>{{castSlayer.chamber4Rune}}: </span>
+              }{{castSlayer.chamber4Loaded}}</p>
+            </div>
+            <div class="chamber1">
+              <p>5: @if (castSlayer.chamber5Rune != 'none') {
+                <span>{{castSlayer.chamber5Rune}}: </span>
+              }{{castSlayer.chamber5Loaded}}</p>
+            </div>
+            <div class="chamber1">
+              <p>6: @if (castSlayer.chamber6Rune != 'none') {
+                <span>{{castSlayer.chamber6Rune}}: </span>
+              }{{castSlayer.chamber6Loaded}}</p>
+            </div>
+          </div>
         </div>
-        <div class="gunslingerData" *ngIf="slayer.class == playbooks.Gunslinger">
-            @let castSlayer = slayer | asGunslinger;
-            <div class="chambers">
-                <div class="chamber1">
-                    <p>1: <span *ngIf="castSlayer.chamber1Rune != 'none'">{{castSlayer.chamber1Rune}}: </span>{{castSlayer.chamber1Loaded}}</p>
-                </div>
-                <div class="chamber1">
-                    <p>2: <span *ngIf="castSlayer.chamber2Rune != 'none'">{{castSlayer.chamber2Rune}}: </span>{{castSlayer.chamber2Loaded}}</p>
-                </div>
-                <div class="chamber1">
-                    <p>3: <span *ngIf="castSlayer.chamber3Rune != 'none'">{{castSlayer.chamber3Rune}}: </span>{{castSlayer.chamber3Loaded}}</p>
-                </div>
-                <div class="chamber1">
-                    <p>4: <span *ngIf="castSlayer.chamber4Rune != 'none'">{{castSlayer.chamber4Rune}}: </span>{{castSlayer.chamber4Loaded}}</p>
-                </div>
-                <div class="chamber1">
-                    <p>5: <span *ngIf="castSlayer.chamber5Rune != 'none'">{{castSlayer.chamber5Rune}}: </span>{{castSlayer.chamber5Loaded}}</p>
-                </div>
-                <div class="chamber1">
-                    <p>6: <span *ngIf="castSlayer.chamber6Rune != 'none'">{{castSlayer.chamber6Rune}}: </span>{{castSlayer.chamber6Loaded}}</p>
-                </div>
-            </div>
+      }
+      @if (slayer.class == playbooks.Arcanist) {
+        <div class="arcanistData">
+          @let castSlayer = slayer | asArcanist;
+          <div class="stance">
+            <p>Corruption: {{castSlayer.corruption}}</p>
+          </div>
+          <div class="favoredSpell">
+            <p>Favored Spell: {{castSlayer.favoredSpell}}</p>
+          </div>
+          <div class="knownSpells">
+            @for (knownSpell of castSlayer.knownSpells; track knownSpell) {
+              <p>{{knownSpell | json}}</p>
+            }
+          </div>
         </div>
-        <div class="arcanistData" *ngIf="slayer.class == playbooks.Arcanist">
-            @let castSlayer = slayer | asArcanist;
-            <div class="stance">
-                <p>Corruption: {{castSlayer.corruption}}</p>
-            </div>
-            <div class="favoredSpell">
-                <p>Favored Spell: {{castSlayer.favoredSpell}}</p>
-            </div>
-            <div class="knownSpells">
-                <p *ngFor="let knownSpell of castSlayer.knownSpells">{{knownSpell | json}}</p>
-            </div>
+      }
+      @if (slayer.class == playbooks.Tactician) {
+        <div class="tacticianData">
+          @let castSlayer = slayer | asTactician;
+          <div class="plans">
+            <p>plans: @for (plan of castSlayer.plans; track plan) {
+              <span class="plan">{{plan}} </span>
+            }</p>
+          </div>
         </div>
-        <div class="tacticianData" *ngIf="slayer.class == playbooks.Tactician">
-            @let castSlayer = slayer | asTactician;
-            <div class="plans">
-                <p>plans: <span class="plan" *ngFor="let plan of castSlayer.plans">{{plan}} </span></p>
-            </div>
-        </div>
-        <div class="advances">
-            <div class="advance" *ngFor="let advance of slayer.advances.toArray()">
-                <p>Name: {{advance.name}}</p>
-                <p>Desc: {{advance.desc}}</p>
-            </div>
-        </div>
+      }
+      <div class="advances">
+        @for (advance of slayer.advances.toArray(); track advance) {
+          <div class="advance">
+            <p>Name: {{advance.name}}</p>
+            <p>Desc: {{advance.desc}}</p>
+          </div>
+        }
+      </div>
     </div>
-</div>
-<div class="slayerUndefined" *ngIf="!cs.slayer">
+  </div>
+}
+@if (!cs.slayer) {
+  <div class="slayerUndefined">
     <p>No Slayer assigned</p>
-</div>
+  </div>
+}
 
 <div class="bottomHalf">
-    <div class="controls">
-        <button (click)="sendTakeDamage(1)">Take Damage</button>
-        <button (click)="sendSaveCampaign()">Save Campaign</button>
-        <!-- <button (click)="addDefaultRoster()">Add Default Roster</button> -->
-    </div>
+  <div class="controls">
+    <button (click)="sendTakeDamage(1)">Take Damage</button>
+    <button (click)="sendSaveCampaign()">Save Campaign</button>
+    <!-- <button (click)="addDefaultRoster()">Add Default Roster</button> -->
+  </div>
 </div>
 

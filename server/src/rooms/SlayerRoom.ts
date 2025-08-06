@@ -2,7 +2,7 @@ import { Room, Client, logger, debugMessage } from "@colyseus/core";
 import { SlayerRoomState, Advance, Player, Slayer, Blade, Tactician, Gunslinger, Arcanist, InventoryItem, KnownSpell, RecentRoll } from "../SlayerRoomState";
 import { EPlaybooks, ICampaign, IJoinOptions, ISlayer, IBlade, IGunslinger, IArcanist, ITactician } from "../../../common/common";
 import { Clint, Ryze, Cervantes, Gene} from "../../../common/examples";
-import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg, IWeaponChangeMsg, IAddPlanMsg, IRemovePlanMsg, IAddSpellMsg, IRemoveSpellMsg, ISetEnhancedMsg, ISetFavoredSpell, IPlayAnimationMsg } from "../../../common/messageFormat";
+import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg, IWeaponChangeMsg, IAddPlanMsg, IRemovePlanMsg, IAddSpellMsg, IRemoveSpellMsg, ISetEnhancedMsg, ISetFavoredSpell, IPlayAnimationMsg, ISwapRollMsg, IPlayRollSwapMsg } from "../../../common/messageFormat";
 import { db } from "../firestoreConnection";
 import { v4 as uuidv4 } from "uuid";
 
@@ -133,6 +133,14 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     const clientPlayer = this.sessionIdToPlayer(client.sessionId);
     const assignment = this.state.currentAssignments.get(clientPlayer.id)
     return assignment.id == slayer.id;
+  }
+
+  sendOverlayMessage(msg: IBaseMsg) {
+    for (let overlay of this.overlayClients){
+      console.log("Forwarding message to overlay: " + JSON.stringify(msg));
+      overlay.send(msg.kind, msg);
+    }
+
   }
 
   onCreate (options: any) {
@@ -488,7 +496,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
         if (slayer.class == EPlaybooks.Tactician){
           if (this.isGM(client) || this.controlsCharacter(client, slayer)){
             const classedSlayer = slayer as Tactician;
-            classedSlayer.plans.splice(msg.planIx);
+            classedSlayer.plans.splice(msg.planIx, 1);
           } else {
             console.log("Not authorized to!");
           }
@@ -603,6 +611,46 @@ export class SlayerRoom extends Room<SlayerRoomState> {
         console.log("Not authorized!");
       }
     })
+
+    this.onMessage(EMessageTypes.swapRoll, (client, msg: ISwapRollMsg) => {
+      const player = this.sessionIdToPlayer(client.sessionId);
+      const targetRoll = this.state.recentRolls[msg.rollIx];
+      const playSwapMsg: IPlayRollSwapMsg = {
+        kind: EMessageTypes.playRollSwap,
+        action: targetRoll.rollName,
+        actor: targetRoll.actor,
+        oldValue: targetRoll.value,
+        newValue: msg.planValue
+      }
+      console.log("Target roll: " + JSON.stringify(this.state.recentRolls[msg.rollIx]));
+      if (
+        this.isGM(client) ||
+        this.state.currentAssignments.get(player.id).class == EPlaybooks.Tactician &&
+        (this.state.currentAssignments.get(player.id) as Tactician).plans.includes(msg.planValue)
+      ){
+        if (this.isGM(client)){
+          console.log("Request comes from a GM");
+        } else {
+          console.log("Request comes from eligible Tactician");
+          const tacticianSlayer = (this.state.currentAssignments.get(player.id) as Tactician);
+          const planIx = tacticianSlayer.plans.indexOf(msg.planValue);
+          tacticianSlayer.plans.splice(planIx, 1);  
+        }
+        if (msg.action == "swap" || msg.action == "neutral"){
+          this.state.recentRolls[msg.rollIx].value = Math.min(6, msg.planValue);
+          playSwapMsg.newValue = this.state.recentRolls[msg.rollIx].value;
+        } else if (msg.action == "add") {
+          this.state.recentRolls[msg.rollIx].value = Math.min(6, (this.state.recentRolls[msg.rollIx].value + msg.planValue));
+          playSwapMsg.newValue = this.state.recentRolls[msg.rollIx].value;
+        } else if (msg.action == "subtract") {
+          this.state.recentRolls[msg.rollIx].value = Math.max(1, (this.state.recentRolls[msg.rollIx].value - msg.planValue));
+          playSwapMsg.newValue = this.state.recentRolls[msg.rollIx].value;
+        }
+        this.sendOverlayMessage(playSwapMsg);
+        console.log(JSON.stringify(this.state.recentRolls));
+      } 
+
+    });
     
 
 

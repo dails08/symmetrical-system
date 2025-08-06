@@ -85,6 +85,7 @@
     justify-content: center;
     border: 1px solid white;
     border-radius: 10px;
+    overflow: hidden;
 }
 
 .add {
@@ -139,7 +140,7 @@
 .recentRolls {
     display: flex;
     flex-direction: column;
-
+    width:100%;
 
     .recentRoll {
         flex: 1;

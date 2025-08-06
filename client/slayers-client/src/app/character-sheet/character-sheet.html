@@ -1,6 +1,8 @@
-<div class="unjoined" *ngIf="this.cjs.roomType == 'lobby'">
-    <app-join-screen></app-join-screen>
-</div>
+@if (this.cjs.roomType == "lobby"){
+    <div class="unjoined">
+        <app-join-screen></app-join-screen>
+    </div>    
+}
 <div class="playerSection">
     <p>{{this.cs.player.displayName}} <span class="playerId">({{cs.player.id}})</span></p>
 </div>
@@ -17,7 +19,10 @@
               <div class="barcontent">
               </div>
               <!-- <div class="gutters"> -->
-                  <div *ngFor="let _ of [].constructor(slayer.maxHP + 1); let ix = index" class="segment" [style.left]="'calc('+100*(ix)/slayer.maxHP+'%)'"></div>
+                @for (_ of [].constructor(slayer.maxHP + 1);let ix = $index;  track _){
+                    <div  class="segment" [style.left]="'calc('+100*(ix)/slayer.maxHP+'%)'"></div>
+                }
+                  <!-- <div *ngFor="let _ of [].constructor(slayer.maxHP + 1); let ix = index" class="segment" [style.left]="'calc('+100*(ix)/slayer.maxHP+'%)'"></div> -->
                   <div class="segment halfhp" [style.left]="'calc(50% + 1px)'"></div>
               <!-- </div> -->
             </div>
@@ -96,17 +101,23 @@
 
 
             <div class="advances">
-                <div class="advance" *ngFor="let advance of slayer.advances.toArray()">
-                    <ng-template class="advancePopover" #advancePopover>{{advance.desc}}</ng-template>
-                    <p [tp]="advancePopover" tpVariation="popover" tpTrigger="click" class="advanceName">{{advance.name}}</p>
-                </div>
+                @for (advance of slayer.advances.toArray(); track advance.name){
+                    <div class="advance">
+                        <ng-template class="advancePopover" #advancePopover>{{advance.desc}}</ng-template>
+                        <p [tp]="advancePopover" tpVariation="popover" tpTrigger="click" class="advanceName">{{advance.name}}</p>
+                    </div>    
+                }
             </div>
-            <div class="inventory" *ngIf="slayer.inventory.length > 0">
-                <div class="advance" *ngFor="let invItem of slayer.inventory.toArray()">
-                    <ng-template class="advancePopover" #advancePopover>{{invItem.desc}}</ng-template>
-                    <p [tp]="advancePopover" tpVariation="popover" tpTrigger="click" class="advanceName">{{invItem.name}}</p>
-                </div>
-            </div>
+            @if (slayer.inventory.length > 0){
+                <div class="inventory" >
+                    @for (invItem of slayer.inventory.toArray(); track invItem.name){
+                        <div class="advance">
+                            <ng-template class="advancePopover" #advancePopover>{{invItem.desc}}</ng-template>
+                            <p [tp]="advancePopover" tpVariation="popover" tpTrigger="click" class="advanceName">{{invItem.name}}</p>
+                        </div>    
+                    }
+                </div>    
+            }
         </div>
         <div class="bottomHalf">
             <div class="bladeData" *ngIf="slayer.class == playbooks.Blade">

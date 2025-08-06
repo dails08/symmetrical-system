@@ -5,6 +5,7 @@ import { ColyseusService } from '../../services/colyseusService';
 import { getStateCallbacks,  } from 'colyseus.js';
 import { ArraySchema } from "@colyseus/schema";
 import { DragDropModule, CdkDragDrop } from '@angular/cdk/drag-drop';
+import { EMessageTypes, ISwapRollMsg } from '../../../../../../common/messageFormat';
 
 @Component({
   selector: 'app-char-sheet-tactician',
@@ -93,9 +94,19 @@ export class CharSheetTactician {
     this.mode = entry;
   }
 
-  dropRoll(event: CdkDragDrop<number[]>, toReplace: RecentRoll){
+  dropRoll(event: CdkDragDrop<number[]>, rollIx: number, toReplace: RecentRoll){
     console.log(event.item.data);
     console.log(toReplace);
+
+    const msg: ISwapRollMsg = {
+      kind: EMessageTypes.swapRoll,
+      rollIx: rollIx,
+      planValue: event.item.data,
+      action: this.mode
+    };
+
+    this.cjs.sendMessage(msg);
+    this.mode = "neutral";
   }
 
   noDrop(){
