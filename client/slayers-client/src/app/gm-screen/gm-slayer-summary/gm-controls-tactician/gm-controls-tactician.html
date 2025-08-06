@@ -13,7 +13,7 @@
   <p>Current contingencies:</p>
   <div cdkDropList (cdkDropListDropped)="addPlan($event)" [cdkDropListConnectedTo]="[newPlans]" id="currentPlans" #currentPlans="cdkDropList" class="plans">
     <mat-chip-set #chipGrid>
-      @for (plan of slayer.plans.toArray(); track plan; let ix = $index) {
+      @for (plan of slayer.plans.toArray(); track $index; let ix = $index) {
         <mat-chip cdkDrag>
           {{plan}}
           <button matChipRemove (click)="removePlan(ix)"><mat-icon>cancel</mat-icon></button>

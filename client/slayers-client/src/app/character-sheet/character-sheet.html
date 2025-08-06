@@ -1,7 +1,7 @@
 @if (this.cjs.roomType == "lobby"){
     <div class="unjoined">
         <app-join-screen></app-join-screen>
-    </div>    
+    </div>
 }
 <div class="playerSection">
     <p>{{this.cs.player.displayName}} <span class="playerId">({{cs.player.id}})</span></p>
@@ -19,7 +19,7 @@
               <div class="barcontent">
               </div>
               <!-- <div class="gutters"> -->
-                @for (_ of [].constructor(slayer.maxHP + 1);let ix = $index;  track _){
+                @for (_ of [].constructor(slayer.maxHP + 1);let ix = $index;  track $index){
                     <div  class="segment" [style.left]="'calc('+100*(ix)/slayer.maxHP+'%)'"></div>
                 }
                   <!-- <div *ngFor="let _ of [].constructor(slayer.maxHP + 1); let ix = index" class="segment" [style.left]="'calc('+100*(ix)/slayer.maxHP+'%)'"></div> -->
@@ -105,7 +105,7 @@
                     <div class="advance">
                         <ng-template class="advancePopover" #advancePopover>{{advance.desc}}</ng-template>
                         <p [tp]="advancePopover" tpVariation="popover" tpTrigger="click" class="advanceName">{{advance.name}}</p>
-                    </div>    
+                    </div>
                 }
             </div>
             @if (slayer.inventory.length > 0){
@@ -114,9 +114,9 @@
                         <div class="advance">
                             <ng-template class="advancePopover" #advancePopover>{{invItem.desc}}</ng-template>
                             <p [tp]="advancePopover" tpVariation="popover" tpTrigger="click" class="advanceName">{{invItem.name}}</p>
-                        </div>    
+                        </div>
                     }
-                </div>    
+                </div>
             }
         </div>
         <div class="bottomHalf">

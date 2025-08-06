@@ -9,7 +9,7 @@
 </div>
 <div class="controlsRow" cdkDropListGroup>
   <div class="plansDisplay" cdkDropList (cdkDropListEntered)="enter('neutral')">
-    @for (plan of slayer.plans; track plan) {
+    @for (plan of slayer.plans; track $index) {
       <div class="plan" cdkDrag [cdkDragData]="plan" cdkDragPreviewContainer="parent"  cdkDragBoundary=".controlsRow">
         {{plan}}
         <div class="plan-preview" [ngClass]="mode" *cdkDragPreview >{{plan}}</div>
@@ -21,14 +21,14 @@
     <div class="actions" >
       @if (this.hasShift) {
         <div id="add" cdkDropList (cdkDropListEntered)="enter('add')" class="action"><p>Add</p></div>
-      
+
       <div id="swap" cdkDropList (cdkDropListEntered)="enter('swap')"  class="action"><p>Swap</p></div>
       <!-- @if (this.hasShift) { -->
         <div id="subtract" cdkDropList (cdkDropListEntered)="enter('subtract')" class="action"><p>Sub</p></div>
       }
     </div>
     <div class="recentRolls">
-      @for (recentRoll of recentRolls; track recentRoll; let ix = $index) {
+      @for (recentRoll of recentRolls; track $index; let ix = $index) {
         <div class="recentRoll" cdkDropList (cdkDropListDropped)="dropRoll($event, ix, recentRoll)">
           <p>{{recentRoll.actor}}: {{recentRoll.rollName}}</p>
           <p>{{recentRoll.value}}</p>
