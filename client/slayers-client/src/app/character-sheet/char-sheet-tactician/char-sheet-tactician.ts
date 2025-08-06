@@ -4,11 +4,13 @@ import { Tactician, Player, RecentRoll, SlayerRoomState } from '../../../../../.
 import { ColyseusService } from '../../services/colyseusService';
 import { getStateCallbacks,  } from 'colyseus.js';
 import { ArraySchema } from "@colyseus/schema";
+import { DragDropModule, CdkDragDrop } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-char-sheet-tactician',
   imports: [
     CommonModule,
+    DragDropModule
   ],
   templateUrl: './char-sheet-tactician.html',
   styleUrl: './char-sheet-tactician.scss'
@@ -24,6 +26,8 @@ export class CharSheetTactician {
   prepCount: number = 0;
 
   recentRolls: RecentRoll[] = [];
+
+  mode: "add" | "swap" | "subtract" | "neutral" = "neutral";
   
 
   checkAdvances(){
@@ -82,6 +86,20 @@ export class CharSheetTactician {
       // $(room.state).bindTo(this.recentRolls,["recentRolls"]);
     })  
     
+  }
+
+  enter(entry: "add" | "swap" | "subtract" | "neutral"){
+    console.log(entry);
+    this.mode = entry;
+  }
+
+  dropRoll(event: CdkDragDrop<number[]>, toReplace: RecentRoll){
+    console.log(event.item.data);
+    console.log(toReplace);
+  }
+
+  noDrop(){
+    return false;
   }
 
 

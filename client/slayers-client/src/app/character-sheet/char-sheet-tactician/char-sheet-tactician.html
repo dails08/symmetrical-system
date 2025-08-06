@@ -5,18 +5,22 @@
     <div class="shootStab topOption"><p>Shoot/Stab</p></div>
     <div class="roll topOption" *ngIf="hasRally"><p>Roll Plan</p></div>
 </div>
-<div class="controlsRow">
-    <div class="plansDisplay">
-        <div class="plan" *ngFor="let plan of slayer.plans">{{plan}}</div>
+<div class="controlsRow" cdkDropListGroup>
+    <div class="plansDisplay" cdkDropList (cdkDropListEntered)="enter('neutral')">
+        <div class="plan" cdkDrag [cdkDragData]="plan" cdkDragPreviewContainer="parent"  cdkDragBoundary=".controlsRow" *ngFor="let plan of slayer.plans">
+            {{plan}}
+            <div class="plan-preview" [ngClass]="mode" *cdkDragPreview >{{plan}}</div>
+            <div class="plan-placeholder" *cdkDragPlaceholder></div>
+        </div>
     </div>
     <div class="controlRightHalf">
-        <div class="actions">
-            <div id="add" *ngIf="this.hasShift" class="action"><p>Add</p></div>
-            <div id="swap" class="action"><p>Swap</p></div>
-            <div id="subtract" *ngIf="this.hasShift" class="action"><p>Sub</p></div>
+        <div class="actions" >
+            <div id="add" cdkDropList (cdkDropListEntered)="enter('add')" *ngIf="this.hasShift" class="action"><p>Add</p></div>
+            <div id="swap" cdkDropList (cdkDropListEntered)="enter('swap')"  class="action"><p>Swap</p></div>
+            <div id="subtract" cdkDropList (cdkDropListEntered)="enter('subtract')" *ngIf="this.hasShift" class="action"><p>Sub</p></div>
         </div>
         <div class="recentRolls">
-            <div class="recentRoll" *ngFor="let recentRoll of recentRolls">
+            <div class="recentRoll" cdkDropList (cdkDropListDropped)="dropRoll($event, recentRoll)" *ngFor="let recentRoll of recentRolls">
                 <p>{{recentRoll.actor}}: {{recentRoll.rollName}}</p>
                 <p>{{recentRoll.value}}</p>
             </div>

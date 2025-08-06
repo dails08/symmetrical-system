@@ -45,13 +45,7 @@
     flex-flow: wrap;
 
 
-        .plan {
-            height: 4rem;
-            width: 4rem;
-            font-size: 4rem;
-            text-align: center;
-            margin: 10px;
-        }
+        
     }
 
     .controlRightHalf {
@@ -65,6 +59,56 @@
 
 }
 
+.plan {
+    height: 4rem;
+    width: 4rem;
+    font-size: 4rem;
+    text-align: center;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid white;
+    border-radius: 10px;
+    background-color: black;
+
+}
+
+.plan-preview {
+    height: 4rem;
+    width: 4rem;
+    font-size: 4rem;
+    text-align: center;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid white;
+    border-radius: 10px;
+}
+
+.add {
+    background-color: darkgreen;
+}
+
+.swap {
+    background-color: yellowgreen;
+}
+
+.subtract {
+    background-color: darkred;
+}
+
+.neutral {
+    background-color: black;
+}
+
+
+.plan-placeholder {
+    // flex-shrink: 0;
+    position: absolute;
+    // visibility: hidden;
+}
 .actions {
     display: flex;
     flex-direction: column;
