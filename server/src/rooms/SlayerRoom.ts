@@ -2,9 +2,10 @@ import { Room, Client, logger, debugMessage } from "@colyseus/core";
 import { SlayerRoomState, Advance, Player, Slayer, Blade, Tactician, Gunslinger, Arcanist, InventoryItem, KnownSpell, RecentRoll } from "../SlayerRoomState";
 import { EPlaybooks, ICampaign, IJoinOptions, ISlayer, IBlade, IGunslinger, IArcanist, ITactician } from "../../../common/common";
 import { Clint, Ryze, Cervantes, Gene} from "../../../common/examples";
-import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg, IWeaponChangeMsg, IAddPlanMsg, IRemovePlanMsg, IAddSpellMsg, IRemoveSpellMsg, ISetEnhancedMsg, ISetFavoredSpell, IPlayAnimationMsg, ISwapRollMsg, IPlayRollSwapMsg } from "../../../common/messageFormat";
+import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg, IWeaponChangeMsg, IAddPlanMsg, IRemovePlanMsg, IAddSpellMsg, IRemoveSpellMsg, ISetEnhancedMsg, ISetFavoredSpell, IPlayAnimationMsg, ISwapRollMsg, IPlayRollSwapMsg, ISetRecentRolls } from "../../../common/messageFormat";
 import { db } from "../firestoreConnection";
 import { v4 as uuidv4 } from "uuid";
+import { reverse } from "dns";
 
 export class SlayerRoom extends Room<SlayerRoomState> {
   maxClients = 10;
@@ -135,12 +136,18 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     return assignment.id == slayer.id;
   }
 
+  setRecentRolls(rolls: {actor: string, action: string, value: number}[]){
+    this.state.recentRolls.clear();
+    for (let roll of rolls){
+      this.state.recentRolls.push(new RecentRoll(roll.actor, roll.action, roll.value))
+    }
+  }
+
   sendOverlayMessage(msg: IBaseMsg) {
     for (let overlay of this.overlayClients){
       console.log("Forwarding message to overlay: " + JSON.stringify(msg));
       overlay.send(msg.kind, msg);
     }
-
   }
 
   onCreate (options: any) {
@@ -267,7 +274,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     //     // this.campaign.roster.push(elem);
     //   }  
     // })
-
+  
     this.onMessage(EMessageTypes.Kill, (client, msg: IKillMsg) => {
       if (this.isGM(client)){
         console.log("Killing " + msg.characterId);
@@ -609,6 +616,15 @@ export class SlayerRoom extends Room<SlayerRoomState> {
         }
       } else {
         console.log("Not authorized!");
+      }
+    })
+
+    this.onMessage(EMessageTypes.setRecentRolls, (client, msg: ISetRecentRolls) => {
+      if (this.isGM(client)){
+        console.log("Setting rolls");
+        this.setRecentRolls(msg.rolls)
+      } else {
+        console.log("Only GMs authorized to set rolls externally!");
       }
     })
 

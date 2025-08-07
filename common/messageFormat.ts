@@ -163,8 +163,12 @@ export interface ISetFavoredSpell extends IBaseMsg {
 export interface ISetRecentRolls extends IBaseMsg {
     kind: EMessageTypes.setRecentRolls,
     rolls: {
+        actor: string,
+        action: string,
+        value: number
+    }[]
         
-    }
+    
 }
 
 // Overlay message format

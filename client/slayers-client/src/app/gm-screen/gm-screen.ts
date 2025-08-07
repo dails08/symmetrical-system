@@ -5,7 +5,7 @@ import { Cervantes, Clint } from "../../../../../common/examples";
 import { ColyseusService } from '../services/colyseusService';
 import { Slayer, Blade, Gunslinger, Arcanist, Tactician, KnownSpell, Advance, Player } from '../../../../../server/src/SlayerRoomState';
 import { CentralService } from '../services/central-service';
-import { EMessageTypes, IAssignmentMsg, IBaseMsg, ICharacterUpdateMsg, IKillMsg, IPlayAnimationMsg, IPlayerUpdateMsg, IRosterAddMsg, ISaveCampaignMsg, IUpdateNumericalMsg } from '../../../../../common/messageFormat';
+import { EMessageTypes, IAssignmentMsg, IBaseMsg, ICharacterUpdateMsg, IKillMsg, IPlayAnimationMsg, IPlayerUpdateMsg, IRosterAddMsg, ISaveCampaignMsg, ISetRecentRolls, IUpdateNumericalMsg } from '../../../../../common/messageFormat';
 import { BladePipe, GunslingerPipe, ArcanistPipe, TacticianPipe } from "../classPipes";
 import { getStateCallbacks } from 'colyseus.js';
 import { GmSlayerSummary } from "./gm-slayer-summary/gm-slayer-summary";
@@ -184,7 +184,22 @@ export class GmScreen {
       }
 
       sendRecentRolls(actor: string, name: string, value: string, multiple: string){
+        const mult = parseInt(multiple);
+        const rolls = [];
+        for (const _ of [].constructor(mult)){
+          rolls.push({
+            actor: actor,
+            action: name,
+            value: parseInt(value)
+          })
+        }
+        const msg: ISetRecentRolls = {
+          kind: EMessageTypes.setRecentRolls,
+          rolls: rolls
+        };
 
+        this.cjs.sendMessage(msg);
+        console.log("Sending recent rolls message");
       }
 
       alterChekhovPoints(playerId: String, newValue: number) {
