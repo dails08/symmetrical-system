@@ -4,7 +4,7 @@
     </div>
 }
 <div class="playerSection">
-    <p>{{this.cs.player.displayName}} <span class="playerId">({{cs.player.id}})</span></p>
+    <p> <span class="playerDisplayName">{{this.cs.player.displayName}} </span> <span class="playerId">({{cs.player.id}})</span></p>
 </div>
 <div class="joined" *ngIf="this.cjs.roomType == 'gameplay'">
     @let slayer = cs.slayer;
@@ -101,6 +101,7 @@
 
 
             <div class="advances">
+              <p class="rowLabel">advances</p>
                 @for (advance of slayer.advances.toArray(); track advance.name){
                     <div class="advance">
                         <ng-template class="advancePopover" #advancePopover>{{advance.desc}}</ng-template>
@@ -108,16 +109,17 @@
                     </div>
                 }
             </div>
-            @if (slayer.inventory.length > 0){
-                <div class="inventory" >
-                    @for (invItem of slayer.inventory.toArray(); track invItem.name){
-                        <div class="advance">
-                            <ng-template class="advancePopover" #advancePopover>{{invItem.desc}}</ng-template>
-                            <p [tp]="advancePopover" tpVariation="popover" tpTrigger="click" class="advanceName">{{invItem.name}}</p>
-                        </div>
-                    }
-                </div>
-            }
+              <div class="advances" >
+                  <p class="rowLabel">inventory</p>
+
+                  @for (invItem of slayer.inventory.toArray(); track invItem.name){
+                      <div class="advance">
+                          <ng-template class="advancePopover" #advancePopover>{{invItem.desc}}</ng-template>
+                          <p [tp]="advancePopover" tpVariation="popover" tpTrigger="click" class="advanceName">{{invItem.name}}</p>
+                      </div>
+                  }
+              </div>
+
         </div>
         <div class="bottomHalf">
             <div class="bladeData" *ngIf="slayer.class == playbooks.Blade">

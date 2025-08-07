@@ -25,6 +25,20 @@
   color: white;
   // height: 20px;
   height: min-content;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid gray;
+  padding: 2px 5px;
+  margin: 0px 20px;
+
+  .playerDisplayName, .playerId {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+  }
+
+  .playerId {
+    color: gray;
+  }
+
 }
 .slayerDefined {
   background-color: black;
@@ -81,14 +95,6 @@
 
   }
 }
-
-
-
-
-
-
-
-
 
 
 
@@ -237,13 +243,28 @@
     }
   }
 
+.rowLabel {
+  position: sticky;
+  font-family: "sarina";
+  color: gray;
+  margin-bottom: -100%;
+  z-index: 5;
+  // bottom: -20%;
+  font-size: 1rem;
+  transform:translateY(23px);
+  margin-right: -80px;
+}
 
 
-  .advances, .inventory {
+
+  .advances {
     display: flex;
     justify-content: start;
-    padding: 10px;
-      border-bottom: 1px solid gray;
+    padding-top: 5px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid gray;
+    height: 45px;
+
 
     .advance{
       flex-grow: 0;
