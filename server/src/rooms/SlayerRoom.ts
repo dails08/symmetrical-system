@@ -136,10 +136,12 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     return assignment.id == slayer.id;
   }
 
-  setRecentRolls(rolls: {actor: string, action: string, value: number}[]){
-    this.state.recentRolls.clear();
+  setRecentRolls(rolls: {actor: string, action: string, value: number}[], action: "add" | "set"){
+    if (action == "set"){
+      this.state.recentRolls.clear();
+    };
     for (let roll of rolls){
-      this.state.recentRolls.push(new RecentRoll(roll.actor, roll.action, roll.value))
+      this.state.recentRolls.push(new RecentRoll(roll.actor, roll.action, roll.value));
     }
   }
 
@@ -622,7 +624,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     this.onMessage(EMessageTypes.setRecentRolls, (client, msg: ISetRecentRolls) => {
       if (this.isGM(client)){
         console.log("Setting rolls");
-        this.setRecentRolls(msg.rolls)
+        this.setRecentRolls(msg.rolls, msg.action)
       } else {
         console.log("Only GMs authorized to set rolls externally!");
       }
@@ -663,7 +665,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
           playSwapMsg.newValue = this.state.recentRolls[msg.rollIx].value;
         }
         this.sendOverlayMessage(playSwapMsg);
-        console.log(JSON.stringify(this.state.recentRolls));
+        // console.log(JSON.stringify(this.state.recentRolls));
       } 
 
     });

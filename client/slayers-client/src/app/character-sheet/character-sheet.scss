@@ -188,6 +188,7 @@
     // height: 100px;
     width: 100%;
     border-bottom: 1px solid gray;
+    scrollbar-width: none;
 
     .skillsLabel {
       font-family: "sarina";
@@ -244,7 +245,7 @@
   }
 
 .rowLabel {
-  position: sticky;
+  position: absolute;
   font-family: "sarina";
   color: gray;
   z-index: 5;
@@ -263,6 +264,9 @@
     padding-bottom: 15px;
     border-bottom: 1px solid gray;
     height: 45px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
 
 
     .advance{

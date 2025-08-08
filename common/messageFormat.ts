@@ -162,6 +162,7 @@ export interface ISetFavoredSpell extends IBaseMsg {
 
 export interface ISetRecentRolls extends IBaseMsg {
     kind: EMessageTypes.setRecentRolls,
+    action: "add" | "set",
     rolls: {
         actor: string,
         action: string,

@@ -21,43 +21,73 @@
     </div>
 
     <div class="bottomHalf">
-        <div class="rostersSection">
-            <div cdkDropList id="rosterList" class="roster">
-                @for (slayer of roster; track slayer.id) {
-                    <div cdkDrag [cdkDragData]="slayer" class="slayer">
-                        <p>{{slayer.name}}, {{slayer.class}}</p>
-                    </div>    
-                }
-            </div>
+      <div class="controlsSection">
+        <div class="sectionLabel">
+          <p>Roster</p>
+        </div>
+        <div class="sectionContent">
+          <div class="rosterLists">
+          <p>Alive</p>
+          <div cdkDropList id="rosterList" class="roster">
+              @for (slayer of roster; track slayer.id) {
+                  <div cdkDrag [cdkDragData]="slayer" class="slayer">
+                      <p>{{slayer.name}}, {{slayer.class}}</p>
+                  </div>
+              }
+          </div>
 
-            <div cdkDropList
-            (cdkDropListDropped)="dropKill($event)"
-            id="kiaList"
-            class="roster">
-            @for (slayer of kia; track slayer.id) {
-                <div class="slayer" >
-                    <p>{{slayer.name}}, {{slayer.class}}</p>
-                </div>  
-            }
-            </div>
+          <p>KIA</p>
+          <div cdkDropList
+          (cdkDropListDropped)="dropKill($event)"
+          id="kiaList"
+          class="roster">
+
+          @for (slayer of kia; track slayer.id) {
+              <div class="slayer" >
+                  <p>{{slayer.name}}, {{slayer.class}}</p>
+              </div>
+          }
+          </div>
         </div>
         <div class="characterCreation">
-            <input matInput #newCharacterName placeholder="Slayer Name" >
-            <button matButton (click)="createNew('blade', newCharacterName.value)">Add Blade</button>
-            <button matButton (click)="createNew('gunslinger', newCharacterName.value)">Add Gunslinger</button>
-            <button matButton (click)="createNew('arcanist', newCharacterName.value)">Add Arcanist</button>
-            <button matButton (click)="createNew('tactician', newCharacterName.value)">Add Tactician</button>
+          <input matInput #newCharacterName placeholder="Slayer Name" >
+          <button matButton (click)="createNew('blade', newCharacterName.value)">Add Blade</button>
+          <button matButton (click)="createNew('gunslinger', newCharacterName.value)">Add Gunslinger</button>
+          <button matButton (click)="createNew('arcanist', newCharacterName.value)">Add Arcanist</button>
+          <button matButton (click)="createNew('tactician', newCharacterName.value)">Add Tactician</button>
         </div>
+        </div>
+      </div>
+
+      <div class="controlsSection">
+        <div class="sectionLabel">
+          <p>Recent Rolls</p>
+        </div>
+        <div class="sectionContent">
+            <div class="recentRollsDisplay">
+              @for (roll of (this.cjs.room | async)?.state?.recentRolls?.toArray(); track roll.rollName){
+                <p>{{roll.actor}}:{{roll.rollName}}:{{roll.value}}</p>
+              }
+            </div>
+            <div class="recentRollsControls">
+              <input matInput #rollActor placeholder="Actor" >
+              <input matInput #rollName placeholder="Name" >
+              <input matInput #rollValue placeholder="Value" >
+              <input matInput #rollTimes placeholder="Multiple" >
+              <button (click)="sendRecentRolls(rollActor.value, rollName.value, rollValue.value, rollTimes.value, 'set')">Set rolls</button>
+              <button (click)="sendRecentRolls(rollActor.value, rollName.value, rollValue.value, rollTimes.value, 'add')">Add to rolls</button>
+              <button (click)="sendRecentRolls(rollActor.value, rollName.value, rollValue.value, '0', 'set')">Clear rolls</button>
+            </div>
+
+
+        </div>
+      </div>
+
+
         <div class="saveAndLoad">
             <button (click)="sendSaveCampaign()">Save Campaign</button>
         </div>
-        <div class="recentRolls">
-            <input matInput #rollActor placeholder="Actor" >
-            <input matInput #rollName placeholder="Name" >
-            <input matInput #rollValue placeholder="Value" >
-            <input matInput #rollTimes placeholder="Multiple" >
-            <button (click)="sendRecentRolls(rollActor.value, rollName.value, rollValue.value, rollTimes.value)">Send rolls</button>
-        </div>
+
         <div class="overlay">
           <button (click)="playAnimation()">Play Animation</button>
         </div>

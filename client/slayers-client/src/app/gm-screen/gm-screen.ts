@@ -183,7 +183,7 @@ export class GmScreen {
         this.cjs.sendMessage(msg)
       }
 
-      sendRecentRolls(actor: string, name: string, value: string, multiple: string){
+      sendRecentRolls(actor: string, name: string, value: string, multiple: string, action: "add" | "set"){
         const mult = parseInt(multiple);
         const rolls = [];
         for (const _ of [].constructor(mult)){
@@ -195,7 +195,8 @@ export class GmScreen {
         }
         const msg: ISetRecentRolls = {
           kind: EMessageTypes.setRecentRolls,
-          rolls: rolls
+          rolls: rolls,
+          action: action
         };
 
         this.cjs.sendMessage(msg);
