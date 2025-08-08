@@ -65,7 +65,7 @@ export class OverlayScene extends Scene {
         // this.add.bitmapText(this.center_width + 100, this.center_height - 50, "angel-red", "2!", 250);
         this.cc = new ComboCounter(this, this.center_width, this.center_height);
         this.add.existing(this.cc);
-        // this.SPACE.addListener("down", this.cc.incrementCombo, this.cc);
+        this.SPACE.addListener("down", this.cc.incrementCombo, this.cc);
 
         const testAnimSprite = this.add.sprite(this.center_width, this.center_height, "testAnimSprite");
         testAnimSprite.setVisible(false);
@@ -87,10 +87,10 @@ export class OverlayScene extends Scene {
                 showOnStart: true
         })
 
-        this.SPACE.addListener("down", () => {testAnimSprite.play("soulSiphon1")});
-        room.onMessage(EMessageTypes.playAnimation, (msg: IPlayAnimationMsg) => {
-            testAnimSprite.play("soulSiphon1");
-        })
+        // this.SPACE.addListener("down", () => {testAnimSprite.play("soulSiphon1")});
+        // room.onMessage(EMessageTypes.playAnimation, (msg: IPlayAnimationMsg) => {
+        //     testAnimSprite.play("soulSiphon1");
+        // })
 
         
 

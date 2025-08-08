@@ -8,7 +8,7 @@
   }
 </div>
 <div class="controlsRow" cdkDropListGroup>
-  <div class="plansDisplay" cdkDropList (cdkDropListEntered)="enter('neutral')">
+  <div class="plansDisplay" cdkDropListSortingDisabled cdkDropList (cdkDropListEntered)="enter('neutral')">
     @for (plan of slayer.plans; track $index) {
       <div class="plan" cdkDrag [cdkDragData]="plan" cdkDragPreviewContainer="parent"  cdkDragBoundary=".controlsRow">
         {{plan}}
