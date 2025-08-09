@@ -81,7 +81,7 @@ export class OverlayScene extends Scene {
 
         // for visual debugging
 
-        const littlePinkDot = this.add.graphics()
+        this.add.graphics()
         // .fillStyle(0x111111, 0.5)
         // .fillRect(0,0, 50, 50)
         .fillStyle(0xFFC0CB)
@@ -120,8 +120,8 @@ export class OverlayScene extends Scene {
 
         // this.add.bitmapText(this.center_width, this.center_height, "angel-red", "x", 150);
         // this.add.bitmapText(this.center_width + 100, this.center_height - 50, "angel-red", "2!", 250);
-        this.cc = new ComboCounter(this, this.center_width, this.center_height);
-        this.add.existing(this.cc);
+        // this.cc = new ComboCounter(this, this.center_width, this.center_height);
+        // this.add.existing(this.cc);
         // this.SPACE.addListener("down", this.cc.incrementCombo, this.cc);
 
         // const testAnimSprite = this.add.sprite(this.center_width, this.center_height, "testAnimSprite");
@@ -150,7 +150,7 @@ export class OverlayScene extends Scene {
         // })
 
 
-        this.SPACE.addListener("down", () => {playSwapAnimation(this, "","",3,6)}, this);
+        this.SPACE.addListener("down", () => {playSwapAnimation(this, "","",Phaser.Math.Between(1,6),Phaser.Math.Between(1,6))}, this);
 
         
 
