@@ -53,12 +53,12 @@ export function playSwapAnimation(scene: OverlayScene, actor: string, action: st
     newVal.setPosition(scene.center_width, scene.center_height);
 
     const actorText = scene.add.bitmapText(0,0, "traffic-white", actor, 200);
-    actorText.setOrigin(1,0.5);
-    actorText.setPosition(0, scene.height / 8);
+    actorText.setOrigin(0,0.5);
+    actorText.setPosition(0 - actorText.width, scene.height / 8);
     
     const actionText = scene.add.bitmapText(0,0, "traffic-white", action, 200);
-    actionText.setOrigin(0,0.5);
-    actionText.setPosition(scene.width, scene.height / 5);
+    actionText.setOrigin(1,0.5);
+    actionText.setPosition(scene.width + actionText.width, scene.height / 5);
 
     // const actionTextBackground = scene.add.graphics();
     // actionTextBackground.fillStyle(0x000000)
@@ -101,12 +101,12 @@ export function playSwapAnimation(scene: OverlayScene, actor: string, action: st
         targets: actorText,
         tweens: [
             {
-                x: scene.width * 2/ 3,
+                x: scene.width * 1/ 3,
                 duration: arrowStageOneDuration / 10,
                 ease: "Cubic.in"
             },
             {
-                x: scene.width,
+                x: "+=200",
                 duration: arrowStateTwoDuration,
                 ease: "linear",
             },
@@ -121,12 +121,12 @@ export function playSwapAnimation(scene: OverlayScene, actor: string, action: st
         targets: actionText,
         tweens: [
             {
-                x: scene.width * 1 / 3,
+                x: scene.width * 2 / 3,
                 duration: arrowStageOneDuration / 4,
                 ease: "Cubic.in"
             },
             {
-                x: 0,
+                x: "-=200",
                 duration: arrowStateTwoDuration,
                 ease: "linear"
             },

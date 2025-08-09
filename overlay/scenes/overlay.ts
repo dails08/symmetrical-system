@@ -1,6 +1,6 @@
 import { Scene } from "phaser";
 import { room } from "../src/colyseus";
-import { EMessageTypes, IBaseMsg, IPlayAnimationMsg } from "../../common/messageFormat";
+import { EMessageTypes, IBaseMsg, IPlayAnimationMsg, IPlayRollSwapMsg } from "../../common/messageFormat";
 import { playSwapAnimation } from "../animations/tacticianAnimations";
 
 export class OverlayScene extends Scene {
@@ -102,6 +102,12 @@ export class OverlayScene extends Scene {
         this.height = this.sys.game.config.height as number;
         this.center_width = this.width / 2;
         this.center_height = this.height / 2;
+
+        // colyseus triggers
+
+        room.onMessage(EMessageTypes.playRollSwap, (msg: IPlayRollSwapMsg) => {
+            playSwapAnimation(this, msg.actor, msg.action, msg.oldValue, msg.newValue);
+        })
 
         // demarcate background
         const backgroundShade = this.add.graphics();
