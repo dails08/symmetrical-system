@@ -1,6 +1,7 @@
 import { Scene } from "phaser";
 import { room } from "../src/colyseus";
 import { EMessageTypes, IBaseMsg, IPlayAnimationMsg } from "../../common/messageFormat";
+import { playSwapAnimation } from "../animations/tacticianAnimations";
 
 export class OverlayScene extends Scene {
 
@@ -148,7 +149,7 @@ export class OverlayScene extends Scene {
         // })
 
 
-        this.SPACE.addListener("down", () => {this.playSwapAnimation("","",0,0)}, this);
+        this.SPACE.addListener("down", () => {playSwapAnimation(this, "","",0,0)}, this);
 
         
 
@@ -161,191 +162,7 @@ export class OverlayScene extends Scene {
 
     }
 
-    playSwapAnimation(actor: string, action: string, oldValue: number, newValue: number){
-        
-        const leftArrow = this.add.sprite(0, this.center_height, "tacticianTriangle");
-        // leftArrow.setSize(this.width / 3, this.height / 2);
-        console.log("leftArrow size", leftArrow.displayWidth, leftArrow.displayHeight);
-        console.log("leftArrow position", leftArrow.x, leftArrow.y);
-        leftArrow.setDisplaySize(this.width / 3, this.height * 2/3);
-        console.log("leftArrow size", leftArrow.displayWidth, leftArrow.displayHeight);
-        console.log("leftArrow position", leftArrow.x, leftArrow.y);
-        leftArrow.setOrigin(1, .5);
-        leftArrow.angle = 0;
-        leftArrow.setPosition(0, this.height * 13/30);
 
-        const rightArrow = this.add.sprite(this.width, this.center_height, "tacticianTriangle");
-        // rightArrow.setSize(this.width / 3, this.height / 2);
-        rightArrow.setDisplaySize(this.width / 3, this.height * 2/3);
-        rightArrow.setOrigin(1, .5);
-        rightArrow.angle = 180;
-        // rightArrow.
-        rightArrow.setPosition(this.width, this.height * 17/30);
-
-        const centerCircle = this.add.sprite(this.center_width, this.center_height, "tacticianCircle");
-        centerCircle.setAlpha(0);
-        centerCircle.setScale(2);
-        // centerCircle.setDisplaySize(this.width / 5, this.height / 5);
-
-        const exchangeArrows = this.add.sprite(0,0, "exchangeArrows");
-        exchangeArrows.setAlpha(0);
-        exchangeArrows.setPosition(this.center_width, this.center_height);
-        exchangeArrows.setDisplaySize(this.width / 6, this.height / 6);
-
-        const littlePinkDot = this.add.sprite(rightArrow.x, rightArrow.y,"littlePinkDot");
-        // littlePinkDot.setOrigin(0,0);
-        console.log("center dims", this.center_width, this.center_height);
-        console.log("lpd position", littlePinkDot.x, littlePinkDot.y);
-        
-        // littlePinkDot.setOrigin(.5,.5);
-
-
-        // const arrowBox = this.add.graphics();
-        // arrowBox.lineStyle(40, 0xFFC0CB);
-        // // arrowBox.strokePoints([
-        // //     leftArrow.x - leftArrow.width / 2, leftArrow.x + leftArrow.width / 2,
-        // //     leftArrow.y - leftArrow.height / 2, leftArrow.y + leftArrow.height / 2
-        // // ]);
-        // arrowBox.strokePoints([
-        //     [0,0],
-        //     [leftArrow.width, 0],
-        //     [leftArrow.width, leftArrow.height],
-        //     [0, leftArrow.height]
-        // ]);
-        // console.log(arrowBox.x);
-        // arrowBox.copyPosition(leftArrow);
-
-
-        this.tweens.chain({
-            targets: leftArrow,
-            tweens: [
-                {
-                    x: {
-                        from: 0,
-                        to: this.width * 55/100,
-                        ease: "Cubic.inOut",
-                        duration: 1000
-                    },
-                    // callbackScope: this,
-                    // onUpdate: () => {
-                    //     littlePinkDot.setPosition(leftArrow.x, leftArrow.y);
-                    //     console.log("leftArrow position", leftArrow.x, leftArrow.y);
-                    //     console.log("lpd position", littlePinkDot.x, littlePinkDot.y);
-                    // },
-                    // onComplete: () => {
-                    //     console.log("Done with leftArrow");
-                    //     console.log("leftArrow position", leftArrow.x, leftArrow.y);
-                    //     leftArrow.destroy();
-                    //     littlePinkDot.destroy();
-                    // }
-                },
-                {
-                    x: "+=100",
-                    duration: 4000,
-                    callbackScope: this,
-                },
-                {
-                    x: leftArrow.displayWidth + this.width,
-                    duration: 1000,
-                    ease: "Cubic.inOut",
-                    onComplete: () => {
-                        console.log("done with leftArrow");
-                        leftArrow.destroy();
-                    }
-
-                }
-
-            ]
-        }).play();
-
-        this.tweens.chain({
-            targets: rightArrow,
-            tweens: [
-                {
-                    x: {
-                        from: this.width,
-                        to: this.width * 45/100,
-                        ease: "Cubic.inOut",
-                        duration: 1000,
-                    },
-                },
-                {
-                    x: "-=100",
-                    duration: 4000,
-                    callbackScope: this,
-                },
-                {
-                    x: - rightArrow.displayWidth,
-                    duration: 1000,
-                    ease: "Cubic.inOut",
-                    onComplete: () => {
-                        console.log("done with leftArrow");
-                        rightArrow.destroy();
-                    }
-
-                }
-
-            ]
-        }).play();
-        this.tweens.chain({
-            targets: centerCircle,
-            tweens: [
-                {
-                    alpha: {
-                        from: 0,
-                        to: 1,
-                        ease: "linear"
-                    },
-                    scale: {
-                        from: 1,
-                        to: 1.8,
-                        ease: "cubic.out"
-                    },
-                    duration: 500,
-                    delay: 500,
-                    completeDelay: 4000,
-                    onComplete: () => {
-                        centerCircle.destroy();
-                    }
-                },
-            ]
-        });
-        this.tweens.chain({
-            targets: exchangeArrows,
-            tweens: [
-                {
-                    scale: {
-                        from: 1.5,
-                        to: .7,
-                        duration: 1000,
-                        ease: "linear"
-                    },
-                    alpha: {
-                        from: 0,
-                        to: 1,
-                        duration: 1000,
-                        ease: "linear"
-                    },
-                    completeDelay: 2000
-                },
-                {
-                    angle: {
-                        from: 0,
-                        to: 180,
-                        duration: 400,
-                        ease: "Cubic.inOut"
-                    },
-                    completeDelay: 1600,
-                    onComplete: () => {
-                        exchangeArrows.destroy();
-                    }
-                }
-            ]
-        })
-
-
-
-    }
 }
 
 class ComboCounter extends Phaser.GameObjects.Container {
