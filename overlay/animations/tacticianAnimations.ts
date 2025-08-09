@@ -52,6 +52,20 @@ export function playSwapAnimation(scene: OverlayScene, actor: string, action: st
     newVal.angle = 0;
     newVal.setPosition(scene.center_width, scene.center_height);
 
+    const actorText = scene.add.bitmapText(0,0, "traffic-white", actor, 200);
+    actorText.setOrigin(1,0.5);
+    actorText.setPosition(0, scene.height / 8);
+    
+    const actionText = scene.add.bitmapText(0,0, "traffic-white", action, 200);
+    actionText.setOrigin(0,0.5);
+    actionText.setPosition(scene.width, scene.height / 5);
+
+    // const actionTextBackground = scene.add.graphics();
+    // actionTextBackground.fillStyle(0x000000)
+    // .fillRoundedRect()
+
+
+
 
 
     // const littlePinkDot = scene.add.sprite(rightArrow.x, rightArrow.y,"littlePinkDot");
@@ -82,6 +96,47 @@ export function playSwapAnimation(scene: OverlayScene, actor: string, action: st
     const arrowStateThreeDuration = 1000;
 
     const exchangeSpinDuration = 400;
+
+    scene.tweens.chain({
+        targets: actorText,
+        tweens: [
+            {
+                x: scene.width * 2/ 3,
+                duration: arrowStageOneDuration / 10,
+                ease: "Cubic.in"
+            },
+            {
+                x: scene.width,
+                duration: arrowStateTwoDuration,
+                ease: "linear",
+            },
+            {
+                x: scene.width + actorText.width,
+                duration: arrowStateThreeDuration,
+                ease: "Cubic.inOut"
+            }
+        ]
+    })
+    scene.tweens.chain({
+        targets: actionText,
+        tweens: [
+            {
+                x: scene.width * 1 / 3,
+                duration: arrowStageOneDuration / 4,
+                ease: "Cubic.in"
+            },
+            {
+                x: 0,
+                duration: arrowStateTwoDuration,
+                ease: "linear"
+            },
+            {
+                x: 0 - actionText.width,
+                duration: arrowStateThreeDuration,
+                ease: "Cubic.inOut"
+            }
+        ]
+    })
 
     scene.tweens.chain({
         targets: leftArrow,

@@ -150,7 +150,7 @@ export class OverlayScene extends Scene {
         // })
 
 
-        this.SPACE.addListener("down", () => {playSwapAnimation(this, "","",Phaser.Math.Between(1,6),Phaser.Math.Between(1,6))}, this);
+        this.SPACE.addListener("down", () => {playSwapAnimation(this, "Cervantes","Hollowpoint",Phaser.Math.Between(1,6),Phaser.Math.Between(1,6))}, this);
 
         
 
