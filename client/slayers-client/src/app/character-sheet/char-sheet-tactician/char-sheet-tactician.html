@@ -19,11 +19,13 @@
   </div>
   <div class="controlRightHalf">
     <div class="actions" >
-      @if (this.hasShift) {
+      @if (this.hasShift || this.hasStrategist) {
         <div id="add" cdkDropList (cdkDropListEntered)="enter('add')" class="action"><p>Add</p></div>
-
-      <div id="swap" cdkDropList (cdkDropListEntered)="enter('swap')"  class="action"><p>Swap</p></div>
-      <!-- @if (this.hasShift) { -->
+      }
+      @if (!this.hasShift || this.hasStrategist){
+        <div id="swap" cdkDropList (cdkDropListEntered)="enter('swap')"  class="action"><p>Swap</p></div>
+      }
+      @if (this.hasShift || this.hasStrategist) {
         <div id="subtract" cdkDropList (cdkDropListEntered)="enter('subtract')" class="action"><p>Sub</p></div>
       }
     </div>

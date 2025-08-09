@@ -53,8 +53,8 @@ export function playSwapAnimation(scene: OverlayScene, actor: string, action: st
     newVal.setPosition(scene.center_width, scene.center_height);
 
     const actorText = scene.add.bitmapText(0,0, "traffic-white", actor, 200);
-    actorText.setOrigin(0,0.5);
-    actorText.setPosition(0 - actorText.width, scene.height / 8);
+    actorText.setOrigin(0,0);
+    actorText.setPosition(0 - actorText.width, 10);
     
     const actionText = scene.add.bitmapText(0,0, "traffic-white", action, 200);
     actionText.setOrigin(1,0.5);

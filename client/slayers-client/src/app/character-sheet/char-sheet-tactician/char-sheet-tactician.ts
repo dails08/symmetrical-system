@@ -24,6 +24,7 @@ export class CharSheetTactician {
   hasEmpower: boolean = false;
   hasWeaken: boolean = false;
   hasShift: boolean = false;
+  hasStrategist: boolean = false;
   prepCount: number = 0;
 
   recentRolls: RecentRoll[] = [];
@@ -36,6 +37,7 @@ export class CharSheetTactician {
       let tmpRally = false;
       let tmpWeaken = false;
       let tmpShift = false;
+      let tmpStrategist = false;
       let tmpEmpower = false;
       let tmpPrepCount = 0;
       for (const advance of this.slayer.advances){
@@ -53,6 +55,10 @@ export class CharSheetTactician {
           tmpShift = true
           console.log("has shift");
         }
+        if (advance.name.toLowerCase() == "strategist"){
+          tmpStrategist = true
+          console.log("has strategist");
+        }
         if (advance.name.toLowerCase() == "prep"){
           tmpPrepCount += 1
         }
@@ -60,6 +66,7 @@ export class CharSheetTactician {
       this.hasRally = tmpRally;
       this.hasEmpower = tmpEmpower;
       this.hasShift = tmpShift;
+      this.hasStrategist = tmpStrategist;
       this.hasWeaken = tmpWeaken;
       this.prepCount = tmpPrepCount;
     }
