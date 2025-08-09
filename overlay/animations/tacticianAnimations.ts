@@ -143,13 +143,29 @@ export function playSwapAnimation(scene: OverlayScene, actor: string, action: st
                     to: 1.8,
                     ease: "cubic.out"
                 },
-                duration: 500,
                 delay: 500,
+                duration: 500,
                 completeDelay: 4000,
+            },
+            {
+                alpha: {
+                    from: 1,
+                    to: 0,
+                    ease: "linear",
+                    duration: 200
+                },
+                scale: {
+                    from: 1.8,
+                    to: 2.5,
+                    ease: "cubic.out",
+                    duration: 500
+                },
+                // duration: 500,
                 onComplete: () => {
                     centerCircle.destroy();
                 }
-            },
+
+            }
         ]
     });
     scene.tweens.chain({
@@ -159,25 +175,26 @@ export function playSwapAnimation(scene: OverlayScene, actor: string, action: st
                 scale: {
                     from: 1.5,
                     to: .7,
-                    duration: 1000,
+                    duration: 300,
                     ease: "linear"
                 },
                 alpha: {
                     from: 0,
                     to: 1,
-                    duration: 1000,
+                    duration: 300,
                     ease: "linear"
                 },
-                completeDelay: 2000
+                delay: 1500
+                // completeDelay: 1000
             },
             {
                 angle: {
                     from: 0,
-                    to: 180,
+                    to: 270,
                     duration: 400,
                     ease: "Cubic.inOut"
                 },
-                completeDelay: 1600,
+                completeDelay: 600,
                 onComplete: () => {
                     exchangeArrows.destroy();
                 }

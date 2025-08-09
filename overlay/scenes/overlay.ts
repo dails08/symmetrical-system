@@ -73,7 +73,7 @@ export class OverlayScene extends Scene {
 
         // tactician swap circle
         this.add.graphics()
-            .fillStyle(0x555555)
+            .fillStyle(0x8B0000)
             .fillCircle(150,150,150)
             .generateTexture("tacticianCircle", 300, 300)
             .destroy();
