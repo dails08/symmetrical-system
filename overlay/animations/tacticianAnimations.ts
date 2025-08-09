@@ -5,6 +5,7 @@ import { OverlayScene } from "../scenes/overlay";
 
 export function playSwapAnimation(scene: OverlayScene, actor: string, action: string, oldValue: number, newValue: number){
         
+
     const leftArrow = scene.add.sprite(0, scene.center_height, "tacticianTriangle");
     // leftArrow.setSize(scene.width / 3, scene.height / 2);
     console.log("leftArrow size", leftArrow.displayWidth, leftArrow.displayHeight);
@@ -34,6 +35,21 @@ export function playSwapAnimation(scene: OverlayScene, actor: string, action: st
     exchangeArrows.setPosition(scene.center_width, scene.center_height);
     exchangeArrows.setDisplaySize(scene.width / 6, scene.height / 6);
 
+    const oldVal = scene.add.bitmapText(scene.center_width, scene.center_height, "traffic-white", oldValue.toString(), 500);
+    oldVal.setAlpha(0);
+    oldVal.setOrigin(.5, .5);
+    oldVal.setPosition(scene.center_width, scene.center_height);
+
+    // const 
+
+    const newVal = scene.add.bitmapText(scene.center_width, scene.center_height, "traffic-white", newValue.toString(), 500);
+    newVal.setAlpha(0);
+    newVal.setOrigin(.5, .5);
+    newVal.angle = -270;
+    newVal.setPosition(scene.center_width, scene.center_height);
+
+
+
     const littlePinkDot = scene.add.sprite(rightArrow.x, rightArrow.y,"littlePinkDot");
     // littlePinkDot.setOrigin(0,0);
     console.log("center dims", scene.center_width, scene.center_height);
@@ -57,6 +73,11 @@ export function playSwapAnimation(scene: OverlayScene, actor: string, action: st
     // console.log(arrowBox.x);
     // arrowBox.copyPosition(leftArrow);
 
+    const arrowStageOneDuration = 1000;
+    const arrowStateTwoDuration = 2100;
+    const arrowStateThreeDuration = 1000;
+
+    const exchangeSpinDuration = 400;
 
     scene.tweens.chain({
         targets: leftArrow,
@@ -66,7 +87,7 @@ export function playSwapAnimation(scene: OverlayScene, actor: string, action: st
                     from: 0,
                     to: scene.width * 55/100,
                     ease: "Cubic.inOut",
-                    duration: 1000
+                    duration: arrowStageOneDuration
                 },
                 // callbackScope: scene,
                 // onUpdate: () => {
@@ -83,12 +104,12 @@ export function playSwapAnimation(scene: OverlayScene, actor: string, action: st
             },
             {
                 x: "+=100",
-                duration: 4000,
+                duration: arrowStateTwoDuration,
                 // callbackScope: scene,
             },
             {
                 x: leftArrow.displayWidth + scene.width,
-                duration: 1000,
+                duration: arrowStateThreeDuration,
                 ease: "Cubic.inOut",
                 onComplete: () => {
                     console.log("done with leftArrow");
@@ -108,17 +129,17 @@ export function playSwapAnimation(scene: OverlayScene, actor: string, action: st
                     from: scene.width,
                     to: scene.width * 45/100,
                     ease: "Cubic.inOut",
-                    duration: 1000,
+                    duration: arrowStageOneDuration,
                 },
             },
             {
                 x: "-=100",
-                duration: 4000,
+                duration: arrowStateTwoDuration,
                 callbackScope: scene,
             },
             {
                 x: - rightArrow.displayWidth,
-                duration: 1000,
+                duration: arrowStateThreeDuration,
                 ease: "Cubic.inOut",
                 onComplete: () => {
                     console.log("done with leftArrow");
@@ -143,9 +164,10 @@ export function playSwapAnimation(scene: OverlayScene, actor: string, action: st
                     to: 1.8,
                     ease: "cubic.out"
                 },
-                delay: 500,
-                duration: 500,
-                completeDelay: 4000,
+                delay: arrowStageOneDuration / 2,
+                duration: arrowStageOneDuration / 2,
+                // completeDelay: 2100,
+                completeDelay: arrowStateTwoDuration  + 100,
             },
             {
                 alpha: {
@@ -184,23 +206,128 @@ export function playSwapAnimation(scene: OverlayScene, actor: string, action: st
                     duration: 300,
                     ease: "linear"
                 },
-                delay: 1500
+                delay: arrowStageOneDuration
                 // completeDelay: 1000
             },
             {
                 angle: {
                     from: 0,
                     to: 270,
-                    duration: 400,
+                    duration: exchangeSpinDuration,
                     ease: "Cubic.inOut"
                 },
                 completeDelay: 600,
+            },
+            {
+                scale: {
+                    from: .7,
+                    to: 1.5,
+                    duration: 300,
+                    ease: "linear"
+                },
+                alpha: {
+                    from: 1,
+                    to: 0,
+                    duration: 300,
+                    ease: "linear"
+                },
                 onComplete: () => {
                     exchangeArrows.destroy();
                 }
-            }
+
+                // completeDelay: 1000
+            },
+
         ]
     })
+
+    scene.tweens.chain({
+        targets: oldVal,
+        tweens: [
+            {
+                alpha: {
+                    from: 0,
+                    to: 1,
+                    duration: 200,
+                    ease: "linear"
+                },
+                scale: {
+                    from: 1.5,
+                    to: 1,
+                    ease: "linear",
+                    duration: 200
+                },
+                delay: arrowStageOneDuration / 2,
+                // completeDelay: arrowStateTwoDuration  + 100
+            },
+            {
+                angle: {
+                    from: 0,
+                    to: -270,
+                    duration: exchangeSpinDuration,
+                    ease: "Cubic.in"
+                },
+                alpha: {
+                    from: 1,
+                    to: 0,
+                    ease: "linear",
+                    duration: 200
+                },
+                delay: 600 + 10
+            },
+        ],
+        onComplete: () => {
+            oldVal.destroy();
+        }
+    })
+
+    scene.tweens.add({
+        targets: newVal,
+        angle: "+=270",
+        duration: exchangeSpinDuration,
+        ease: "Cubic.in",
+        delay: arrowStageOneDuration / 2 + 200 + 600 + 10,
+        completeDelay: 400
+
+    }).play()
+    scene.tweens.add({
+        targets: newVal,
+        alpha: {
+            from: 0,
+            to: 1,
+            duration: 200,
+            ease: "linear"
+        },
+        delay: arrowStageOneDuration / 2 + 200 + 600 + 10,
+        completeDelay: 400,
+        onComplete: () => {
+            newVal.destroy();
+        }
+    }).play()
+    // scene.tweens.chain({
+    //     targets: newVal,
+    //     tweens: [
+    //         {
+    //             angle: {
+    //                 angle: "-=270",
+                    
+    //                 duration: 200,
+    //                 ease: "Cubic.in"
+    //             },
+    //             alpha: {
+    //                 from: 0,
+    //                 to: 1,
+    //                 ease: "linear",
+    //                 duration: 200
+    //             },
+    //             delay: arrowStageOneDuration / 2 + 200 + 600 + 10,
+    //             completeDelay: 400
+    //         },
+    //     ],
+    //     onComplete: () => {
+    //         newVal.destroy();
+    //     }
+    // })
 
 
 

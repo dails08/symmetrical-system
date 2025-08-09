@@ -29,7 +29,8 @@ export class OverlayScene extends Scene {
     }
 
     preload(){
-        this.load.bitmapFont("angel-red","assets/fonts/Angel-red/Angel-red.png", "assets/fonts/Angel-red/Angel-red.xml");
+        this.load.bitmapFont("angel-red","assets/fonts/bmfs/Angel-red/Angel-red.png", "assets/fonts/bmfs/Angel-red/Angel-red.xml");
+        this.load.bitmapFont("traffic-white","assets/fonts/bmfs/BostonTraffic/BostonTraffic.png", "assets/fonts/bmfs/BostonTraffic/BostonTraffic.xml");
         // this.load.spritesheet("testAnim", "assets/spritesheets/test2.png", {
         //     frameWidth: 500,
         //     frameHeight: 500
@@ -149,7 +150,7 @@ export class OverlayScene extends Scene {
         // })
 
 
-        this.SPACE.addListener("down", () => {playSwapAnimation(this, "","",0,0)}, this);
+        this.SPACE.addListener("down", () => {playSwapAnimation(this, "","",3,6)}, this);
 
         
 
