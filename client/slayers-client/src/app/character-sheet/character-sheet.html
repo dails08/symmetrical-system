@@ -129,29 +129,9 @@
                     <p>{{castSlayer.weaponNumber}}d{{castSlayer.weaponSides}}</p>
                 </div>
             </div>
-            <div class="gunslingerData" *ngIf="slayer.class == playbooks.Gunslinger">
-                @let castSlayer = slayer | asGunslinger;
-                <div class="chambers">
-                    <div class="chamber1">
-                        <p>1: <span *ngIf="castSlayer.chamber1Rune != 'none'">{{castSlayer.chamber1Rune}}: </span>{{castSlayer.chamber1Loaded}}</p>
-                    </div>
-                    <div class="chamber1">
-                        <p>2: <span *ngIf="castSlayer.chamber2Rune != 'none'">{{castSlayer.chamber2Rune}}: </span>{{castSlayer.chamber2Loaded}}</p>
-                    </div>
-                    <div class="chamber1">
-                        <p>3: <span *ngIf="castSlayer.chamber3Rune != 'none'">{{castSlayer.chamber3Rune}}: </span>{{castSlayer.chamber3Loaded}}</p>
-                    </div>
-                    <div class="chamber1">
-                        <p>4: <span *ngIf="castSlayer.chamber4Rune != 'none'">{{castSlayer.chamber4Rune}}: </span>{{castSlayer.chamber4Loaded}}</p>
-                    </div>
-                    <div class="chamber1">
-                        <p>5: <span *ngIf="castSlayer.chamber5Rune != 'none'">{{castSlayer.chamber5Rune}}: </span>{{castSlayer.chamber5Loaded}}</p>
-                    </div>
-                    <div class="chamber1">
-                        <p>6: <span *ngIf="castSlayer.chamber6Rune != 'none'">{{castSlayer.chamber6Rune}}: </span>{{castSlayer.chamber6Loaded}}</p>
-                    </div>
-                </div>
-            </div>
+            @if (slayer.class == playbooks.Gunslinger){
+                <app-char-sheet-gunslinger [slayer]="slayer | asGunslinger"></app-char-sheet-gunslinger>
+            }
             <div class="arcanistData" *ngIf="slayer.class == playbooks.Arcanist">
                 @let castSlayer = slayer | asArcanist;
                 <div class="stance">
@@ -165,7 +145,10 @@
                 </div>
             </div>
               <!-- @let castSlayer = slayer | asTactician; -->
-              <app-char-sheet-tactician *ngIf="slayer.class == playbooks.Tactician" [slayer]="slayer | asTactician"></app-char-sheet-tactician>
+               @if (slayer.class == playbooks.Tactician){
+                <app-char-sheet-tactician  [slayer]="slayer | asTactician"></app-char-sheet-tactician>
+
+               }
         </div>
     </div>
     <div class="slayerUndefined" *ngIf="!cs.slayer">

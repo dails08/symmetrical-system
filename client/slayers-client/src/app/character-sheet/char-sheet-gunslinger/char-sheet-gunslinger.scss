@@ -1,0 +1,158 @@
+:host {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.topRow {
+    display: flex;
+    width: 100%;
+    height: 100px;
+    align-items: center;
+    border-bottom: 1px solid gray;
+    overflow-x: scroll;
+
+    .topRowSection {
+        color: white;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        font-size: 40px;
+        font-weight: bold;
+        flex: 1;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        
+    }
+    .fireSection {
+        background-color: darkred;
+        border-bottom: 1px solid grey;
+    }
+
+    .reloadSection {
+        background-color: darkblue;
+    }
+}
+
+.stagingArea {
+    display: flex;
+    width: 100%;
+    height: 70px;
+    align-items: center;
+    border-bottom: 1px solid gray;
+    overflow-x: scroll;
+    padding: 10px 5px;
+}
+
+.controlsRow {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    // height: calc(100vh - 372px);
+    overflow-y: scroll;
+    .leftSide {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+        .chambers {
+            flex: 1;
+            display:flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            width: 400px;
+            height: 400px;
+            .revolverChambers {
+                width: 80%;
+            }
+            .chamber {
+                width: 70px;
+                height: 70px;
+                margin:10px;
+                padding: 10px;
+                position: absolute;
+                border: 1px solid white;
+                border-radius: 100%;
+                // background-color: pink;
+
+                .rune {
+                    margin: -10px;
+                }
+            }
+
+            .chamberOne {
+                background-color: blue;
+                left: calc(50% - (35px + 5px + 5px));
+                top: 22px;
+            }
+            .chamberTwo {
+                background-color: green;
+                right: calc(50% - (35px + 5px + 5px) - 80px);
+                top: 69px;
+            }
+            .chamberThree {
+                background-color: purple;
+                right: calc(50% - (35px + 5px + 5px) - 80px);
+                bottom: 100px;
+            }
+            .chamberFour {
+                background-color: yellow;
+                right: calc(50% - (35px + 5px + 5px));
+                bottom: 55px;                
+            }
+            .chamberFive {
+                background-color: darkorange;
+                left: calc(50% - (35px + 5px + 5px) - 80px);
+                bottom: 100px;
+            }
+            .chamberSix {
+                background-color: red;
+                left: calc(50% - (35px + 5px + 5px) - 80px);
+                top: 69px;
+            }
+        }
+    
+        .reloadSection {
+            color: white;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-size: 40px;
+            font-weight: bold;
+            // flex: 1;
+            // height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-color: darkblue;
+            border-top: 1px solid white;
+            width: 100%;
+            
+        }
+    
+    }
+
+
+    .fireControls {
+        width:400px;
+        border-left: 1px solid grey;
+        display: flex;
+        flex-direction: column;
+        .staging {
+            flex: 1
+        }
+
+        .clearControl {
+            color: white;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-size: 40px;
+            font-weight: bold;
+            height: 50px;
+            text-align: center;
+    
+        }
+    }
+
+}
