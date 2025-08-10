@@ -1,6 +1,7 @@
 import { Scene } from "phaser";
 import { room } from "../src/colyseus";
-import { EMessageTypes, IBaseMsg, IPlayAnimationMsg } from "../../common/messageFormat";
+import { EMessageTypes, IBaseMsg, IPlayAnimationMsg, IPlayRollSwapMsg } from "../../common/messageFormat";
+import { playSwapAnimation } from "../animations/tacticianAnimations";
 
 export class OverlayScene extends Scene {
 
@@ -15,7 +16,12 @@ export class OverlayScene extends Scene {
 
     cc: ComboCounter;
 
-    testAnim: Phaser.Animations.Animation;
+    // testAnim: Phaser.Animations.Animation;
+
+    // tactician variables
+    solidArrow: Phaser.GameObjects.Sprite;
+    exchangeArrows: Phaser.GameObjects.Sprite;
+
 
 
     constructor(){
@@ -23,7 +29,8 @@ export class OverlayScene extends Scene {
     }
 
     preload(){
-        this.load.bitmapFont("angel-red","assets/fonts/Angel-red/Angel-red.png", "assets/fonts/Angel-red/Angel-red.xml");
+        this.load.bitmapFont("angel-red","assets/fonts/bmfs/Angel-red/Angel-red.png", "assets/fonts/bmfs/Angel-red/Angel-red.xml");
+        this.load.bitmapFont("traffic-white","assets/fonts/bmfs/BostonTraffic/BostonTraffic.png", "assets/fonts/bmfs/BostonTraffic/BostonTraffic.xml");
         // this.load.spritesheet("testAnim", "assets/spritesheets/test2.png", {
         //     frameWidth: 500,
         //     frameHeight: 500
@@ -41,9 +48,51 @@ export class OverlayScene extends Scene {
         //     frameHeight: 600,
         //   });
 
-          for(let i = 0; i < 121; i++){
-            this.load.image("soulSiphon" + i, "https://storage.googleapis.com/slayers-media/spritesheets/soulSiphon1/soulSiphon2." + i + ".png");
-          }
+        //   for(let i = 0; i < 121; i++){
+        //     this.load.image("soulSiphon" + i, "https://storage.googleapis.com/slayers-media/spritesheets/soulSiphon1/soulSiphon2." + i + ".png");
+        //   }
+
+        this.load.image("solidArrow", "assets/images/up-arrow.png");
+        this.load.image("exchangeArrows", "assets/images/exchange.png");
+
+                // tactician content
+        const swapTriangleHeight = 500;
+        const swapTriangleWidth= 500;
+
+        // create the yellow tactician swap triangle
+        this.add.graphics()
+            // .fillStyle(0x111111, 0.5)
+            // .fillRect(0,0, swapTriangleWidth, swapTriangleHeight)
+            .fillStyle(0xffff00, 1)
+            .fillTriangle(
+                0,0,
+                swapTriangleWidth, swapTriangleHeight / 2,
+                0, swapTriangleHeight
+            )
+            .generateTexture("tacticianTriangle", swapTriangleWidth, swapTriangleHeight)
+            .destroy();
+
+        // tactician swap circle
+        this.add.graphics()
+            .fillStyle(0x8B0000)
+            .fillCircle(150,150,150)
+            .generateTexture("tacticianCircle", 300, 300)
+            .destroy();
+
+        // for visual debugging
+
+        this.add.graphics()
+        // .fillStyle(0x111111, 0.5)
+        // .fillRect(0,0, 50, 50)
+        .fillStyle(0xFFC0CB)
+        .fillCircle(25,25,25)
+        .generateTexture("littlePinkDot", 50, 50)
+        .destroy();
+
+
+
+
+
       
 
     }
@@ -54,6 +103,20 @@ export class OverlayScene extends Scene {
         this.center_width = this.width / 2;
         this.center_height = this.height / 2;
 
+        // colyseus triggers
+
+        room.onMessage(EMessageTypes.playRollSwap, (msg: IPlayRollSwapMsg) => {
+            playSwapAnimation(this, msg.actor, msg.action, msg.oldValue, msg.newValue);
+        })
+
+        // demarcate background
+        const backgroundShade = this.add.graphics();
+        backgroundShade.fillStyle(0x000000, 1);
+        backgroundShade.fillRect(0,0,this.width, this.height);
+
+
+
+
         if (this.input.keyboard){
             this.SPACE = this.input.keyboard?.addKey(
                 Phaser.Input.Keyboard.KeyCodes.SPACE
@@ -63,34 +126,39 @@ export class OverlayScene extends Scene {
 
         // this.add.bitmapText(this.center_width, this.center_height, "angel-red", "x", 150);
         // this.add.bitmapText(this.center_width + 100, this.center_height - 50, "angel-red", "2!", 250);
-        this.cc = new ComboCounter(this, this.center_width, this.center_height);
-        this.add.existing(this.cc);
+        // this.cc = new ComboCounter(this, this.center_width, this.center_height);
+        // this.add.existing(this.cc);
         // this.SPACE.addListener("down", this.cc.incrementCombo, this.cc);
 
-        const testAnimSprite = this.add.sprite(this.center_width, this.center_height, "testAnimSprite");
-        testAnimSprite.setVisible(false);
-        testAnimSprite.setScale(3, 3);
-        const soulSiphonFrames: Phaser.Types.Animations.AnimationFrame[] = [];
+        // const testAnimSprite = this.add.sprite(this.center_width, this.center_height, "testAnimSprite");
+        // testAnimSprite.setVisible(false);
+        // testAnimSprite.setScale(3, 3);
+        // const soulSiphonFrames: Phaser.Types.Animations.AnimationFrame[] = [];
 
-        for (let i = 0; i < 121; i++){
-            soulSiphonFrames.push({
-                key: "soulSiphon" + i
-            })
-        }
+        // for (let i = 0; i < 121; i++){
+        //     soulSiphonFrames.push({
+        //         key: "soulSiphon" + i
+        //     })
+        // }
         
-        testAnimSprite.anims.create({
-                key: "soulSiphon1",
-                frames: soulSiphonFrames,
-                duration: 2000,
-                hideOnComplete: true,
-                repeat: 0,
-                showOnStart: true
-        })
+        // testAnimSprite.anims.create({
+        //         key: "soulSiphon1",
+        //         frames: soulSiphonFrames,
+        //         duration: 2000,
+        //         hideOnComplete: true,
+        //         repeat: 0,
+        //         showOnStart: true
+        // })
 
-        this.SPACE.addListener("down", () => {testAnimSprite.play("soulSiphon1")});
-        room.onMessage(EMessageTypes.playAnimation, (msg: IPlayAnimationMsg) => {
-            testAnimSprite.play("soulSiphon1");
-        })
+        // this.SPACE.addListener("down", () => {testAnimSprite.play("soulSiphon1")});
+        // room.onMessage(EMessageTypes.playAnimation, (msg: IPlayAnimationMsg) => {
+        //     testAnimSprite.play("soulSiphon1");
+        // })
+
+
+        this.SPACE.addListener("down", () => {playSwapAnimation(this, "Cervantes","Hollowpoint",Phaser.Math.Between(1,6),Phaser.Math.Between(1,6))}, this);
+
+        
 
         
 
@@ -100,6 +168,8 @@ export class OverlayScene extends Scene {
     update(){
 
     }
+
+
 }
 
 class ComboCounter extends Phaser.GameObjects.Container {

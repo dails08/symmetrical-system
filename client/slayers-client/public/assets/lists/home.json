@@ -1,0 +1,100 @@
+{
+  "FurnitureAndFixtures": [
+    "Wooden bed frame", "Straw mattress", "Feather bed", "Woolen blanket", "Fur blanket", "Linen sheets",
+    "Canopy bed", "Bed curtains", "Wooden chest", "Small table", "Washstand", "Basin", "Ewer (pitcher)",
+    "Chamber pot", "Wooden stool", "High-backed chair", "Three-legged stool", "Bench", "Bedside table",
+    "Wall shelf", "Iron candleholder", "Wooden dresser", "Tapestry rack", "Curtain rod", "Wall peg",
+    "Ladder (to loft)", "Wall hook", "Mirror (polished metal or glass)", "Rug (woven or fur)",
+    "Bed warmer (filled with embers)"
+  ],
+  "LightingAndHeating": [
+    "Tallow candle", "Beeswax candle", "Candle snuffer", "Iron candlestick", "Lantern (horn or glass)",
+    "Rushlight", "Fireplace", "Firewood", "Charcoal brazier", "Bellows", "Hearth poker", "Ash bucket",
+    "Fire screen", "Oil lamp", "Torch (in sconce)"
+  ],
+  "TextilesAndCoverings": [
+    "Woolen rug", "Fur rug", "Wall tapestry", "Bed drapes", "Linen towel", "Embroidered pillowcase",
+    "Woolen throw", "Sheepskin", "Floor rushes", "Cloth canopy", "Quilted blanket", "Lace bedspread",
+    "Linen curtain", "Woven coverlet", "Decorative wall hanging"
+  ],
+  "ClothingAndAccessories": [
+    "Woolen tunic", "Linen shift", "Leather belt", "Cloak", "Hood", "Coif", "Wool socks", "Leather boots",
+    "Wooden clogs", "Undergarments", "Hose", "Gloves", "Nightcap", "Capuchon (hooded cape)", "Doublet",
+    "Girdle", "Chemise", "Brooch", "Garment chest", "Iron buckle", "Garment brush", "Shoehorn",
+    "Lace ties", "Fabric scraps", "Hair ribbon"
+  ],
+  "PersonalItems": [
+    "Comb (wood or bone)", "Brush", "Mirror", "Soap (lye or fat-based)", "Toothstick", "Tweezers",
+    "Sewing kit", "Needlecase", "Thimble", "Scissors", "Spindle", "Drop spindle", "Pins", "Wool yarn",
+    "Embroidery hoop", "Perfume vial", "Pouch", "Personal seal", "Hairpin", "Nail scraper"
+  ],
+  "BooksAndWriting": [
+    "Vellum manuscript", "Inkpot", "Quill", "Wax tablet", "Stylus", "Bookstand", "Psalter",
+    "Illuminated manuscript", "Scroll", "Scribe’s knife", "Prayer book", "Writing desk",
+    "Bookmark ribbon", "Charcoal stick", "Papyrus scraps"
+  ],
+  "ReligiousItems": [
+    "Wooden cross", "Rosary", "Prayer beads", "Small altar", "Icon painting", "Candles for prayer",
+    "Incense", "Censer", "Bible (if noble)", "Reliquary", "Holy water vial", "Pilgrim badge",
+    "Religious medallion", "Psalms book", "Devotional carving"
+  ],
+  "Decorations": [
+    "Wall tapestry", "Heraldic banner", "Carved box", "Decorative plate", "Painted chest", "Pottery jug",
+    "Floral garlands (dried)", "Antlers on wall", "Wooden figurines", "Metal goblets", "Crystal bead strands",
+    "Ivory carving", "Painted icons", "Dried flowers", "Wooden animals"
+  ],
+  "FoodAndDrinkItems": [
+    "Water jug", "Wooden cup", "Bread trencher", "Cheese wheel", "Dried fruits", "Apple basket",
+    "Dried herbs", "Small keg", "Drinking horn", "Clay mug", "Mead flask", "Ale jug", "Salt bowl",
+    "Nut bowl", "Cheese knife"
+  ],
+  "ToolsAndUtensils": [
+    "Knife", "Spoon (wood or bone)", "Wooden bowl", "Mortar and pestle", "Scales", "Iron tongs",
+    "Needle threader", "Flax comb", "Loom shuttle", "Spindle whorl", "Thread winder", "Candle mold",
+    "Awl", "Small hammer", "Flint and steel"
+  ],
+  "HealthAndHygiene": [
+    "Chamber pot", "Linen cloths", "Salve pot", "Herb poultices", "Medical herbs", "Leech jar",
+    "Bloodletting bowl", "Scented sachets", "Footbath", "Healing ointment", "Bandages", "Plaster strips",
+    "Bone splint", "Eyewash vial", "Oil for massage"
+  ],
+  "MusicalInstruments": [
+    "Small harp", "Recorder", "Psaltery", "Tambourine", "Hand drum", "Bone flute", "Lute (if noble)",
+    "Jew’s harp", "Bell chime", "Bagpipe"
+  ],
+  "StorageAndContainers": [
+    "Wooden bucket", "Clay jar", "Leather pouch", "Wool sack", "Linen sack", "Storage chest",
+    "Iron-bound coffer", "Basket (wicker)", "Small barrel", "Drawstring bag", "Pottery bowl",
+    "Spice box", "Jewelry box", "Oil flask", "Drawered cabinet"
+  ],
+  "WeaponsAndDefense": [
+    "Dagger", "Sword (display or ready)", "Buckler", "Shield", "Bow", "Arrows (in quiver)", "Crossbow",
+    "Helmet", "Chainmail coif", "Gambeson (padded armor)"
+  ],
+  "MiscellaneousItems": [
+    "Dice", "Gaming board", "Carved chess set", "Love token", "Marriage ring", "Keys (iron)", "Lockbox",
+    "Money pouch", "Coins", "Amulet", "Herbal sachets", "Dreamcatcher-style charm", "Bell (for service)",
+    "Writing charm", "Decorative knotwork"
+  ],
+  "AnimalRelatedItems": [
+    "Cat basket", "Dog cushion", "Leather leash", "Feeding dish", "Flea trap", "Small birdcage",
+    "Falconer’s glove", "Bird perch", "Wool brush", "Hay for bedding"
+  ],
+  "SeasonalOrWeatherRelated": [
+    "Extra blankets", "Snow shoes (stored)", "Fur coat", "Foot warmer", "Rain hood", "Waterproof cloak",
+    "Dried firewood bundle", "Candle supply", "Ice bucket", "Sun hat"
+  ],
+  "LuxuryOrNobleItems": [
+    "Gold-thread pillow", "Silk canopy", "Jeweled comb", "Perfumed oil", "Crystal mirror", "Gilded candelabra",
+    "Velvet slippers", "Fine goblet", "Embroidered linens", "Ivory hairbrush", "Silk gown", "Gold ring",
+    "Music book", "Portrait painting", "Ivory dice"
+  ],
+  "MagicAndSuperstitionItems": [
+    "Rune stones", "Dream charm", "Herbal charm bag", "Astrological chart", "Moon calendar", "Potion vial",
+    "Bone talisman", "Protection amulet", "Love spell scroll", "Witch bottle"
+  ],
+  "ChildrensItems": [
+    "Wooden doll", "Rag doll", "Toy knight", "Carved animals", "Simple rattle", "Spinning top",
+    "Ball of yarn", "Cradle", "Swaddling cloth", "Bedtime story scroll"
+  ]
+}

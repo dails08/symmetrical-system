@@ -8,23 +8,101 @@
 
 .topRow {
     display: flex;
+    width: 100%;
     height: 100px;
     align-items: center;
     border-bottom: 1px solid gray;
-    :not(:first-child) {
+    overflow-x: scroll;
+    &:not(:first-child) {
         border-left: 1px solid gray;
-    }
-    .topOption {
+    };
+    scrollbar-width: none;
+    .topOptions {
         display: flex;
         align-items: center;
         justify-content: center;
         flex: 1;
         height: 100%;
+        min-width:100%;
+        .topOption {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            height: 100%;
+            // min-width:100%
+            border-right: 1px solid white;
+
+            .optionBox {
+                margin: 10px;
+                border-radius: 10px;
+                height:90%;
+                width: 90%;
+                border: 1px solid white;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .rollRally {
+                background-color: cornflowerblue;
+                color: black;
+            }
+            .shootStab {
+                background-color: darkred;
+            }
+        }
+    
     }
 
-    .shootStab {
-        background-color: darkred;
+    .planRoller {
+        .totalPlans {
+            .dieLabel {
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-weight: bold;
+                font-size: 50px;
+            }
+        }
+        .dieControl {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+            height: 100%;
+            flex: 1;
+            position: relative;
+            img {
+                    height: 60px;
+                    width: 60px;
+                    // position: absolute;
+                    left: 0;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    filter: brightness(0) saturate(100%) invert(100%) sepia(3%) saturate(13%) hue-rotate(61deg) brightness(104%) contrast(104%);
+                }
+            .dieLabel {
+                
+            }
+
+        }
+        .rollPlans {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: darkred;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-weight: bold;
+            font-size: 25px;
+            border-left: 1px solid white;
+            height:100%;
+            padding:10px;
+
+        }
+
     }
+
 }
 
 .controlsRow {
@@ -45,13 +123,7 @@
     flex-flow: wrap;
 
 
-        .plan {
-            height: 4rem;
-            width: 4rem;
-            font-size: 4rem;
-            text-align: center;
-            margin: 10px;
-        }
+        
     }
 
     .controlRightHalf {
@@ -65,6 +137,57 @@
 
 }
 
+.plan {
+    height: 4rem;
+    width: 4rem;
+    font-size: 4rem;
+    text-align: center;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid white;
+    border-radius: 10px;
+    background-color: black;
+
+}
+
+.plan-preview {
+    height: 4rem;
+    width: 4rem;
+    font-size: 4rem;
+    text-align: center;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.add {
+    background-color: darkgreen;
+}
+
+.swap {
+    background-color: yellowgreen;
+}
+
+.subtract {
+    background-color: darkred;
+}
+
+.neutral {
+    background-color: black;
+}
+
+
+.plan-placeholder {
+    // flex-shrink: 0;
+    position: absolute;
+    // visibility: hidden;
+}
 .actions {
     display: flex;
     flex-direction: column;
@@ -95,7 +218,7 @@
 .recentRolls {
     display: flex;
     flex-direction: column;
-
+    width:100%;
 
     .recentRoll {
         flex: 1;

@@ -1,25 +1,80 @@
 <!-- <div class="plans">
-    <p>plans: <span class="plan" *ngFor="let plan of slayer.plans">{{plan}} </span></p>
+<p>plans: <span class="plan" *ngFor="let plan of slayer.plans">{{plan}} </span></p>
 </div> -->
 <div class="topRow">
-    <div class="shootStab topOption"><p>Shoot/Stab</p></div>
-    <div class="roll topOption" *ngIf="hasRally"><p>Roll Plan</p></div>
-</div>
-<div class="controlsRow">
-    <div class="plansDisplay">
-        <div class="plan" *ngFor="let plan of slayer.plans">{{plan}}</div>
+  <div class="topOptions">
+    <div class="topOption">
+      <div class="optionBox shootStab" (click)="shootStab()">
+        <p>Shoot/Stab</p>
+
+      </div>
     </div>
-    <div class="controlRightHalf">
-        <div class="actions">
-            <div id="add" *ngIf="this.hasShift" class="action"><p>Add</p></div>
-            <div id="swap" class="action"><p>Swap</p></div>
-            <div id="subtract" *ngIf="this.hasShift" class="action"><p>Sub</p></div>
+    @if (hasRally) {
+      <div class=" topOption">
+        <div class="optionBox rollRally" (click)="rollRally()">
+          <p>Rally!</p>
         </div>
-        <div class="recentRolls">
-            <div class="recentRoll" *ngFor="let recentRoll of recentRolls">
-                <p>{{recentRoll.actor}}: {{recentRoll.rollName}}</p>
-                <p>{{recentRoll.value}}</p>
-            </div>
-        </div>    
+      </div>
+    }
+  
+  </div>  
+  <div class="planRoller topOptions">
+    <div class="dieControl totalPlans" (click)="resetPlans()">
+      <div class="dieLabel">{{planningRollsTotal}}</div>
+      <div class="dieIcon ">Left</div>
     </div>
+    @if (hasWeaken){
+      <div class="dieControl deeFours" (click)="adjustPlanRoll(1,0,0)">
+        <img src="/assets/shapes/4.svg" alt="" class="die dieCentral normal">
+        <div class="dieLabel">{{planningRollsDeeFours}}</div>
+      </div>  
+    }
+    <div class="dieControl deeSixes"(click)="adjustPlanRoll(0,1,0)">
+      <img src="/assets/shapes/6.svg" alt="" class="die dieCentral normal">
+      <div class="dieLabel">{{planningRollsDeeSixes}}</div>
+    </div>
+    @if (hasEmpower){
+      <div class="dieControl deeEights" (click)="adjustPlanRoll(0,0,1)">
+        <img src="/assets/shapes/8.svg" alt="" class="die dieCentral normal">
+        <div class="dieLabel">{{planningRollsDeeEights}}</div>
+      </div>  
+    }
+    <div class="rollPlans" (click)="sendPlansRoll()">
+      <p>Roll</p>
+      <p>Plans</p>
+    </div>
+  </div>
+
+</div>
+<div class="controlsRow" cdkDropListGroup>
+  <div class="plansDisplay" cdkDropListSortingDisabled cdkDropList (cdkDropListEntered)="enter('neutral')">
+    @for (plan of slayer.plans; track $index) {
+      <div class="plan" cdkDrag [cdkDragData]="plan" cdkDragPreviewContainer="parent"  cdkDragBoundary=".controlsRow">
+        {{plan}}
+        <div class="plan-preview" [ngClass]="mode" *cdkDragPreview >{{plan}}</div>
+        <div class="plan-placeholder" *cdkDragPlaceholder></div>
+      </div>
+    }
+  </div>
+  <div class="controlRightHalf">
+    <div class="actions" >
+      @if (this.hasShift || this.hasStrategist) {
+        <div id="add" cdkDropList (cdkDropListEntered)="enter('add')" class="action"><p>Add</p></div>
+      }
+      @if (!this.hasShift || this.hasStrategist){
+        <div id="swap" cdkDropList (cdkDropListEntered)="enter('swap')"  class="action"><p>Swap</p></div>
+      }
+      @if (this.hasShift || this.hasStrategist) {
+        <div id="subtract" cdkDropList (cdkDropListEntered)="enter('subtract')" class="action"><p>Sub</p></div>
+      }
+    </div>
+    <div class="recentRolls">
+      @for (recentRoll of recentRolls; track $index; let ix = $index) {
+        <div class="recentRoll" cdkDropList (cdkDropListDropped)="dropRoll($event, ix, recentRoll)">
+          <p>{{recentRoll.actor}}: {{recentRoll.rollName}}</p>
+          <p>{{recentRoll.value}}</p>
+        </div>
+      }
+    </div>
+  </div>
 </div>

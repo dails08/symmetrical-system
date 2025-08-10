@@ -1,0 +1,93 @@
+{
+  "BuildingsAndStructures": [
+    "Stone inn", "Tavern", "Blacksmith shop", "Apothecary", "Bakery", "Butcher shop", "Tailor shop",
+    "Cobbler’s shop", "Town hall", "Wooden house", "Guild hall", "Church", "Bell tower", "Stables",
+    "Market stalls", "Public fountain", "Watchtower", "City gate", "Archway", "Alley entrance"
+  ],
+  "StreetFeatures": [
+    "Cobblestones", "Dirt road", "Wooden walkway", "Gutters", "Open sewer", "Water trough", "Horse hitching post",
+    "Street sign", "Lantern post", "Town crier platform", "Bench", "Covered walkway", "Wooden barrels",
+    "Crates", "Stacked firewood", "Rain barrel", "Steps", "Awnings", "Wooden scaffolding", "Stone wall"
+  ],
+  "MarketGoodsAndStalls": [
+    "Fruit cart", "Vegetable crate", "Bread basket", "Fish stall", "Meat hooks", "Cheese wheel", "Wool bundles",
+    "Textiles", "Spices", "Herbs", "Clay pots", "Candles", "Soap bars", "Jewelry display", "Weapon rack",
+    "Armor stand", "Scroll display", "Paintings", "Barrels of ale", "Glass bottles"
+  ],
+  "PeopleAndProfessions": [
+    "Baker", "Butcher", "Fishmonger", "Merchant", "Blacksmith", "Tailor", "Cobbler", "Tavern keeper",
+    "Town crier", "Beggar", "Minstrel", "Guard", "Pickpocket", "Street sweeper", "Messenger boy",
+    "Milkmaid", "Stable boy", "Apprentice", "Priest", "Scribe"
+  ],
+  "CartsAndTransport": [
+    "Handcart", "Wheelbarrow", "Ox cart", "Horse-drawn wagon", "Hay cart", "Delivery cart", "Merchant's wagon",
+    "Grain sack cart", "Wine barrel cart", "Covered wagon", "Pack mule", "Donkey", "Horse with saddlebags",
+    "Wooden wheels", "Yoke", "Harness", "Reins", "Leather straps", "Saddle", "Axle"
+  ],
+  "Animals": [
+    "Horse", "Ox", "Goat", "Sheep", "Dog", "Chicken", "Cat", "Pig", "Duck", "Mouse", "Pigeon", "Hawk",
+    "Rat", "Crow", "Stray dog", "Donkey", "Pack horse", "Geese", "Bees", "Ferret"
+  ],
+  "PublicServicesAndUtilities": [
+    "Well", "Fountain", "Lantern hook", "Town bulletin board", "Stocks (for punishment)", "Pillory",
+    "Public latrine", "Guard post", "Firewood pile", "Watch bell", "Rope barrier", "Water basin",
+    "Public announcement board", "Notice scroll", "Torch bracket", "Public bench", "Warning sign",
+    "Waste barrel", "Town map", "Prayer board"
+  ],
+  "StreetFoodAndDrink": [
+    "Roasted meat on spit", "Mead jug", "Bread loaves", "Fruit skewers", "Meat pies", "Ale mugs",
+    "Wine bottle", "Cheese wedge", "Boiled eggs", "Cookpot", "Soup cauldron", "Clay cups", "Pastries",
+    "Roasted chestnuts", "Fried fish", "Grain cakes", "Dried fruits", "Honey cakes", "Broth pot", "Skillet"
+  ],
+  "SoundsAndMusicalItems": [
+    "Minstrel’s lute", "Tambourine", "Flute", "Drum", "Town bell", "Chiming clock", "Crank organ",
+    "Singing beggar", "Caller horn", "Whistle", "Street song lyrics", "Dance circle", "Bard's scroll",
+    "Pan flute", "Fiddle", "Wind chimes", "Crowd chatter", "Footsteps", "Coin clinks", "Dog barking"
+  ],
+  "WasteAndSanitation": [
+    "Dung pile", "Chamber pot contents", "Rotting vegetables", "Broken barrel", "Discarded bones",
+    "Animal droppings", "Soggy straw", "Slop bucket", "Waste water", "Rag pile", "Cracked clay bowl",
+    "Torn sack", "Shattered jug", "Dead rat", "Worn boot", "Fish scraps", "Ash pile", "Old rope",
+    "Mud puddle", "Rotting fruit"
+  ],
+  "ReligiousAndCultural": [
+    "Shrine", "Cross", "Prayer candles", "Icon painting", "Holy water font", "Pilgrim badge",
+    "Religious banner", "Festival ribbons", "Ceremonial lantern", "Chalk drawings", "Street altar",
+    "Clergy robes", "Blessing scroll", "Censer", "Prayer book", "Heraldic banner", "Feast table",
+    "Procession bell", "Incense bowl", "Blessing herb"
+  ],
+  "SignageAndShops": [
+    "Hanging inn sign", "Blacksmith’s anvil sign", "Tavern crest", "Apothecary symbol", "Market prices scroll",
+    "Wooden shop signs", "Painted storefront", "Guild sigil", "Seamstress board", "Barber pole",
+    "Leatherworker sign", "Candle shop sign", "Toymaker sign", "Bookseller plank", "Butcher’s cleaver sign",
+    "Fishmonger scale", "Potter’s wheel emblem", "Painter's easel", "Weaver’s shuttle", "Fletcher’s arrows"
+  ],
+  "FestivalAndEvents": [
+    "Festival banner", "Juggling balls", "Parade drums", "Stage platform", "Dancer’s costume",
+    "Face paint", "Jester hat", "Carnival mask", "Feast table", "Fire breather torch", "Colored flags",
+    "Musician’s tent", "Prize ribbons", "Tug-of-war rope", "Torchlight procession", "Parade float",
+    "Audience benches", "Festival tokens", "Tournament list", "Knight's display"
+  ],
+  "LightingAndFire": [
+    "Iron torch", "Lantern", "Tallow candles", "Street brazier", "Wall sconce", "Oil lamp", "Candle stand",
+    "Fire pit", "Lamp post", "Hearth smoke", "Torch bracket", "Kindling bundle", "Burning stick",
+    "Charcoal pile", "Fire ring", "Ash can", "Lantern glass", "Oil flask", "Flint and steel", "Firewood stack"
+  ],
+  "GoodsAndTradeItems": [
+    "Spool of thread", "Leather hide", "Iron ingot", "Wool roll", "Basket of eggs", "Spice pouch",
+    "Ceramic jug", "Wooden spoon", "Needles", "Silk cloth", "Dyes", "Lantern oil", "Glass vial",
+    "Ink bottle", "Quill", "Copper pot", "Tin cup", "Thread spool", "Candle wax", "Stone tile"
+  ],
+  "CrimeAndMischief": [
+    "Pickpocket's blade", "Cut purse", "Discarded coin pouch", "Graffiti", "Scrawled wall message",
+    "Knife mark", "Smuggled item", "Concealed blade", "Watch whistle", "Wanted poster",
+    "Shady alley", "Broken lock", "Secret note", "Footprint trail", "Masked face", "Poison vial",
+    "Blackmail letter", "False coin", "Silent signal", "Boot print"
+  ],
+  "TransportationAndTravel": [
+    "Travel satchel", "Boot prints", "Traveler’s cloak", "Saddlebag", "Walking stick", "Map scroll",
+    "Guidepost", "Compass", "Merchant token", "Parchment map", "Traveling trunk", "Road tax scroll",
+    "Shoes for hire", "Pack animal gear", "Saddle pad", "Mule tether", "Cane", "Compass rose engraving",
+    "Shoeing station", "Toll booth"
+  ]
+}

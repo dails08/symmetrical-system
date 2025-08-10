@@ -1,0 +1,89 @@
+{
+  "DwellingsAndStructures": [
+    "Wooden hut", "Thatch-roof cottage", "Stone chimney", "Treehouse", "Watchtower", "Wooden bridge",
+    "Animal pen", "Wattle and daub house", "Clay oven", "Lean-to shelter", "Barn", "Chicken coop",
+    "Goat shed", "Smokehouse", "Well", "Rain barrel", "Village square", "Stockade wall", "Gatehouse",
+    "Forest shrine"
+  ],
+  "ToolsAndImplements": [
+    "Wooden hoe", "Iron axe", "Sickle", "Hammer", "Shovel", "Pickaxe", "Wooden plow", "Saw", "Adze",
+    "Drawknife", "Chisel", "Spade", "Pitchfork", "Grindstone", "Maul", "Anvil", "Whetstone", "Tongs",
+    "Carving knife", "Hand drill"
+  ],
+  "HuntingAndFishingGear": [
+    "Bow", "Quiver of arrows", "Snares", "Fishing rod", "Fishing net", "Traps", "Sling", "Hunting horn",
+    "Spearfishing spear", "Fishing basket", "Deer lure", "Tracking stick", "Skinning knife", "Game rack",
+    "Hunting dog collar", "Falconry glove", "Camouflage cloak", "Meat hook", "Trail markers", "Trophy antlers"
+  ],
+  "CraftingAndWorkspaces": [
+    "Loom", "Spinning wheel", "Potter’s wheel", "Tanning rack", "Leather straps", "Basket frame", "Clay molds",
+    "Dye pot", "Forge", "Bellows", "Wood carving bench", "Wool carders", "Weaving shuttle", "Tool rack",
+    "Worktable", "Thread spools", "Paintbrushes", "Kiln", "Mortar and pestle", "Workbench"
+  ],
+  "NaturalResources": [
+    "Logs", "Firewood stack", "Clay", "River stones", "Herbs", "Moss", "Berries", "Mushrooms",
+    "Beehive", "Wild honey", "Pinecones", "Feathers", "Animal bones", "Tree sap", "Birch bark", "Animal pelts",
+    "Tree stumps", "Vines", "Nuts", "Willow branches"
+  ],
+  "ClothingAndWearables": [
+    "Wool cloak", "Leather boots", "Linen tunic", "Fur-lined gloves", "Travel hood", "Bone necklace",
+    "Herbal satchel", "Utility belt", "Woven sash", "Shoulder bag", "Waterproof cape", "Hunter’s jerkin",
+    "Wide-brim hat", "Cloth wraps", "Leg bindings", "Forest camo", "Embroidery thread", "Patch kit",
+    "Simple sandals", "Sun hat"
+  ],
+  "DomesticItems": [
+    "Cooking pot", "Iron kettle", "Woven baskets", "Clay bowls", "Wooden plates", "Wicker chairs", "Stools",
+    "Table", "Cupboard", "Barrel", "Crate", "Mortar", "Serving spoon", "Washing basin", "Fire poker",
+    "Lantern", "Candlestick", "Ladle", "Storage chest", "Clay jug"
+  ],
+  "FoodAndProvisions": [
+    "Dried meat", "Salted fish", "Fresh bread", "Vegetable basket", "Herb bundles", "Cheese wheel",
+    "Honeycomb", "Smoked ham", "Jars of jam", "Nuts and seeds", "Pickled vegetables", "Berry wine",
+    "Apples", "Turnips", "Grain sack", "Mushroom pouch", "Barley", "Dried beans", "Ale jug", "Onions"
+  ],
+  "AnimalsAndLivestock": [
+    "Goat", "Sheep", "Chicken", "Pig", "Cow", "Hunting dog", "Cat", "Horse", "Donkey", "Hawk",
+    "Rabbit hutch", "Bird coop", "Feed trough", "Hay bale", "Water bucket", "Nest box", "Animal harness",
+    "Saddle", "Egg basket", "Leather reins"
+  ],
+  "ChildrenItems": [
+    "Wooden toy", "Stick horse", "Ball of twine", "Slingshot", "Pebble pouch", "Small bow", "Rag doll",
+    "Wooden sword", "Spinning top", "Toy animals", "Simple rattle", "Bug cage", "Miniature cart", "Child’s cloak",
+    "Wool cap", "Drawing charcoal", "Small drum", "Feather headdress", "Marbles", "Swing rope"
+  ],
+  "ReligiousAndSpiritual": [
+    "Wooden idol", "Prayer beads", "Forest altar", "Herbal incense", "Stone circle", "Runestone",
+    "Totem pole", "Warding charm", "Amulet", "Sacred grove marker", "Ceremonial bowl", "Burned offerings",
+    "Chant scroll", "Nature symbol pendant", "Devotional cloth", "Bone charm", "Blessing bundle",
+    "Moonstone", "Sun disk carving", "Feather charm"
+  ],
+  "WeaponsAndDefense": [
+    "Spear", "Short sword", "Knife", "Shield", "Wooden staff", "Club", "Slingstones", "Armor vest",
+    "Helmet", "Arrowheads", "Buckler", "Torch", "Blowdart pipe", "Tribal spear", "Wooden pike",
+    "Leather bracers", "Caltrops", "Signal horn", "Hunter’s dagger", "Hidden blade"
+  ],
+  "MedicinalAndHerbal": [
+    "Aloe leaf", "Dried lavender", "Yarrow", "Comfrey root", "Herb pouch", "Poultice cloth", "Salve jar",
+    "Mortar and pestle", "Bone needle", "Bandages", "Honey salve", "Antler powder", "Mushroom tincture",
+    "Healing stones", "Ash paste", "Infusion bottle", "Plantain leaf", "Camomile tea", "Ointment box",
+    "Leech jar"
+  ],
+  "SeasonalAndFestival": [
+    "Maypole ribbons", "Harvest wreath", "Lantern garlands", "Firepit stones", "Festival masks",
+    "Drum circle stool", "Painted faces", "Bunting flags", "Feast table", "Horn of plenty", "Flower crown",
+    "Bonfire torch", "Dancing shoes", "Drinking horn", "Seasonal herbs", "Decorated cart", "Musical pipes",
+    "Festival cloak", "Wreath of ivy", "Festival banner"
+  ],
+  "ArtisanGoodsAndTrade": [
+    "Clay pots", "Handwoven rugs", "Wood carvings", "Stone sculptures", "Knitted shawls", "Bone jewelry",
+    "Carved walking sticks", "Braided rope", "Lanterns", "Hand tools", "Bartered goods", "Dried herbs",
+    "Ink bottles", "Quills", "Scrolls", "Chalk pieces", "Ink stamps", "Wool skeins", "Painted wood panels",
+    "Tanned hides"
+  ],
+  "PathwaysAndVillageLayout": [
+    "Stone path", "Wooden signpost", "Footbridge", "Village gate", "Watch fire", "Path markers",
+    "Fence", "Wooden post", "Marker stones", "Log bench", "Hollow stump", "Mossy rock", "Animal trail",
+    "Hitching post", "Lantern pole", "Market stall", "Meeting stone", "Wooden archway", "Trail ladder",
+    "Stream crossing"
+  ]
+}

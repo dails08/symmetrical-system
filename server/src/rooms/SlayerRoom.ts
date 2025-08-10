@@ -2,9 +2,10 @@ import { Room, Client, logger, debugMessage } from "@colyseus/core";
 import { SlayerRoomState, Advance, Player, Slayer, Blade, Tactician, Gunslinger, Arcanist, InventoryItem, KnownSpell, RecentRoll } from "../SlayerRoomState";
 import { EPlaybooks, ICampaign, IJoinOptions, ISlayer, IBlade, IGunslinger, IArcanist, ITactician } from "../../../common/common";
 import { Clint, Ryze, Cervantes, Gene} from "../../../common/examples";
-import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg, IWeaponChangeMsg, IAddPlanMsg, IRemovePlanMsg, IAddSpellMsg, IRemoveSpellMsg, ISetEnhancedMsg, ISetFavoredSpell, IPlayAnimationMsg } from "../../../common/messageFormat";
+import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg, IWeaponChangeMsg, IAddPlanMsg, IRemovePlanMsg, IAddSpellMsg, IRemoveSpellMsg, ISetEnhancedMsg, ISetFavoredSpell, IPlayAnimationMsg, ISwapRollMsg, IPlayRollSwapMsg, ISetRecentRolls } from "../../../common/messageFormat";
 import { db } from "../firestoreConnection";
 import { v4 as uuidv4 } from "uuid";
+import { reverse } from "dns";
 
 export class SlayerRoom extends Room<SlayerRoomState> {
   maxClients = 10;
@@ -135,6 +136,22 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     return assignment.id == slayer.id;
   }
 
+  setRecentRolls(rolls: {actor: string, action: string, value: number}[], action: "add" | "set"){
+    if (action == "set"){
+      this.state.recentRolls.clear();
+    };
+    for (let roll of rolls){
+      this.state.recentRolls.push(new RecentRoll(roll.actor, roll.action, roll.value));
+    }
+  }
+
+  sendOverlayMessage(msg: IBaseMsg) {
+    for (let overlay of this.overlayClients){
+      console.log("Forwarding message to overlay: " + JSON.stringify(msg));
+      overlay.send(msg.kind, msg);
+    }
+  }
+
   onCreate (options: any) {
     const ryze = new Arcanist(Ryze);
     const cervantes = new Blade(Cervantes);
@@ -259,7 +276,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     //     // this.campaign.roster.push(elem);
     //   }  
     // })
-
+  
     this.onMessage(EMessageTypes.Kill, (client, msg: IKillMsg) => {
       if (this.isGM(client)){
         console.log("Killing " + msg.characterId);
@@ -267,7 +284,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
           return slayer.id == msg.characterId;
         });
         if (ix) {
-          this.state.kia.push(this.state.roster.splice(ix)[0]);
+          this.state.kia.push(this.state.roster.splice(ix, 1)[0]);
         } else {
           console.log("No slayer found with id " + msg.characterId);
         }  
@@ -323,11 +340,11 @@ export class SlayerRoom extends Room<SlayerRoomState> {
             if (msg.action == "remove" && "ix" in msg) {
               if (msg.array == "advances"){
                 console.log("Removing advance with ix " + msg.ix)
-                slayer.advances.splice(msg.ix)
+                slayer.advances.splice(msg.ix, 1)
                 console.log("Updated avd to " + JSON.stringify(slayer.advances));
               } else if (msg.array == "inventory"){
                 console.log("Removing item");
-                slayer.inventory.splice(msg.ix);
+                slayer.inventory.splice(msg.ix, 1);
               }
             } else if (msg.action == "add" && msg.data){
               if (msg.array == "advances"){
@@ -488,7 +505,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
         if (slayer.class == EPlaybooks.Tactician){
           if (this.isGM(client) || this.controlsCharacter(client, slayer)){
             const classedSlayer = slayer as Tactician;
-            classedSlayer.plans.splice(msg.planIx);
+            classedSlayer.plans.splice(msg.planIx, 1);
           } else {
             console.log("Not authorized to!");
           }
@@ -559,7 +576,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
         if (slayer.class == EPlaybooks.Arcanist){
           if (this.isGM(client) || this.controlsCharacter(client, slayer)){
             const classedSlayer = slayer as Arcanist;
-            classedSlayer.knownSpells.splice(msg.ix);
+            classedSlayer.knownSpells.splice(msg.ix, 1);
           } else {
             console.log("Not authorized to!");
           }
@@ -603,6 +620,55 @@ export class SlayerRoom extends Room<SlayerRoomState> {
         console.log("Not authorized!");
       }
     })
+
+    this.onMessage(EMessageTypes.setRecentRolls, (client, msg: ISetRecentRolls) => {
+      if (this.isGM(client)){
+        console.log("Setting rolls");
+        this.setRecentRolls(msg.rolls, msg.action)
+      } else {
+        console.log("Only GMs authorized to set rolls externally!");
+      }
+    })
+
+    this.onMessage(EMessageTypes.swapRoll, (client, msg: ISwapRollMsg) => {
+      const player = this.sessionIdToPlayer(client.sessionId);
+      const targetRoll = this.state.recentRolls[msg.rollIx];
+      const playSwapMsg: IPlayRollSwapMsg = {
+        kind: EMessageTypes.playRollSwap,
+        action: targetRoll.rollName,
+        actor: targetRoll.actor,
+        oldValue: targetRoll.value,
+        newValue: msg.planValue
+      }
+      console.log("Target roll: " + JSON.stringify(this.state.recentRolls[msg.rollIx]));
+      if (
+        this.isGM(client) ||
+        this.state.currentAssignments.get(player.id).class == EPlaybooks.Tactician &&
+        (this.state.currentAssignments.get(player.id) as Tactician).plans.includes(msg.planValue)
+      ){
+        if (this.isGM(client)){
+          console.log("Request comes from a GM");
+        } else {
+          console.log("Request comes from eligible Tactician");
+          const tacticianSlayer = (this.state.currentAssignments.get(player.id) as Tactician);
+          const planIx = tacticianSlayer.plans.indexOf(msg.planValue);
+          tacticianSlayer.plans.splice(planIx, 1);  
+        }
+        if (msg.action == "swap" || msg.action == "neutral"){
+          this.state.recentRolls[msg.rollIx].value = Math.min(6, msg.planValue);
+          playSwapMsg.newValue = this.state.recentRolls[msg.rollIx].value;
+        } else if (msg.action == "add") {
+          this.state.recentRolls[msg.rollIx].value = Math.min(6, (this.state.recentRolls[msg.rollIx].value + msg.planValue));
+          playSwapMsg.newValue = this.state.recentRolls[msg.rollIx].value;
+        } else if (msg.action == "subtract") {
+          this.state.recentRolls[msg.rollIx].value = Math.max(1, (this.state.recentRolls[msg.rollIx].value - msg.planValue));
+          playSwapMsg.newValue = this.state.recentRolls[msg.rollIx].value;
+        }
+        this.sendOverlayMessage(playSwapMsg);
+        // console.log(JSON.stringify(this.state.recentRolls));
+      } 
+
+    });
     
 
 

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Player, Slayer, Tactician } from '../../../../../../../server/src/SlayerRoomState';
 import { ColyseusService } from '../../../services/colyseusService';
 
@@ -11,12 +11,7 @@ import { EMessageTypes, IAddPlanMsg, IRemovePlanMsg } from '../../../../../../..
 
 @Component({
   selector: 'app-gm-controls-tactician',
-  imports: [CommonModule,
-    MatChipsModule,
-    MatIconModule,
-    MatFormFieldModule,
-    CdkDropList, CdkDrag
-  ],
+  imports: [MatChipsModule, MatIconModule, MatFormFieldModule, CdkDropList, CdkDrag],
   templateUrl: './gm-controls-tactician.html',
   styleUrl: './gm-controls-tactician.scss'
 })

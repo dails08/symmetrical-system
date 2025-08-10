@@ -1,0 +1,50 @@
+<div class="topRow">
+    <div class="topRowSection fireSection">
+        <p>Spray Lead</p>
+    </div>
+</div>
+<div class="stagingArea">
+    @for (stagedRound of stagedRounds; track $index){
+        <div class="stagedRound">R</div>
+    }
+</div>
+<div class="controlsRow">
+    <div class="leftSide">
+        <div class="chambers">
+            <img class="revolverChambers" src="/assets/shapes/revolver-chambers-grey.png">
+            <div class="chamber chamberOne"  [ngClass]="slayer.chamber1Loaded ? 'loaded' : 'unloaded'">
+                @if(slayer.chamber1Rune != ERunes.None){
+                    <img class="rune" [src]="'/assets/shapes/' + slayer.chamber1Rune + '.svg'">
+                }
+            </div>
+            <div class="chamber chamberTwo" [ngClass]="slayer.chamber2Loaded ? 'loaded' : 'unloaded'">
+                @if(slayer.chamber2Rune != ERunes.None){
+                    <img class="rune" [src]="'/assets/shapes/' + slayer.chamber2Rune + '.svg'">
+                }
+            </div>
+            <div class="chamber  chamberThree" [ngClass]="slayer.chamber3Loaded ? 'loaded' : 'unloaded'">
+                @if(slayer.chamber3Rune != ERunes.None){
+                    <img class="rune" [src]="'/assets/shapes/' + slayer.chamber3Rune + '.svg'">
+                }
+            </div>
+            <div class="chamber  chamberFour"  [ngClass]="slayer.chamber4Loaded ? 'loaded' : 'unloaded'">
+                @if(slayer.chamber4Rune != ERunes.None){
+                    <img class="rune" [src]="'/assets/shapes/' + slayer.chamber4Rune + '.svg'">
+                }
+            </div>
+            <div class="chamber chamberFive" [ngClass]="slayer.chamber5Loaded ? 'loaded' : 'unloaded'">
+                @if(slayer.chamber5Rune != ERunes.None){
+                    <img class="rune" [src]="'/assets/shapes/' + slayer.chamber5Rune + '.svg'">
+                }
+            </div>
+            <div class="chamber chamberSix"  [ngClass]="slayer.chamber6Loaded ? 'loaded' : 'unloaded'">
+                @if(slayer.chamber6Rune != ERunes.None){
+                    <img class="rune" [src]="'/assets/shapes/' + slayer.chamber6Rune + '.svg'">
+                }
+            </div>
+        </div>
+        <div class=" reloadSection">
+            <p>Reload</p>
+        </div>    
+    </div>
+</div>

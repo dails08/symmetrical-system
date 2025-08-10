@@ -1,8 +1,10 @@
-<div class="unjoined" *ngIf="this.cjs.roomType == 'lobby'">
-    <app-join-screen></app-join-screen>
-</div>
+@if (this.cjs.roomType == "lobby"){
+    <div class="unjoined">
+        <app-join-screen></app-join-screen>
+    </div>
+}
 <div class="playerSection">
-    <p>{{this.cs.player.displayName}} <span class="playerId">({{cs.player.id}})</span></p>
+    <p> <span class="playerDisplayName">{{this.cs.player.displayName}} </span> <span class="playerId">({{cs.player.id}})</span></p>
 </div>
 <div class="joined" *ngIf="this.cjs.roomType == 'gameplay'">
     @let slayer = cs.slayer;
@@ -17,7 +19,10 @@
               <div class="barcontent">
               </div>
               <!-- <div class="gutters"> -->
-                  <div *ngFor="let _ of [].constructor(slayer.maxHP + 1); let ix = index" class="segment" [style.left]="'calc('+100*(ix)/slayer.maxHP+'%)'"></div>
+                @for (_ of [].constructor(slayer.maxHP + 1);let ix = $index;  track $index){
+                    <div  class="segment" [style.left]="'calc('+100*(ix)/slayer.maxHP+'%)'"></div>
+                }
+                  <!-- <div *ngFor="let _ of [].constructor(slayer.maxHP + 1); let ix = index" class="segment" [style.left]="'calc('+100*(ix)/slayer.maxHP+'%)'"></div> -->
                   <div class="segment halfhp" [style.left]="'calc(50% + 1px)'"></div>
               <!-- </div> -->
             </div>
@@ -96,17 +101,25 @@
 
 
             <div class="advances">
-                <div class="advance" *ngFor="let advance of slayer.advances.toArray()">
-                    <ng-template class="advancePopover" #advancePopover>{{advance.desc}}</ng-template>
-                    <p [tp]="advancePopover" tpVariation="popover" tpTrigger="click" class="advanceName">{{advance.name}}</p>
-                </div>
+              <p class="rowLabel">advances</p>
+                @for (advance of slayer.advances.toArray(); track advance.name + ":" + $index){
+                    <div class="advance">
+                        <ng-template class="advancePopover" #advancePopover>{{advance.desc}}</ng-template>
+                        <p [tp]="advancePopover" tpVariation="popover" tpTrigger="click" class="advanceName">{{advance.name}}</p>
+                    </div>
+                }
             </div>
-            <div class="inventory" *ngIf="slayer.inventory.length > 0">
-                <div class="advance" *ngFor="let invItem of slayer.inventory.toArray()">
-                    <ng-template class="advancePopover" #advancePopover>{{invItem.desc}}</ng-template>
-                    <p [tp]="advancePopover" tpVariation="popover" tpTrigger="click" class="advanceName">{{invItem.name}}</p>
-                </div>
-            </div>
+              <div class="advances" >
+                  <p class="rowLabel">inventory</p>
+
+                  @for (invItem of slayer.inventory.toArray(); track invItem.name){
+                      <div class="advance">
+                          <ng-template class="advancePopover" #advancePopover>{{invItem.desc}}</ng-template>
+                          <p [tp]="advancePopover" tpVariation="popover" tpTrigger="click" class="advanceName">{{invItem.name}}</p>
+                      </div>
+                  }
+              </div>
+
         </div>
         <div class="bottomHalf">
             <div class="bladeData" *ngIf="slayer.class == playbooks.Blade">
@@ -116,29 +129,9 @@
                     <p>{{castSlayer.weaponNumber}}d{{castSlayer.weaponSides}}</p>
                 </div>
             </div>
-            <div class="gunslingerData" *ngIf="slayer.class == playbooks.Gunslinger">
-                @let castSlayer = slayer | asGunslinger;
-                <div class="chambers">
-                    <div class="chamber1">
-                        <p>1: <span *ngIf="castSlayer.chamber1Rune != 'none'">{{castSlayer.chamber1Rune}}: </span>{{castSlayer.chamber1Loaded}}</p>
-                    </div>
-                    <div class="chamber1">
-                        <p>2: <span *ngIf="castSlayer.chamber2Rune != 'none'">{{castSlayer.chamber2Rune}}: </span>{{castSlayer.chamber2Loaded}}</p>
-                    </div>
-                    <div class="chamber1">
-                        <p>3: <span *ngIf="castSlayer.chamber3Rune != 'none'">{{castSlayer.chamber3Rune}}: </span>{{castSlayer.chamber3Loaded}}</p>
-                    </div>
-                    <div class="chamber1">
-                        <p>4: <span *ngIf="castSlayer.chamber4Rune != 'none'">{{castSlayer.chamber4Rune}}: </span>{{castSlayer.chamber4Loaded}}</p>
-                    </div>
-                    <div class="chamber1">
-                        <p>5: <span *ngIf="castSlayer.chamber5Rune != 'none'">{{castSlayer.chamber5Rune}}: </span>{{castSlayer.chamber5Loaded}}</p>
-                    </div>
-                    <div class="chamber1">
-                        <p>6: <span *ngIf="castSlayer.chamber6Rune != 'none'">{{castSlayer.chamber6Rune}}: </span>{{castSlayer.chamber6Loaded}}</p>
-                    </div>
-                </div>
-            </div>
+            @if (slayer.class == playbooks.Gunslinger){
+                <app-char-sheet-gunslinger [slayer]="slayer | asGunslinger"></app-char-sheet-gunslinger>
+            }
             <div class="arcanistData" *ngIf="slayer.class == playbooks.Arcanist">
                 @let castSlayer = slayer | asArcanist;
                 <div class="stance">
@@ -152,7 +145,10 @@
                 </div>
             </div>
               <!-- @let castSlayer = slayer | asTactician; -->
-              <app-char-sheet-tactician *ngIf="slayer.class == playbooks.Tactician" [slayer]="slayer | asTactician"></app-char-sheet-tactician>
+               @if (slayer.class == playbooks.Tactician){
+                <app-char-sheet-tactician  [slayer]="slayer | asTactician"></app-char-sheet-tactician>
+
+               }
         </div>
     </div>
     <div class="slayerUndefined" *ngIf="!cs.slayer">
