@@ -55,6 +55,10 @@ export class CharSheetTactician {
         this.recentRolls.splice(ix);
       })
       // $(room.state).bindTo(this.recentRolls,["recentRolls"]);
+      $(this.slayer).listen("skillsTactics", (value, previousValue) =>{
+        this.resetPlans();
+      })
+      this.resetPlans();
     })  
     
   }
@@ -66,6 +70,14 @@ export class CharSheetTactician {
     this.planningRollsDeeEights = 0;
   }
 
+  rollRally(){
+    console.log("Rally!");
+  }
+
+  shootStab(){
+    console.log("Shoot/stab!");
+  }
+
   adjustPlanRoll(fours: number, sixes: number, eights: number){
     if (this.planningRollsTotal > 0){
       this.planningRollsTotal -= 1;
@@ -73,6 +85,16 @@ export class CharSheetTactician {
       this.planningRollsDeeSixes += sixes;
       this.planningRollsDeeEights += eights;
     }
+  }
+
+  sendPlansRoll(){
+    const msg: any = {
+      fours: this.planningRollsDeeFours,
+      sixes: this.planningRollsDeeSixes,
+      eights: this.planningRollsDeeEights
+    };
+    this.resetPlans();
+    console.log(msg);
   }
 
   checkAdvances(){
@@ -112,6 +134,7 @@ export class CharSheetTactician {
       this.hasStrategist = tmpStrategist;
       this.hasWeaken = tmpWeaken;
       this.prepCount = tmpPrepCount;
+      this.resetPlans();
     }
     
   }

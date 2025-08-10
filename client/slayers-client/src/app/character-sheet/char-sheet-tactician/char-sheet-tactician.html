@@ -4,42 +4,44 @@
 <div class="topRow">
   <div class="topOptions">
     <div class="topOption">
-      <div class="optionBox shootStab">
+      <div class="optionBox shootStab" (click)="shootStab()">
         <p>Shoot/Stab</p>
 
       </div>
     </div>
     @if (hasRally) {
       <div class=" topOption">
-        <div class="optionBox rollRally">
+        <div class="optionBox rollRally" (click)="rollRally()">
           <p>Roll Plan</p>
         </div>
       </div>
     }
   
-  </div>  <div class="planRoller topOptions">
-    <div class="diecontrol totalPlans" (click)="resetPlans()">
-      <div class="dieIcon"></div>
+  </div>  
+  <div class="planRoller topOptions">
+    <div class="dieControl totalPlans" (click)="resetPlans()">
       <div class="dieLabel">{{planningRollsTotal}}</div>
+      <div class="dieIcon ">Left</div>
     </div>
     @if (hasWeaken){
-      <div class="diecontrol deeFours" (click)="adjustPlanRoll(1,0,0)">
-        <div class="dieIcon"></div>
-        <div class="dieLabel"></div>
+      <div class="dieControl deeFours" (click)="adjustPlanRoll(1,0,0)">
+        <img src="/assets/shapes/4.svg" alt="" class="die dieCentral normal">
+        <div class="dieLabel">{{planningRollsDeeFours}}</div>
       </div>  
     }
-    <div class="diecontrol deeSixes">
-      <div class="dieIcon"></div>
-      <div class="dieLabel"></div>
+    <div class="dieControl deeSixes"(click)="adjustPlanRoll(0,1,0)">
+      <img src="/assets/shapes/6.svg" alt="" class="die dieCentral normal">
+      <div class="dieLabel">{{planningRollsDeeSixes}}</div>
     </div>
     @if (hasEmpower){
-      <div class="diecontrol deeEights">
-        <div class="dieIcon"></div>
-        <div class="dieLabel"></div>
+      <div class="dieControl deeEights" (click)="adjustPlanRoll(0,0,1)">
+        <img src="/assets/shapes/8.svg" alt="" class="die dieCentral normal">
+        <div class="dieLabel">{{planningRollsDeeEights}}</div>
       </div>  
     }
-    <div class="rollPlans">
-      <p>Roll Plans</p>
+    <div class="rollPlans" (click)="sendPlansRoll()">
+      <p>Roll</p>
+      <p>Plans</p>
     </div>
   </div>
 

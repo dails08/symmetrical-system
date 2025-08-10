@@ -102,7 +102,7 @@
 
             <div class="advances">
               <p class="rowLabel">advances</p>
-                @for (advance of slayer.advances.toArray(); track advance.name){
+                @for (advance of slayer.advances.toArray(); track advance.name + ":" + $index){
                     <div class="advance">
                         <ng-template class="advancePopover" #advancePopover>{{advance.desc}}</ng-template>
                         <p [tp]="advancePopover" tpVariation="popover" tpTrigger="click" class="advanceName">{{advance.name}}</p>
