@@ -284,7 +284,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
           return slayer.id == msg.characterId;
         });
         if (ix) {
-          this.state.kia.push(this.state.roster.splice(ix)[0]);
+          this.state.kia.push(this.state.roster.splice(ix, 1)[0]);
         } else {
           console.log("No slayer found with id " + msg.characterId);
         }  
@@ -340,11 +340,11 @@ export class SlayerRoom extends Room<SlayerRoomState> {
             if (msg.action == "remove" && "ix" in msg) {
               if (msg.array == "advances"){
                 console.log("Removing advance with ix " + msg.ix)
-                slayer.advances.splice(msg.ix)
+                slayer.advances.splice(msg.ix, 1)
                 console.log("Updated avd to " + JSON.stringify(slayer.advances));
               } else if (msg.array == "inventory"){
                 console.log("Removing item");
-                slayer.inventory.splice(msg.ix);
+                slayer.inventory.splice(msg.ix, 1);
               }
             } else if (msg.action == "add" && msg.data){
               if (msg.array == "advances"){
@@ -576,7 +576,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
         if (slayer.class == EPlaybooks.Arcanist){
           if (this.isGM(client) || this.controlsCharacter(client, slayer)){
             const classedSlayer = slayer as Arcanist;
-            classedSlayer.knownSpells.splice(msg.ix);
+            classedSlayer.knownSpells.splice(msg.ix, 1);
           } else {
             console.log("Not authorized to!");
           }
