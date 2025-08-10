@@ -2,10 +2,47 @@
 <p>plans: <span class="plan" *ngFor="let plan of slayer.plans">{{plan}} </span></p>
 </div> -->
 <div class="topRow">
-  <div class="shootStab topOption"><p>Shoot/Stab</p></div>
-  @if (hasRally) {
-    <div class="roll topOption"><p>Roll Plan</p></div>
-  }
+  <div class="topOptions">
+    <div class="topOption">
+      <div class="optionBox shootStab">
+        <p>Shoot/Stab</p>
+
+      </div>
+    </div>
+    @if (hasRally) {
+      <div class=" topOption">
+        <div class="optionBox rollRally">
+          <p>Roll Plan</p>
+        </div>
+      </div>
+    }
+  
+  </div>  <div class="planRoller topOptions">
+    <div class="diecontrol totalPlans" (click)="resetPlans()">
+      <div class="dieIcon"></div>
+      <div class="dieLabel">{{planningRollsTotal}}</div>
+    </div>
+    @if (hasWeaken){
+      <div class="diecontrol deeFours" (click)="adjustPlanRoll(1,0,0)">
+        <div class="dieIcon"></div>
+        <div class="dieLabel"></div>
+      </div>  
+    }
+    <div class="diecontrol deeSixes">
+      <div class="dieIcon"></div>
+      <div class="dieLabel"></div>
+    </div>
+    @if (hasEmpower){
+      <div class="diecontrol deeEights">
+        <div class="dieIcon"></div>
+        <div class="dieLabel"></div>
+      </div>  
+    }
+    <div class="rollPlans">
+      <p>Roll Plans</p>
+    </div>
+  </div>
+
 </div>
 <div class="controlsRow" cdkDropListGroup>
   <div class="plansDisplay" cdkDropListSortingDisabled cdkDropList (cdkDropListEntered)="enter('neutral')">

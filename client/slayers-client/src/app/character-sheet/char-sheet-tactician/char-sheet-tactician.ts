@@ -27,10 +27,53 @@ export class CharSheetTactician {
   hasStrategist: boolean = false;
   prepCount: number = 0;
 
+  planningRollsTotal: number = 0;
+  planningRollsDeeFours = 0;
+  planningRollsDeeSixes = 0;
+  planningRollsDeeEights = 0;
+
   recentRolls: RecentRoll[] = [];
 
   mode: "add" | "swap" | "subtract" | "neutral" = "neutral";
   
+  constructor(
+    private cjs: ColyseusService
+  ){
+
+    this.cjs.room.then((room) => {
+      const $ = getStateCallbacks(room);
+      $(this.slayer).advances.onAdd((item, ix) => {
+        this.checkAdvances();
+      })
+      $(this.slayer).advances.onRemove((item, ix) => {
+        this.checkAdvances();
+      })
+      $(room.state).recentRolls.onAdd((elem, ix) => {
+        this.recentRolls.push(elem);
+      })
+      $(room.state).recentRolls.onRemove((elem, ix) => {
+        this.recentRolls.splice(ix);
+      })
+      // $(room.state).bindTo(this.recentRolls,["recentRolls"]);
+    })  
+    
+  }
+
+  resetPlans() {
+    this.planningRollsTotal = this.slayer.skillsTactics + this.prepCount;
+    this.planningRollsDeeFours = 0;
+    this.planningRollsDeeSixes = 0;
+    this.planningRollsDeeEights = 0;
+  }
+
+  adjustPlanRoll(fours: number, sixes: number, eights: number){
+    if (this.planningRollsTotal > 0){
+      this.planningRollsTotal -= 1;
+      this.planningRollsDeeFours += fours;
+      this.planningRollsDeeSixes += sixes;
+      this.planningRollsDeeEights += eights;
+    }
+  }
 
   checkAdvances(){
     if (this.slayer){
@@ -73,28 +116,7 @@ export class CharSheetTactician {
     
   }
 
-  constructor(
-    private cjs: ColyseusService
-  ){
 
-    this.cjs.room.then((room) => {
-      const $ = getStateCallbacks(room);
-      $(this.slayer).advances.onAdd((item, ix) => {
-        this.checkAdvances();
-      })
-      $(this.slayer).advances.onRemove((item, ix) => {
-        this.checkAdvances();
-      })
-      $(room.state).recentRolls.onAdd((elem, ix) => {
-        this.recentRolls.push(elem);
-      })
-      $(room.state).recentRolls.onRemove((elem, ix) => {
-        this.recentRolls.splice(ix);
-      })
-      // $(room.state).bindTo(this.recentRolls,["recentRolls"]);
-    })  
-    
-  }
 
   enter(entry: "add" | "swap" | "subtract" | "neutral"){
     console.log(entry);
