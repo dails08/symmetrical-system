@@ -26,7 +26,7 @@
         align-items: center;
         justify-content: center;
         text-align: center;
-        
+
     }
     .fireSection {
         background-color: darkred;
@@ -82,7 +82,7 @@
                     // border: 1px solid white;
                     // border-radius: 100%;
                     // background-color: pink;
-    
+
                     .rune {
                         margin: -5px;
                         // filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(87deg) brightness(119%) contrast(119%);
@@ -91,18 +91,19 @@
                         // filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(var(--hueRotationAngle)deg) brightness(119%) contrast(119%);
                     }
                 }
-    
+
                 .loadedChamber {
                     border: 1px solid white;
                     border-radius: 100%;
                 }
                 .unloadedChamber {
                     border: none;
+                    border-radius: 100%;
                     img {
                         visibility: hidden;
                     }
                 }
-    
+
                 .chamberOne {
                     // background-color: blue;
                     left: calc(50% - (35px + 5px + 5px));
@@ -121,7 +122,7 @@
                 .chamberFour {
                     // background-color: yellow;
                     right: calc(50% - (35px + 5px + 5px));
-                    top: 207px;                
+                    top: 207px;
                 }
                 .chamberFive {
                     // background-color: darkorange;
@@ -134,9 +135,9 @@
                     top: 69px;
                 }
             }
-            
+
         }
-    
+
         .reloadSection {
             color: white;
             font-family: Georgia, 'Times New Roman', Times, serif;
@@ -151,9 +152,9 @@
             background-color: darkblue;
             border-top: 1px solid white;
             width: 100%;
-            
+
         }
-    
+
     }
 
 
@@ -173,8 +174,59 @@
             font-weight: bold;
             height: 50px;
             text-align: center;
-    
+
         }
     }
 
+}
+
+.chamber {
+  width: 70px;
+  height: 70px;
+  margin:10px;
+  padding: 10px;
+  position: absolute;
+  background-color: black;
+  // border: 1px solid white;
+  // border-radius: 100%;
+  // background-color: pink;
+
+  .rune {
+      margin: -5px;
+      // filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(87deg) brightness(119%) contrast(119%);
+  }
+  .loadedRune {
+      // filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(var(--hueRotationAngle)deg) brightness(119%) contrast(119%);
+  }
+}
+
+.loadedChamber {
+  border: 1px solid white;
+  border-radius: 100%;
+}
+.unloadedChamber {
+  border: none;
+  border-radius: 100%;
+  img {
+      visibility: hidden;
+  }
+}
+
+.stagedRound {
+  width: 70px;
+  height: 70px;
+  margin:10px;
+  padding: 10px;
+  background-color: black;
+  border: 1px solid white;
+  border-radius: 100%;
+  // background-color: pink;
+
+  .rune {
+      margin: -5px;
+      // filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(87deg) brightness(119%) contrast(119%);
+  }
+  .loadedRune {
+      // filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(var(--hueRotationAngle)deg) brightness(119%) contrast(119%);
+  }
 }

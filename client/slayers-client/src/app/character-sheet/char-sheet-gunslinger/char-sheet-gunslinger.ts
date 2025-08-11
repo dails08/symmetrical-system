@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Input } from '@angular/core';
 import { Gunslinger, SlayerRoomState  } from '../../../../../../server/src/SlayerRoomState';
 import { ColyseusService } from '../../services/colyseusService';
 import { ERunes } from '../../../../../../common/common';
-import { DragDropModule } from '@angular/cdk/drag-drop';
+import { DragDropModule, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { animate, utils, stagger, createTimer } from 'animejs';
 import { getStateCallbacks } from 'colyseus.js';
@@ -34,7 +34,7 @@ export class CharSheetGunslinger  implements AfterViewInit{
   constructor(
       private cjs: ColyseusService
     ){
-      
+
       this.cjs.room.then(room => {
         const $ = getStateCallbacks<SlayerRoomState>(room);
         // $(this.slayer).onChange(() => {
@@ -61,8 +61,8 @@ export class CharSheetGunslinger  implements AfterViewInit{
         })
       })
 
-     
-      
+
+
     }
 
     updateRuneAnimation(chamber: string) {
@@ -76,7 +76,7 @@ export class CharSheetGunslinger  implements AfterViewInit{
         duration: 10000,
         loop: -1,
         delay: toDelay,
-        alternate: true, 
+        alternate: true,
         filter: [
           'invert(' + toInvert + '%) sepia(93%) saturate(1352%) hue-rotate(0deg) brightness(119%) contrast(119%)',
           'invert(42%) sepia(93%) saturate(1352%) hue-rotate(359deg) brightness(119%) contrast(119%)'
@@ -95,7 +95,7 @@ export class CharSheetGunslinger  implements AfterViewInit{
           duration: 10000,
           loop: -1,
           delay: toDelay,
-          alternate: true, 
+          alternate: true,
           filter: [
             'invert(' + toInvert + '%) sepia(93%) saturate(1352%) hue-rotate(0deg) brightness(119%) contrast(119%)',
             'invert(42%) sepia(93%) saturate(1352%) hue-rotate(359deg) brightness(119%) contrast(119%)'
@@ -116,6 +116,15 @@ export class CharSheetGunslinger  implements AfterViewInit{
 
     logChamberClick(chamber: number) {
       console.log("Chamber clicked!: " + chamber);
+    }
+
+    addToStaged(event: CdkDragDrop<{chamber: number, rune: ERunes}[]>){
+      this.stagedRounds.push(event.item.data);
+      this.updateRuneAnimation(event.item.data.chamber);
+    }
+
+    unstage(index: number) {
+      this.stagedRounds.splice(index, 1);
     }
 
     ngAfterViewInit(): void {

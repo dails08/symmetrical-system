@@ -3,9 +3,13 @@
         <p>Spray Lead</p>
     </div>
 </div>
-<div cdkDropList #stagedList="cdkDropList" [cdkDropListConnectedTo]="chamberList" class="stagingArea">
+<div cdkDropList #stagedList="cdkDropList" [cdkDropListConnectedTo]="chamberList"  (cdkDropListDropped)="addToStaged($event)" class="stagingArea">
     @for (stagedRound of stagedRounds; track $index){
-        <div class="stagedRound">R</div>
+        <div class="stagedRound" (click)="unstage($index)">
+           @if(slayer.chamber1Rune != ERunes.None){
+              <img class="rune loadedRune" [ngClass]="'chamber' + ['One','Two', 'Three', 'Four', 'Five', 'Six'][stagedRound.chamber] + 'Rune'" [src]="'/assets/shapes/' + stagedRound.rune + '.svg'">
+            }
+        </div>
     }
 </div>
 <div class="controlsRow">
@@ -13,41 +17,41 @@
         <div class="chambers">
             <img class="revolverChambers" src="/assets/shapes/revolver-chambers-grey.png">
             <div cdkDropList [cdkDropListConnectedTo]="stagedList" #chamberList="cdkDropList" class="chamberList">
-                <div cdkDrag class="chamber chamberOne" (click)="logChamberClick(1)" [ngClass]="slayer.chamber1Loaded ? 'loadedChamber' : 'unloadedChamber'" >
+                <div cdkDrag [cdkDragData]="{chamber: 1, rune: slayer.chamber1Rune}" class="chamber chamberOne" (click)="logChamberClick(1)" [ngClass]="slayer.chamber1Loaded ? 'loadedChamber' : 'unloadedChamber'" >
                     @if(slayer.chamber1Rune != ERunes.None){
                         <img class="rune chamberOneRune" [ngClass]="slayer.chamber1Loaded ? 'loadedRune' : 'unloadedRune'" [src]="'/assets/shapes/' + slayer.chamber1Rune + '.svg'">
                     }
-                </div>    
-                <div cdkDrag class="chamber chamberTwo"  (click)="logChamberClick(2)" [ngClass]="slayer.chamber2Loaded ? 'loadedChamber' : 'unloadedChamber'">
+                </div>
+                <div cdkDrag [cdkDragData]="{chamber: 2, rune: slayer.chamber2Rune}" class="chamber chamberTwo"  (click)="logChamberClick(2)" [ngClass]="slayer.chamber2Loaded ? 'loadedChamber' : 'unloadedChamber'">
                     @if(slayer.chamber2Rune != ERunes.None){
                         <img class="rune chamberTwoRune" [ngClass]="slayer.chamber2Loaded ? 'loadedRune' : 'unloadedRune'" [src]="'/assets/shapes/' + slayer.chamber2Rune + '.svg'">
                     }
                 </div>
-                <div cdkDrag class="chamber  chamberThree" [ngClass]="slayer.chamber3Loaded ? 'loadedChamber' : 'unloadedChamber'">
+                <div cdkDrag [cdkDragData]="{chamber: 3, rune: slayer.chamber3Rune}" class="chamber  chamberThree" [ngClass]="slayer.chamber3Loaded ? 'loadedChamber' : 'unloadedChamber'">
                     @if(slayer.chamber3Rune != ERunes.None){
                         <img class="rune chamberThreeRune" [ngClass]="slayer.chamber3Loaded ? 'loadedRune' : 'unloadedRune'" [src]="'/assets/shapes/' + slayer.chamber3Rune + '.svg'">
                     }
                 </div>
-                <div cdkDrag  class="chamber  chamberFour" [ngClass]="slayer.chamber4Loaded ? 'loadedChamber' : 'unloadedChamber'">
+                <div cdkDrag [cdkDragData]="{chamber: 4, rune: slayer.chamber4Rune}"  class="chamber  chamberFour" [ngClass]="slayer.chamber4Loaded ? 'loadedChamber' : 'unloadedChamber'">
                     @if(slayer.chamber4Rune != ERunes.None){
                         <img class="rune chamberFourRune"  [ngClass]="slayer.chamber4Loaded ? 'loadedRune' : 'unloadedRune'" [src]="'/assets/shapes/' + slayer.chamber4Rune + '.svg'">
                     }
                 </div>
-                <div cdkDrag class="chamber chamberFive" [ngClass]="slayer.chamber5Loaded ? 'loadedChamber' : 'unloadedChamber'">
+                <div cdkDrag [cdkDragData]="{chamber: 5, rune: slayer.chamber5Rune}" class="chamber chamberFive" [ngClass]="slayer.chamber5Loaded ? 'loadedChamber' : 'unloadedChamber'">
                     @if(slayer.chamber5Rune != ERunes.None){
                         <img class="rune chamberFiveRune" [ngClass]="slayer.chamber5Loaded ? 'loadedRune' : 'unloadedRune'" [src]="'/assets/shapes/' + slayer.chamber5Rune + '.svg'">
                     }
                 </div>
-                <div cdkDrag class="chamber chamberSix" [ngClass]="slayer.chamber6Loaded ? 'loadedChamber' : 'unloadedChamber'">
+                <div cdkDrag [cdkDragData]="{chamber: 6, rune: slayer.chamber6Rune}" class="chamber chamberSix" [ngClass]="slayer.chamber6Loaded ? 'loadedChamber' : 'unloadedChamber'">
                     @if(slayer.chamber6Rune != ERunes.None){
                         <img class="rune chamberSixRune" [ngClass]="slayer.chamber6Loaded ? 'loadedRune' : 'unloadedRune'" [src]="'/assets/shapes/' + slayer.chamber6Rune + '.svg'">
                     }
                 </div>
             </div>
-            
+
         </div>
         <div class=" reloadSection">
             <p>Reload</p>
-        </div>    
+        </div>
     </div>
 </div>
