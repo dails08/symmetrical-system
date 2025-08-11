@@ -85,7 +85,7 @@
                     margin: -5px;
                     // filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(87deg) brightness(119%) contrast(119%);
                 }
-                .loaded {
+                .loadedRune {
                     // filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(var(--hueRotationAngle)deg) brightness(119%) contrast(119%);
                 }
             }
@@ -93,6 +93,12 @@
             .loadedChamber {
                 border: 1px solid white;
                 border-radius: 100%;
+            }
+            .unloadedChamber {
+                border: none;
+                img {
+                    visibility: hidden;
+                }
             }
 
             .chamberOne {
