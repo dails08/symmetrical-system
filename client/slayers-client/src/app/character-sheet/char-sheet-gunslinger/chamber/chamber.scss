@@ -1,0 +1,30 @@
+.placeholder {
+    width: 70px;
+    height: 70px;
+    margin:10px;
+    padding: 10px;
+    position: absolute;
+    background-color: black;
+    // border: 1px solid white;
+    // border-radius: 100%;
+    // background-color: pink;
+    border-radius: 100%;
+
+    .rune {
+        margin: -5px;
+        // filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(87deg) brightness(119%) contrast(119%);
+    }
+    .loadedRune {
+        // filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(var(--hueRotationAngle)deg) brightness(119%) contrast(119%);
+    }
+}
+
+.visibleChamber {
+    border: 1px solid white;
+}
+.unloadedChamber {
+    border: none;
+    img {
+        visibility: hidden;
+    }
+}

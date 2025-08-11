@@ -1,0 +1,7 @@
+<div class="placeholder">
+    <div class="round" [ngClass]="loaded && unstaged ? 'visibleRound' : 'invisibleRound'">
+        @if(rune != ERunes.None && unstaged){
+            <img class="rune" [ngClass]="loaded ? 'loadedRune' : 'unloadedRune'" [src]="'/assets/shapes/' + rune + '.svg'">
+        }    
+    </div>
+</div>
