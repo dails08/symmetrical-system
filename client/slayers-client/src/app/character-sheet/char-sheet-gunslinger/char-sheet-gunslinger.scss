@@ -40,12 +40,15 @@
 
 .stagingArea {
     display: flex;
-    width: 100%;
-    height: 70px;
+    // width: 100%;
+    height: 80px;
     align-items: center;
     border-bottom: 1px solid gray;
     overflow-x: scroll;
     padding: 10px 5px;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    scrollbar-width: none;
 }
 
 .controlsRow {
@@ -229,4 +232,9 @@
   .loadedRune {
       // filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(var(--hueRotationAngle)deg) brightness(119%) contrast(119%);
   }
+}
+
+.invisibleChamberPlaceholder {
+    opacity: 0;
+    position: absolute;
 }
