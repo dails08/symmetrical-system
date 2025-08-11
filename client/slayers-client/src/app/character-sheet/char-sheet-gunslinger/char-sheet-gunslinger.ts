@@ -69,8 +69,8 @@ export class CharSheetGunslinger  implements AfterViewInit{
       console.log("Updating rune animation for " + ".chamber" + chamber + "Rune");
       const changedChamber = utils.$(".chamber" + chamber + "Rune");
       console.log(changedChamber.length);
-      const toInvert = Math.floor(Math.random()*100);
-      const toDelay = Math.floor(Math.random() * 1000);
+      const toInvert = Math.floor(Math.random() * 50) + 25;
+      const toDelay =  Math.floor(Math.random() * 1000);
 
       animate(changedChamber, {
         duration: 10000,

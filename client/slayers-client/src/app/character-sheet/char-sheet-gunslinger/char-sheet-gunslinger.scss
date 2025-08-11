@@ -71,66 +71,70 @@
             .revolverChambers {
                 width: 80%;
             }
-            .chamber {
-                width: 70px;
-                height: 70px;
-                margin:10px;
-                padding: 10px;
-                position: absolute;
-                // border: 1px solid white;
-                // border-radius: 100%;
-                // background-color: pink;
-
-                .rune {
-                    margin: -5px;
-                    // filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(87deg) brightness(119%) contrast(119%);
+            .chamberList {
+                .chamber {
+                    width: 70px;
+                    height: 70px;
+                    margin:10px;
+                    padding: 10px;
+                    position: absolute;
+                    background-color: black;
+                    // border: 1px solid white;
+                    // border-radius: 100%;
+                    // background-color: pink;
+    
+                    .rune {
+                        margin: -5px;
+                        // filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(87deg) brightness(119%) contrast(119%);
+                    }
+                    .loadedRune {
+                        // filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(var(--hueRotationAngle)deg) brightness(119%) contrast(119%);
+                    }
                 }
-                .loadedRune {
-                    // filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(var(--hueRotationAngle)deg) brightness(119%) contrast(119%);
+    
+                .loadedChamber {
+                    border: 1px solid white;
+                    border-radius: 100%;
+                }
+                .unloadedChamber {
+                    border: none;
+                    img {
+                        visibility: hidden;
+                    }
+                }
+    
+                .chamberOne {
+                    // background-color: blue;
+                    left: calc(50% - (35px + 5px + 5px));
+                    top: 22px;
+                }
+                .chamberTwo {
+                    // background-color: green;
+                    right: calc(50% - (35px + 5px + 5px) - 80px);
+                    top: 69px;
+                }
+                .chamberThree {
+                    // background-color: purple;
+                    right: calc(50% - (35px + 5px + 5px) - 80px);
+                    top: 162px;
+                }
+                .chamberFour {
+                    // background-color: yellow;
+                    right: calc(50% - (35px + 5px + 5px));
+                    top: 207px;                
+                }
+                .chamberFive {
+                    // background-color: darkorange;
+                    left: calc(50% - (35px + 5px + 5px) - 80px);
+                    top: 162px;
+                }
+                .chamberSix {
+                    // background-color: red;
+                    left: calc(50% - (35px + 5px + 5px) - 80px);
+                    top: 69px;
                 }
             }
-
-            .loadedChamber {
-                border: 1px solid white;
-                border-radius: 100%;
-            }
-            .unloadedChamber {
-                border: none;
-                img {
-                    visibility: hidden;
-                }
-            }
-
-            .chamberOne {
-                // background-color: blue;
-                left: calc(50% - (35px + 5px + 5px));
-                top: 22px;
-            }
-            .chamberTwo {
-                // background-color: green;
-                right: calc(50% - (35px + 5px + 5px) - 80px);
-                top: 69px;
-            }
-            .chamberThree {
-                // background-color: purple;
-                right: calc(50% - (35px + 5px + 5px) - 80px);
-                top: 162px;
-            }
-            .chamberFour {
-                // background-color: yellow;
-                right: calc(50% - (35px + 5px + 5px));
-                top: 207px;                
-            }
-            .chamberFive {
-                // background-color: darkorange;
-                left: calc(50% - (35px + 5px + 5px) - 80px);
-                top: 162px;
-            }
-            .chamberSix {
-                // background-color: red;
-                left: calc(50% - (35px + 5px + 5px) - 80px);
-                top: 69px;
-            }
+            
         }
     
         .reloadSection {
