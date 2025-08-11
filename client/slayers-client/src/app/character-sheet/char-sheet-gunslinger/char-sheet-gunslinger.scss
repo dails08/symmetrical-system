@@ -2,7 +2,10 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    --hueRotationAngle: 0;
 }
+
+
 
 .topRow {
     display: flex;
@@ -74,42 +77,51 @@
                 margin:10px;
                 padding: 10px;
                 position: absolute;
-                border: 1px solid white;
-                border-radius: 100%;
+                // border: 1px solid white;
+                // border-radius: 100%;
                 // background-color: pink;
 
                 .rune {
-                    margin: -10px;
+                    margin: -5px;
+                    // filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(87deg) brightness(119%) contrast(119%);
+                }
+                .loaded {
+                    // filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(var(--hueRotationAngle)deg) brightness(119%) contrast(119%);
                 }
             }
 
+            .loadedChamber {
+                border: 1px solid white;
+                border-radius: 100%;
+            }
+
             .chamberOne {
-                background-color: blue;
+                // background-color: blue;
                 left: calc(50% - (35px + 5px + 5px));
                 top: 22px;
             }
             .chamberTwo {
-                background-color: green;
+                // background-color: green;
                 right: calc(50% - (35px + 5px + 5px) - 80px);
                 top: 69px;
             }
             .chamberThree {
-                background-color: purple;
+                // background-color: purple;
                 right: calc(50% - (35px + 5px + 5px) - 80px);
                 top: 162px;
             }
             .chamberFour {
-                background-color: yellow;
+                // background-color: yellow;
                 right: calc(50% - (35px + 5px + 5px));
                 top: 207px;                
             }
             .chamberFive {
-                background-color: darkorange;
+                // background-color: darkorange;
                 left: calc(50% - (35px + 5px + 5px) - 80px);
                 top: 162px;
             }
             .chamberSix {
-                background-color: red;
+                // background-color: red;
                 left: calc(50% - (35px + 5px + 5px) - 80px);
                 top: 69px;
             }
