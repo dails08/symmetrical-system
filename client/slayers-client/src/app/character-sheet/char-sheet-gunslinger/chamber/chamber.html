@@ -1,7 +1,5 @@
-<div class="placeholder">
-    <div class="round" [ngClass]="loaded && unstaged ? 'visibleRound' : 'invisibleRound'">
-        @if(rune != ERunes.None && unstaged){
-            <img class="rune" [ngClass]="loaded ? 'loadedRune' : 'unloadedRune'" [src]="'/assets/shapes/' + rune + '.svg'">
-        }    
-    </div>
+<div class="chamber"  [ngClass]="{loadedChamber: loaded, selectedRound: selected}">
+    @if(rune != ERunes.None){
+        <img [id]="'runeImg' + this.chamber" (load)="updateRuneAnimation()" #runeImg class="rune" [src]="'/assets/shapes/' + rune + '.svg'">
+    }    
 </div>
