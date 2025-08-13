@@ -13,7 +13,7 @@ export class Chamber implements AfterViewInit {
 
   @Input({required: true})
   rune!: ERunes;
-  
+
   @Input({required: true})
   loaded!: boolean;
 
@@ -39,9 +39,9 @@ export class Chamber implements AfterViewInit {
         } else {
           this.stopAnimation();
         }
-      }       
+      }
     }, 100)
-    
+
   }
 
   startAnimation(){
@@ -60,7 +60,7 @@ export class Chamber implements AfterViewInit {
       this.animation = animate("#runeImg" + this.chamber, {
         duration: toDuration,
         loop: true,
-        delay: toDelay,
+        // delay: toDelay,
         alternate: true,
         // width: "200px",
         filter: [
@@ -79,6 +79,7 @@ export class Chamber implements AfterViewInit {
     console.log("Stopping animation on element #runeImg" + this.chamber);
     console.log(this.animation);
     this.animation?.pause();
+    this.animation?.cancel();
     console.log("Ostensibly paused");
     console.log("Setting new filter");
     utils.set("#runeImg" + this.chamber, {
@@ -86,7 +87,7 @@ export class Chamber implements AfterViewInit {
         'invert(100%) sepia(93%) saturate(0%) hue-rotate(0deg) brightness(50%) contrast(119%)'
       ]
     });
-    console.log(this.animation);  
+    console.log(this.animation);
   }
 
   ngAfterViewInit(): void {
