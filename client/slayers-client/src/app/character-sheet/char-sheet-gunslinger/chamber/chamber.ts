@@ -78,8 +78,8 @@ export class Chamber implements AfterViewInit {
   stopAnimation(){
     console.log("Stopping animation on element #runeImg" + this.chamber);
     console.log(this.animation);
-    this.animation?.cancel();
-    console.log("Ostensibly canceled");
+    this.animation?.pause();
+    console.log("Ostensibly paused");
     console.log("Setting new filter");
     utils.set("#runeImg" + this.chamber, {
       filter: [
