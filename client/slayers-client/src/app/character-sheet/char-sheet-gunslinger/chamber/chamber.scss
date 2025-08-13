@@ -26,6 +26,7 @@
 .unloadedChamber {
     border: none;
     img {
-        visibility: hidden;
+        // visibility: hidden;
+        filter: saturate(0%)
     }
 }

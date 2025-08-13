@@ -64,21 +64,64 @@ export class CharSheetGunslinger {
         $(this.slayer).listen("chamber1Rune",(value, previousValue) => {
           this.firstChamber.updateRuneAnimation();
         })
+        $(this.slayer).listen("chamber1Loaded",(value, previousValue) => {
+          if (!value){
+            this.firstChamber.stopAnimation();
+          } else {
+            this.firstChamber.updateRuneAnimation();
+          }
+        })
         $(this.slayer).listen("chamber2Rune",(value, previousValue) => {
           this.secondChamber.updateRuneAnimation();
+        })
+        $(this.slayer).listen("chamber2Loaded",(value, previousValue) => {
+          if (!value){
+            this.secondChamber.stopAnimation();
+          } else {
+            this.secondChamber.updateRuneAnimation();
+          }
         })
         $(this.slayer).listen("chamber3Rune",(value, previousValue) => {
           this.thirdChamber.updateRuneAnimation();
         })
+        $(this.slayer).listen("chamber3Loaded",(value, previousValue) => {
+          if (!value){
+            this.thirdChamber.stopAnimation();
+          } else {
+            this.thirdChamber.updateRuneAnimation();
+          }
+        })
         $(this.slayer).listen("chamber4Rune",(value, previousValue) => {
           this.fourthChamber.updateRuneAnimation();
+        })
+        $(this.slayer).listen("chamber4Loaded",(value, previousValue) => {
+          if (!value){
+            this.fourthChamber.stopAnimation();
+          } else {
+            this.fourthChamber.updateRuneAnimation();
+          }
         })
         $(this.slayer).listen("chamber5Rune",(value, previousValue) => {
           this.fifthChamber.updateRuneAnimation();
         })
+        $(this.slayer).listen("chamber5Loaded",(value, previousValue) => {
+          if (!value){
+            this.fifthChamber.stopAnimation();
+          } else {
+            this.fifthChamber.updateRuneAnimation();
+          }
+        })
         $(this.slayer).listen("chamber6Rune",(value, previousValue) => {
           this.sixthChamber.updateRuneAnimation();
         })
+        $(this.slayer).listen("chamber6Loaded",(value, previousValue) => {
+          if (!value){
+            this.sixthChamber.stopAnimation();
+          } else {
+            this.sixthChamber.updateRuneAnimation();
+          }
+        })
+
 
     })
   }
@@ -91,7 +134,9 @@ export class CharSheetGunslinger {
     }
 
     toggleSelected(chamber: Chamber) {
-      chamber.selected = !chamber.selected
+      if (chamber.loaded){
+        chamber.selected = !chamber.selected
+      }
     }
 
     
