@@ -1,11 +1,11 @@
 import { Room, Client, logger, debugMessage } from "@colyseus/core";
 import { SlayerRoomState, Advance, Player, Slayer, Blade, Tactician, Gunslinger, Arcanist, InventoryItem, KnownSpell, RecentRoll } from "../SlayerRoomState";
-import { EPlaybooks, ICampaign, IJoinOptions, ISlayer, IBlade, IGunslinger, IArcanist, ITactician } from "../../../common/common";
+import { EPlaybooks, ICampaign, IJoinOptions, ISlayer, IBlade, IGunslinger, IArcanist, ITactician, ERunes } from "../../../common/common";
 import { Clint, Ryze, Cervantes, Gene} from "../../../common/examples";
-import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg, IWeaponChangeMsg, IAddPlanMsg, IRemovePlanMsg, IAddSpellMsg, IRemoveSpellMsg, ISetEnhancedMsg, ISetFavoredSpell, IPlayAnimationMsg, ISwapRollMsg, IPlayRollSwapMsg, ISetRecentRolls } from "../../../common/messageFormat";
+import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg, IWeaponChangeMsg, IAddPlanMsg, IRemovePlanMsg, IAddSpellMsg, IRemoveSpellMsg, ISetEnhancedMsg, ISetFavoredSpell, IPlayAnimationMsg, ISwapRollMsg, IPlayRollSwapMsg, ISetRecentRolls, ISprayLeadMsg } from "../../../common/messageFormat";
 import { db } from "../firestoreConnection";
 import { v4 as uuidv4 } from "uuid";
-import { reverse } from "dns";
+import { RedisDriver } from "colyseus";
 
 export class SlayerRoom extends Room<SlayerRoomState> {
   maxClients = 10;
@@ -134,6 +134,12 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     const clientPlayer = this.sessionIdToPlayer(client.sessionId);
     const assignment = this.state.currentAssignments.get(clientPlayer.id)
     return assignment.id == slayer.id;
+  }
+
+  getCharacterFromSession(client: Client){
+    const clientPlayer = this.sessionIdToPlayer(client.sessionId);
+    const assignment = this.state.currentAssignments.get(clientPlayer.id)
+    return assignment;
   }
 
   setRecentRolls(rolls: {actor: string, action: string, value: number}[], action: "add" | "set"){
@@ -669,6 +675,55 @@ export class SlayerRoom extends Room<SlayerRoomState> {
       } 
 
     });
+
+    this.onMessage(EMessageTypes.sprayLead, (client, msg: ISprayLeadMsg) => {
+      const assignedSlayer = this.getCharacterFromSession(client);
+      if (this.isGM(client) || assignedSlayer.class == EPlaybooks.Gunslinger) {
+        const assignedGunslinger = assignedSlayer as Gunslinger;
+        const chambers = [
+          {rune: assignedGunslinger.chamber1Rune, loaded: assignedGunslinger.chamber1Loaded},
+          {rune: assignedGunslinger.chamber2Rune, loaded: assignedGunslinger.chamber2Loaded},
+          {rune: assignedGunslinger.chamber3Rune, loaded: assignedGunslinger.chamber3Loaded},
+          {rune: assignedGunslinger.chamber4Rune, loaded: assignedGunslinger.chamber4Loaded},
+          {rune: assignedGunslinger.chamber5Rune, loaded: assignedGunslinger.chamber5Loaded},
+          {rune: assignedGunslinger.chamber6Rune, loaded: assignedGunslinger.chamber6Loaded},
+        ]
+        
+        const delayBetweenShotsMs = 100;
+        let currentDelayMs = 0;
+        for (const chamberRaw of msg.chambers) {
+          this.state.recentRolls.clear();
+          const chamber = chamberRaw - 1;
+          const chamberIsLoaded = chambers[chamber].loaded;
+          const runeValue = chambers[chamber].rune;
+          const runeText = runeValue == ERunes.None ? "Bullet" : runeValue; 
+          if (chamberIsLoaded){
+            setTimeout(() => {
+              if (chamberRaw == 1){
+                assignedGunslinger.chamber1Loaded = false;
+              } else if(chamberRaw == 2){
+                assignedGunslinger.chamber2Loaded = false;
+              } else if(chamberRaw == 3){
+                assignedGunslinger.chamber3Loaded = false;
+              } else if(chamberRaw == 4){
+                assignedGunslinger.chamber4Loaded = false;
+              } else if(chamberRaw == 5){
+                assignedGunslinger.chamber5Loaded = false;
+              } else if(chamberRaw == 6){
+                assignedGunslinger.chamber6Loaded = false;
+              }
+              // TODO: Fake Rolls
+              const rollValue = Math.floor(Math.random() * 6);
+              console.log(runeText + " rolled a " + rollValue);
+              const bulletRoll = new RecentRoll(assignedGunslinger.name, runeText, rollValue);
+              this.state.recentRolls.push(bulletRoll);
+            }, currentDelayMs);
+            currentDelayMs += delayBetweenShotsMs;
+          }
+          
+        }
+      }
+    })
     
 
 

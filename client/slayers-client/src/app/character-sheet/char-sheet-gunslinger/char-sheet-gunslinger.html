@@ -1,50 +1,28 @@
 <div class="topRow">
-    <div class="topRowSection fireSection">
+    <div class="topRowSection fireSection" (click)="sprayLead()">
         <p>Spray Lead</p>
     </div>
 </div>
-<div class="stagingArea">
-    @for (stagedRound of stagedRounds; track $index){
-        <div class="stagedRound">R</div>
-    }
-</div>
+
 <div class="controlsRow">
     <div class="leftSide">
         <div class="chambers">
+            <!-- This is the highest jank concentration in any code I have written, perhaps ever. -->
             <img class="revolverChambers" src="/assets/shapes/revolver-chambers-grey.png">
-            <div class="chamber chamberOne"  [ngClass]="slayer.chamber1Loaded ? 'loaded' : 'unloaded'">
-                @if(slayer.chamber1Rune != ERunes.None){
-                    <img class="rune" [src]="'/assets/shapes/' + slayer.chamber1Rune + '.svg'">
-                }
-            </div>
-            <div class="chamber chamberTwo" [ngClass]="slayer.chamber2Loaded ? 'loaded' : 'unloaded'">
-                @if(slayer.chamber2Rune != ERunes.None){
-                    <img class="rune" [src]="'/assets/shapes/' + slayer.chamber2Rune + '.svg'">
-                }
-            </div>
-            <div class="chamber  chamberThree" [ngClass]="slayer.chamber3Loaded ? 'loaded' : 'unloaded'">
-                @if(slayer.chamber3Rune != ERunes.None){
-                    <img class="rune" [src]="'/assets/shapes/' + slayer.chamber3Rune + '.svg'">
-                }
-            </div>
-            <div class="chamber  chamberFour"  [ngClass]="slayer.chamber4Loaded ? 'loaded' : 'unloaded'">
-                @if(slayer.chamber4Rune != ERunes.None){
-                    <img class="rune" [src]="'/assets/shapes/' + slayer.chamber4Rune + '.svg'">
-                }
-            </div>
-            <div class="chamber chamberFive" [ngClass]="slayer.chamber5Loaded ? 'loaded' : 'unloaded'">
-                @if(slayer.chamber5Rune != ERunes.None){
-                    <img class="rune" [src]="'/assets/shapes/' + slayer.chamber5Rune + '.svg'">
-                }
-            </div>
-            <div class="chamber chamberSix"  [ngClass]="slayer.chamber6Loaded ? 'loaded' : 'unloaded'">
-                @if(slayer.chamber6Rune != ERunes.None){
-                    <img class="rune" [src]="'/assets/shapes/' + slayer.chamber6Rune + '.svg'">
-                }
-            </div>
+            <app-chamber class="chamberLocation chamberOne" #chamber1 [chamber]="1" [loaded]="this.slayer.chamber1Loaded" [rune]="this.slayer.chamber1Rune" (click)="toggleSelectedOrReload(chamber1)"></app-chamber>
+            <app-chamber class="chamberLocation chamberTwo" #chamber2 [chamber]="2" [loaded]="this.slayer.chamber2Loaded" [rune]="this.slayer.chamber2Rune" (click)="toggleSelectedOrReload(chamber2)"></app-chamber>
+            <app-chamber class="chamberLocation chamberThree" #chamber3 [chamber]="3" [loaded]="this.slayer.chamber3Loaded" [rune]="this.slayer.chamber3Rune" (click)="toggleSelectedOrReload(chamber3)"></app-chamber>
+            <app-chamber class="chamberLocation chamberFour" #chamber4 [chamber]="4" [loaded]="this.slayer.chamber4Loaded" [rune]="this.slayer.chamber4Rune" (click)="toggleSelectedOrReload(chamber4)"></app-chamber>
+            <app-chamber class="chamberLocation chamberFive" #chamber5 [chamber]="5" [loaded]="this.slayer.chamber5Loaded" [rune]="this.slayer.chamber5Rune" (click)="toggleSelectedOrReload(chamber5)"></app-chamber>
+            <app-chamber class="chamberLocation chamberSix" #chamber6 [chamber]="6" [loaded]="this.slayer.chamber6Loaded" [rune]="this.slayer.chamber6Rune" (click)="toggleSelectedOrReload(chamber6)"></app-chamber>
         </div>
-        <div class=" reloadSection">
+        <div class=" reloadSection" [ngClass]="{reloadingState: this.stateReloading}" (click)="toggleReloadState()">
+          @if (this.stateReloading){
+            <p>Reloading</p>
+          } @else {
             <p>Reload</p>
-        </div>    
+          }
+
+        </div>
     </div>
 </div>

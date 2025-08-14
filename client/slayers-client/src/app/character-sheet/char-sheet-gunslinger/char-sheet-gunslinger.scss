@@ -2,7 +2,10 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    --hueRotationAngle: 0;
 }
+
+
 
 .topRow {
     display: flex;
@@ -23,7 +26,7 @@
         align-items: center;
         justify-content: center;
         text-align: center;
-        
+
     }
     .fireSection {
         background-color: darkred;
@@ -37,12 +40,15 @@
 
 .stagingArea {
     display: flex;
-    width: 100%;
-    height: 70px;
+    // width: 100%;
+    height: 80px;
     align-items: center;
     border-bottom: 1px solid gray;
     overflow-x: scroll;
     padding: 10px 5px;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    scrollbar-width: none;
 }
 
 .controlsRow {
@@ -68,53 +74,45 @@
             .revolverChambers {
                 width: 80%;
             }
-            .chamber {
-                width: 70px;
-                height: 70px;
-                margin:10px;
-                padding: 10px;
-                position: absolute;
-                border: 1px solid white;
-                border-radius: 100%;
-                // background-color: pink;
 
-                .rune {
-                    margin: -10px;
-                }
+            .chamberLocation {
+                position: absolute;
             }
 
             .chamberOne {
-                background-color: blue;
+                // background-color: blue;
                 left: calc(50% - (35px + 5px + 5px));
                 top: 22px;
             }
             .chamberTwo {
-                background-color: green;
+                // background-color: green;
                 right: calc(50% - (35px + 5px + 5px) - 80px);
                 top: 69px;
             }
             .chamberThree {
-                background-color: purple;
+                // background-color: purple;
                 right: calc(50% - (35px + 5px + 5px) - 80px);
-                bottom: 100px;
+                top: 162px;
             }
             .chamberFour {
-                background-color: yellow;
+                // background-color: yellow;
                 right: calc(50% - (35px + 5px + 5px));
-                bottom: 55px;                
+                top: 207px;
             }
             .chamberFive {
-                background-color: darkorange;
+                // background-color: darkorange;
                 left: calc(50% - (35px + 5px + 5px) - 80px);
-                bottom: 100px;
+                top: 162px;
             }
             .chamberSix {
-                background-color: red;
+                // background-color: red;
                 left: calc(50% - (35px + 5px + 5px) - 80px);
                 top: 69px;
             }
+
+
         }
-    
+
         .reloadSection {
             color: white;
             font-family: Georgia, 'Times New Roman', Times, serif;
@@ -129,9 +127,12 @@
             background-color: darkblue;
             border-top: 1px solid white;
             width: 100%;
-            
         }
-    
+
+        .reloadingState {
+          background-color: darkred;
+        }
+
     }
 
 
@@ -151,7 +152,7 @@
             font-weight: bold;
             height: 50px;
             text-align: center;
-    
+
         }
     }
 

@@ -27,9 +27,12 @@ export enum EMessageTypes {
     setFavoredSpell,
     setRecentRolls,
     swapRoll,
+    reloadChambers,
+    sprayLead,
     // overlay message types
     playAnimation,
     playRollSwap,
+
 }
 
 export interface IBaseMsg {
@@ -194,4 +197,12 @@ export interface ISwapRollMsg extends IBaseMsg {
     rollIx: number,
     planValue: number,
     action: string,
+}
+
+// Gunslinger related
+
+
+export interface ISprayLeadMsg extends IBaseMsg {
+    kind: EMessageTypes.sprayLead,
+    chambers: number[]
 }

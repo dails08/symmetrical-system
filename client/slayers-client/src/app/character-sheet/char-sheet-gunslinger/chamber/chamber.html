@@ -1,0 +1,5 @@
+<div class="chamber"  [ngClass]="{loadedChamber: loaded, unloadedChamber: !loaded, selectedRound: selected}">
+    @if(rune != ERunes.None){
+        <img [id]="'runeImg' + this.chamber" (load)="updateRuneAnimation()" #runeImg class="rune" [src]="'/assets/shapes/' + rune + '.svg'">
+    }    
+</div>
