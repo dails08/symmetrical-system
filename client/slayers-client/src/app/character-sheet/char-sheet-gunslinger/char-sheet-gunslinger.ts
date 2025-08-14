@@ -7,6 +7,8 @@ import { CommonModule } from '@angular/common';
 import { animate, utils, stagger, createTimer } from 'animejs';
 import { getStateCallbacks } from 'colyseus.js';
 import { Chamber } from './chamber/chamber';
+import { EMessageTypes, ILoadedChangeMsg, ISprayLeadMsg } from '../../../../../../common/messageFormat';
+import { EmailValidator } from '@angular/forms';
 
 @Component({
   selector: 'app-char-sheet-gunslinger',
@@ -126,19 +128,50 @@ export class CharSheetGunslinger {
     })
   }
 
-  
+
 
 
     logChamberClick(chamber: number) {
       console.log("Chamber clicked!: " + chamber);
     }
 
-    toggleSelected(chamber: Chamber) {
-      if (chamber.loaded){
-        chamber.selected = !chamber.selected
+    sprayLead() {
+      const staged: number[] = [];
+      for (let elem of [this.firstChamber, this.secondChamber, this.thirdChamber, this.fourthChamber, this.fifthChamber, this.sixthChamber]){
+        if (elem.selected){
+          staged.push(elem.chamber)
+          elem.selected = false;
+        }
       }
+      const msg: ISprayLeadMsg = {
+        kind: EMessageTypes.sprayLead,
+        chambers: staged
+      };
+      this.cjs.sendMessage(msg);
     }
 
-    
+    toggleReloadState(){
+      this.stateReloading = ! this.stateReloading;
+    }
+
+    toggleSelectedOrReload(chamber: Chamber) {
+      if (this.stateReloading){
+
+        const reloadMsg: ILoadedChangeMsg = {
+          kind: EMessageTypes.LoadedChange,
+          chamber: chamber.chamber,
+          loaded: true,
+          slayerId: this.slayer.id
+        };
+        this.cjs.sendMessage(reloadMsg);
+      } else {
+        if (chamber.loaded){
+          chamber.selected = !chamber.selected
+      }
+      }
+
+    }
+
+
 
 }
