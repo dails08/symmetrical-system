@@ -1,8 +1,9 @@
 import { Scene } from "phaser";
 import { room } from "../src/colyseus";
-import { EMessageTypes, IBaseMsg, IPlayAnimationMsg, IPlayRollSwapMsg } from "../../common/messageFormat";
+import { EMessageTypes, IBaseMsg, IPlayAnimationMsg, IPlayGunshotAnimationMsg, IPlayRollSwapMsg } from "../../common/messageFormat";
 import { playSwapAnimation } from "../animations/tacticianAnimations";
-
+import { dddice } from "../src/dddice";
+import { DiceEvent, IApiResponse, IRoll, ThreeDDiceRollEvent } from "dddice-js";
 export class OverlayScene extends Scene {
 
 
@@ -109,6 +110,10 @@ export class OverlayScene extends Scene {
             playSwapAnimation(this, msg.actor, msg.action, msg.oldValue, msg.newValue);
         })
 
+        room.onMessage(EMessageTypes.playGunshotAnimation, (msg: IPlayGunshotAnimationMsg) => {
+            console.log(msg);
+        })
+
         // demarcate background
         const backgroundShade = this.add.graphics();
         backgroundShade.fillStyle(0x000000, 1);
@@ -156,7 +161,50 @@ export class OverlayScene extends Scene {
         // })
 
 
-        this.SPACE.addListener("down", () => {playSwapAnimation(this, "Cervantes","Hollowpoint",Phaser.Math.Between(1,6),Phaser.Math.Between(1,6))}, this);
+        // this.SPACE.addListener("down", () => {playSwapAnimation(this, "Cervantes","Hollowpoint",Phaser.Math.Between(1,6),Phaser.Math.Between(1,6))}, this);
+        
+        // this.SPACE.addListener("down", () => {
+        //     dddice.on(ThreeDDiceRollEvent.RollFinished,(result: IRoll) => {
+        //         for (const value of result.values){
+        //             console.log(value.label + ": " + value.value);
+        //         }
+        //     })
+        //     dddice.roll([
+        //         {
+        //             type: "d6",
+        //             theme: "dddice-red",
+        //             label: "Hollowpoint"
+        //         },
+        //         {
+        //             type: "d6",
+        //             theme: "dddice-bees",
+        //             label: "Tar"
+        //         },
+        //         {
+        //             type: "d6",
+        //             theme: "wretched-scavenged-isles-lwvp5iq3",
+        //             label: "Bullet"
+        //         },
+        //         {
+        //             type: "d6",
+        //             theme: "wretched-scavenged-isles-lwvp5iq3",
+        //             label: "Bullet"
+        //         },
+        //         {
+        //             type: "d6",
+        //             theme: "wretched-scavenged-isles-lwvp5iq3",
+        //             label: "Bullet"
+        //         }
+        //     ],{
+        //         label: "Test roll"
+        //     }).then((resp: IApiResponse<"roll", IRoll>) =>  {
+        //         // const result = resp.data;
+        //         // for (const value of result.values){
+        //         //     console.log(value.label + ": " + value.value);
+        //         // }
+        //     })
+        //     // playSwapAnimation(this, "Cervantes","Hollowpoint",Phaser.Math.Between(1,6),Phaser.Math.Between(1,6))
+        // }, this);
 
         
 

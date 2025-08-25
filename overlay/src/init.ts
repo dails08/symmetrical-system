@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { OverlayScene } from "../scenes/overlay";
-
+import { initDDDice } from "./dddice";
 
 const config: Phaser.Types.Core.GameConfig = {
     width: 2560,
@@ -11,10 +11,11 @@ const config: Phaser.Types.Core.GameConfig = {
     },
     scale: {
         mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_BOTH
+        // autoCenter: Phaser.Scale.CENTER_BOTH
     },
     parent: "game-container",
     scene: [OverlayScene]
 }
 
 const TheGame = new Phaser.Game(config);
+var dddice = initDDDice();

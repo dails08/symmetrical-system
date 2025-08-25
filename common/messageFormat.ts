@@ -16,19 +16,24 @@ export enum EMessageTypes {
     SaveCampaign,
     JoinResponse,
     StanceChange,
-    RuneChange,
-    LoadedChange,
     setWeapon,
+    // tactician
+    swapRoll,
     addPlan,
     removePlan,
+    setRecentRolls,
+    // gunslinger
+    RuneChange,
+    LoadedChange,
+    reloadChambers,
+    sprayLead,
+    playGunshotAnimation,
+    // arcanist
     addSpell,
     removeSpell,
     setEnhanced,
     setFavoredSpell,
-    setRecentRolls,
-    swapRoll,
-    reloadChambers,
-    sprayLead,
+
     // overlay message types
     playAnimation,
     playRollSwap,
@@ -205,4 +210,12 @@ export interface ISwapRollMsg extends IBaseMsg {
 export interface ISprayLeadMsg extends IBaseMsg {
     kind: EMessageTypes.sprayLead,
     chambers: number[]
+}
+
+export interface IPlayGunshotAnimationMsg extends IBaseMsg {
+    kind: EMessageTypes.playGunshotAnimation,
+    shots: {
+        rune: string, //jank
+        hit: boolean
+    }[]
 }

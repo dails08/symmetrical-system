@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "colyseus.js": "^0.16.19",
+    "dddice-js": "^0.19.34-974",
     "phaser": "^3.90.0"
   },
   "devDependencies": {

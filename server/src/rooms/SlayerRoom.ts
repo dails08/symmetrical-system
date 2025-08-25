@@ -2,10 +2,11 @@ import { Room, Client, logger, debugMessage } from "@colyseus/core";
 import { SlayerRoomState, Advance, Player, Slayer, Blade, Tactician, Gunslinger, Arcanist, InventoryItem, KnownSpell, RecentRoll } from "../SlayerRoomState";
 import { EPlaybooks, ICampaign, IJoinOptions, ISlayer, IBlade, IGunslinger, IArcanist, ITactician, ERunes } from "../../../common/common";
 import { Clint, Ryze, Cervantes, Gene} from "../../../common/examples";
-import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg, IWeaponChangeMsg, IAddPlanMsg, IRemovePlanMsg, IAddSpellMsg, IRemoveSpellMsg, ISetEnhancedMsg, ISetFavoredSpell, IPlayAnimationMsg, ISwapRollMsg, IPlayRollSwapMsg, ISetRecentRolls, ISprayLeadMsg } from "../../../common/messageFormat";
+import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg, IWeaponChangeMsg, IAddPlanMsg, IRemovePlanMsg, IAddSpellMsg, IRemoveSpellMsg, ISetEnhancedMsg, ISetFavoredSpell, IPlayAnimationMsg, ISwapRollMsg, IPlayRollSwapMsg, ISetRecentRolls, ISprayLeadMsg, IPlayGunshotAnimationMsg } from "../../../common/messageFormat";
 import { db } from "../firestoreConnection";
 import { v4 as uuidv4 } from "uuid";
-import { RedisDriver } from "colyseus";
+import { customRoll } from "../dddiceConnection";
+import { IDiceRoll, IDieType, IRoll, ThreeDDiceRollEvent } from "dddice-js";
 
 export class SlayerRoom extends Room<SlayerRoomState> {
   maxClients = 10;
@@ -158,6 +159,31 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     }
   }
 
+  roll(dice: IDiceRoll[], actor: string){
+    // const rolls: IDiceRoll[] = [];
+    this.state.recentRolls.clear();
+    // for (const die of dice){
+    //   rolls.push({
+    //     label: die.name,
+    //     type: die.size.toString(),
+    //     theme: die.themeId
+    //   })
+    // };
+    // const resp = dddice.roll.create(rolls);
+    const resp = customRoll(dice, actor)
+    resp.then(value => {
+      const rollData = value.data as IRoll;
+      for (const roll of rollData.values){
+        this.setRecentRolls([{
+          actor: actor,
+          action: roll.label,
+          value: roll.value
+        }], "add");
+      }
+    })
+    return resp
+  }
+
   onCreate (options: any) {
     const ryze = new Arcanist(Ryze);
     const cervantes = new Blade(Cervantes);
@@ -165,6 +191,10 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     const clint = new Gunslinger(Clint);
 
     const exampleBand = [clint, ryze, cervantes, gene];
+
+    console.log("DDDICE api key: ")
+    console.log(process.env.DDDICE_API_KEY);
+    // dddice.
 
 
     // for (const elem of exampleBand){
@@ -679,6 +709,16 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     this.onMessage(EMessageTypes.sprayLead, (client, msg: ISprayLeadMsg) => {
       const assignedSlayer = this.getCharacterFromSession(client);
       if (this.isGM(client) || assignedSlayer.class == EPlaybooks.Gunslinger) {
+        
+        const runeToTheme = new Map<string, string>();
+        runeToTheme.set("hollowpoint", "handa-mists-of-yuggoth");
+        runeToTheme.set("blast", "infernal-ly6ghn2k");
+        runeToTheme.set("tar", "dark-clouds-lu5mbgi2");
+        runeToTheme.set("snare", "dddice-porcelain");
+        runeToTheme.set("bleed", "futura-pink-m0wtlr5x");
+        runeToTheme.set("seeker", "runeheart-ls6ujsiu");
+        runeToTheme.set("none", "wendigo-lw9r7tr1");
+
         const assignedGunslinger = assignedSlayer as Gunslinger;
         const chambers = [
           {rune: assignedGunslinger.chamber1Rune, loaded: assignedGunslinger.chamber1Loaded},
@@ -689,16 +729,13 @@ export class SlayerRoom extends Room<SlayerRoomState> {
           {rune: assignedGunslinger.chamber6Rune, loaded: assignedGunslinger.chamber6Loaded},
         ]
         
-        const delayBetweenShotsMs = 100;
-        let currentDelayMs = 0;
+        const toRolls: IDiceRoll[] = [];
         for (const chamberRaw of msg.chambers) {
-          this.state.recentRolls.clear();
           const chamber = chamberRaw - 1;
           const chamberIsLoaded = chambers[chamber].loaded;
           const runeValue = chambers[chamber].rune;
           const runeText = runeValue == ERunes.None ? "Bullet" : runeValue; 
           if (chamberIsLoaded){
-            setTimeout(() => {
               if (chamberRaw == 1){
                 assignedGunslinger.chamber1Loaded = false;
               } else if(chamberRaw == 2){
@@ -713,15 +750,37 @@ export class SlayerRoom extends Room<SlayerRoomState> {
                 assignedGunslinger.chamber6Loaded = false;
               }
               // TODO: Fake Rolls
-              const rollValue = Math.floor(Math.random() * 6);
-              console.log(runeText + " rolled a " + rollValue);
-              const bulletRoll = new RecentRoll(assignedGunslinger.name, runeText, rollValue);
-              this.state.recentRolls.push(bulletRoll);
-            }, currentDelayMs);
-            currentDelayMs += delayBetweenShotsMs;
+              toRolls.push({
+                label: runeText,
+                type: "d6",
+                theme: runeToTheme.get(runeText) || "wendigo-lw9r7tr1"
+              })
+              
+              // const rollValue = Math.floor(Math.random() * 6);
+              // console.log(runeText + " rolled a " + rollValue);
+              // const bulletRoll = new RecentRoll(assignedGunslinger.name, runeText, rollValue);
+              // this.state.recentRolls.push(bulletRoll);
           }
           
         }
+        this.roll(toRolls, assignedGunslinger.name).then(result => {
+          console.log(result);
+          const rollData = result.data as IRoll;
+          const toShots: {rune: string, hit: boolean}[] = [];
+          for (const value of rollData.values){
+            toShots.push({
+              rune: value.label,
+              hit: value.label == "seeker" ? value.value >= 3 : value.value >= 4
+            })
+          }
+          const msg: IPlayGunshotAnimationMsg = {
+            kind: EMessageTypes.playGunshotAnimation,
+            shots: toShots
+          }
+          this.sendOverlayMessage(msg);
+        }).catch((err) => {
+          // console.log
+        })
       }
     })
     
