@@ -2,6 +2,36 @@ import { Scene } from "phaser";
 import { OverlayScene } from "../scenes/overlay";
 
 
+export function loadTacticianContent(scene: OverlayScene){
+    scene.load.bitmapFont("traffic-white","assets/fonts/bmfs/BostonTraffic/BostonTraffic.png", "assets/fonts/bmfs/BostonTraffic/BostonTraffic.xml");
+    scene.load.image("solidArrow", "assets/images/up-arrow.png");
+        scene.load.image("exchangeArrows", "assets/images/exchange.png");
+
+        // tactician content
+        const swapTriangleHeight = 500;
+        const swapTriangleWidth= 500;
+
+        // create the yellow tactician swap triangle
+        scene.add.graphics()
+            // .fillStyle(0x111111, 0.5)
+            // .fillRect(0,0, swapTriangleWidth, swapTriangleHeight)
+            .fillStyle(0xffff00, 1)
+            .fillTriangle(
+                0,0,
+                swapTriangleWidth, swapTriangleHeight / 2,
+                0, swapTriangleHeight
+            )
+            .generateTexture("tacticianTriangle", swapTriangleWidth, swapTriangleHeight)
+            .destroy();
+
+        // tactician swap circle
+        scene.add.graphics()
+            .fillStyle(0x8B0000)
+            .fillCircle(150,150,150)
+            .generateTexture("tacticianCircle", 300, 300)
+            .destroy();
+
+}
 
 export function playSwapAnimation(scene: OverlayScene, actor: string, action: string, oldValue: number, newValue: number){
         

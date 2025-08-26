@@ -1,8 +1,8 @@
 import { Scene } from "phaser";
 import { room } from "../src/colyseus";
 import { EMessageTypes, IBaseMsg, IPlayAnimationMsg, IPlayGunshotAnimationMsg, IPlayRollSwapMsg } from "../../common/messageFormat";
-import { playSwapAnimation } from "../animations/tacticianAnimations";
-import { dddice } from "../src/dddice";
+import { loadTacticianContent, playSwapAnimation } from "../playbooks/tactician";
+import { loadGunslingerContent, playGunshotsAnimation } from "../playbooks/gunslinger";
 import { DiceEvent, IApiResponse, IRoll, ThreeDDiceRollEvent } from "dddice-js";
 export class OverlayScene extends Scene {
 
@@ -31,54 +31,11 @@ export class OverlayScene extends Scene {
 
     preload(){
         this.load.bitmapFont("angel-red","assets/fonts/bmfs/Angel-red/Angel-red.png", "assets/fonts/bmfs/Angel-red/Angel-red.xml");
-        this.load.bitmapFont("traffic-white","assets/fonts/bmfs/BostonTraffic/BostonTraffic.png", "assets/fonts/bmfs/BostonTraffic/BostonTraffic.xml");
-        // this.load.spritesheet("testAnim", "assets/spritesheets/test2.png", {
-        //     frameWidth: 500,
-        //     frameHeight: 500
-        // });
-        // this.load.spritesheet("testAnim2", "assets/spritesheets/explosion 4.png", {
-        //     frameWidth: 500,
-        //     frameHeight: 500
-        // });
-        // this.load.spritesheet("coin", "assets/spritesheets/coin.png", {
-        //     frameWidth: 32,
-        //     frameHeight: 32,
-        //   });
-        //   this.load.spritesheet("altTest", "https://storage.googleapis.com/slayers-media/spritesheets/soulSiphon2.png", {
-        //     frameWidth: 700,
-        //     frameHeight: 600,
-        //   });
+       
 
-        //   for(let i = 0; i < 121; i++){
-        //     this.load.image("soulSiphon" + i, "https://storage.googleapis.com/slayers-media/spritesheets/soulSiphon1/soulSiphon2." + i + ".png");
-        //   }
 
-        this.load.image("solidArrow", "assets/images/up-arrow.png");
-        this.load.image("exchangeArrows", "assets/images/exchange.png");
-
-                // tactician content
-        const swapTriangleHeight = 500;
-        const swapTriangleWidth= 500;
-
-        // create the yellow tactician swap triangle
-        this.add.graphics()
-            // .fillStyle(0x111111, 0.5)
-            // .fillRect(0,0, swapTriangleWidth, swapTriangleHeight)
-            .fillStyle(0xffff00, 1)
-            .fillTriangle(
-                0,0,
-                swapTriangleWidth, swapTriangleHeight / 2,
-                0, swapTriangleHeight
-            )
-            .generateTexture("tacticianTriangle", swapTriangleWidth, swapTriangleHeight)
-            .destroy();
-
-        // tactician swap circle
-        this.add.graphics()
-            .fillStyle(0x8B0000)
-            .fillCircle(150,150,150)
-            .generateTexture("tacticianCircle", 300, 300)
-            .destroy();
+        loadTacticianContent(this);
+        loadGunslingerContent(this);
 
         // for visual debugging
 
@@ -112,6 +69,7 @@ export class OverlayScene extends Scene {
 
         room.onMessage(EMessageTypes.playGunshotAnimation, (msg: IPlayGunshotAnimationMsg) => {
             console.log(msg);
+            playGunshotsAnimation(this, msg.shots);
         })
 
         // demarcate background
@@ -129,82 +87,6 @@ export class OverlayScene extends Scene {
         }
 
 
-        // this.add.bitmapText(this.center_width, this.center_height, "angel-red", "x", 150);
-        // this.add.bitmapText(this.center_width + 100, this.center_height - 50, "angel-red", "2!", 250);
-        // this.cc = new ComboCounter(this, this.center_width, this.center_height);
-        // this.add.existing(this.cc);
-        // this.SPACE.addListener("down", this.cc.incrementCombo, this.cc);
-
-        // const testAnimSprite = this.add.sprite(this.center_width, this.center_height, "testAnimSprite");
-        // testAnimSprite.setVisible(false);
-        // testAnimSprite.setScale(3, 3);
-        // const soulSiphonFrames: Phaser.Types.Animations.AnimationFrame[] = [];
-
-        // for (let i = 0; i < 121; i++){
-        //     soulSiphonFrames.push({
-        //         key: "soulSiphon" + i
-        //     })
-        // }
-        
-        // testAnimSprite.anims.create({
-        //         key: "soulSiphon1",
-        //         frames: soulSiphonFrames,
-        //         duration: 2000,
-        //         hideOnComplete: true,
-        //         repeat: 0,
-        //         showOnStart: true
-        // })
-
-        // this.SPACE.addListener("down", () => {testAnimSprite.play("soulSiphon1")});
-        // room.onMessage(EMessageTypes.playAnimation, (msg: IPlayAnimationMsg) => {
-        //     testAnimSprite.play("soulSiphon1");
-        // })
-
-
-        // this.SPACE.addListener("down", () => {playSwapAnimation(this, "Cervantes","Hollowpoint",Phaser.Math.Between(1,6),Phaser.Math.Between(1,6))}, this);
-        
-        // this.SPACE.addListener("down", () => {
-        //     dddice.on(ThreeDDiceRollEvent.RollFinished,(result: IRoll) => {
-        //         for (const value of result.values){
-        //             console.log(value.label + ": " + value.value);
-        //         }
-        //     })
-        //     dddice.roll([
-        //         {
-        //             type: "d6",
-        //             theme: "dddice-red",
-        //             label: "Hollowpoint"
-        //         },
-        //         {
-        //             type: "d6",
-        //             theme: "dddice-bees",
-        //             label: "Tar"
-        //         },
-        //         {
-        //             type: "d6",
-        //             theme: "wretched-scavenged-isles-lwvp5iq3",
-        //             label: "Bullet"
-        //         },
-        //         {
-        //             type: "d6",
-        //             theme: "wretched-scavenged-isles-lwvp5iq3",
-        //             label: "Bullet"
-        //         },
-        //         {
-        //             type: "d6",
-        //             theme: "wretched-scavenged-isles-lwvp5iq3",
-        //             label: "Bullet"
-        //         }
-        //     ],{
-        //         label: "Test roll"
-        //     }).then((resp: IApiResponse<"roll", IRoll>) =>  {
-        //         // const result = resp.data;
-        //         // for (const value of result.values){
-        //         //     console.log(value.label + ": " + value.value);
-        //         // }
-        //     })
-        //     // playSwapAnimation(this, "Cervantes","Hollowpoint",Phaser.Math.Between(1,6),Phaser.Math.Between(1,6))
-        // }, this);
 
         
 

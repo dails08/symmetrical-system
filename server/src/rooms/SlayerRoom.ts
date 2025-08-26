@@ -159,9 +159,12 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     }
   }
 
-  roll(dice: IDiceRoll[], actor: string){
+  roll(dice: IDiceRoll[], actor: string, skipUpdate?: boolean){
     // const rolls: IDiceRoll[] = [];
-    this.state.recentRolls.clear();
+    if (!skipUpdate)
+    {
+      this.state.recentRolls.clear();
+    }
     // for (const die of dice){
     //   rolls.push({
     //     label: die.name,
@@ -171,16 +174,18 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     // };
     // const resp = dddice.roll.create(rolls);
     const resp = customRoll(dice, actor)
-    resp.then(value => {
-      const rollData = value.data as IRoll;
-      for (const roll of rollData.values){
-        this.setRecentRolls([{
-          actor: actor,
-          action: roll.label,
-          value: roll.value
-        }], "add");
-      }
-    })
+    if (!skipUpdate){
+      resp.then(value => {
+        const rollData = value.data as IRoll;
+        for (const roll of rollData.values){
+          this.setRecentRolls([{
+            actor: actor,
+            action: roll.label,
+            value: roll.value
+          }], "add");
+        }
+      })  
+    }
     return resp
   }
 
