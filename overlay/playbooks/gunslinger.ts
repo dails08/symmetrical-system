@@ -3,14 +3,11 @@ import { OverlayScene } from "../scenes/overlay";
 
 
 export function loadGunslingerContent(scene: OverlayScene){
-    scene.load.bitmapFont("traffic-white","assets/fonts/bmfs/BostonTraffic/BostonTraffic.png", "assets/fonts/bmfs/BostonTraffic/BostonTraffic.xml");
-    scene.load.image("solidArrow", "assets/images/up-arrow.png");
-    scene.load.image("exchangeArrows", "assets/images/exchange.png");
 
-    scene.load.image("bh1", "assets/images/bh1.png");
     scene.load.image("bh2", "assets/images/bh2.png");
     scene.load.image("bh3", "assets/images/bh3.png");
     scene.load.image("bh4", "assets/images/bh4.png");
+    scene.load.image("bh5", "assets/images/bh5.png");
 
     scene.load.image("blastRune", "assets/images/blast.svg");
     scene.load.image("bleedRune", "assets/images/bleed.svg");
@@ -25,21 +22,29 @@ export function loadGunslingerContent(scene: OverlayScene){
 export function playGunshotsAnimation(scene: OverlayScene, shots: {rune: string, hit: boolean}[]){
 
     const rng = new Phaser.Math.RandomDataGenerator();
-    const bulletholes = ["bh1", "bh2", "bh3", "bh4"];
+    const bulletholes = ["bh2", "bh3", "bh4", "bh5"];
+    const bhScaleMap = new Map<string, number>();
+    bhScaleMap.set("bh5", 1);
+    bhScaleMap.set("bh4", 1);
     let delay = 0;
-    let delta = 200;
-    for (const shot of shots) {
-        console.log(shot);
+    let delta = 100;
+    let disappearDelay = 2000;
+    for (const shot of shots){
+        // console.log(x);
         scene.time.delayedCall(delay, () => {
-            // if (shot.hit){
+            if (shot.hit){
                 const bulletHole = bulletholes[Math.floor(Math.random()*bulletholes.length)];
                 console.log(bulletHole);
                 const randX = rng.between((scene.game.config.width as number) * 1/5, (scene.game.config.width as number) * 4/5);
                 const randY = rng.between((scene.game.config.height as number) * 1/5, (scene.game.config.height as number) * 4/5);
-                console.log([randX, randY]);
                 const tmp_bh = scene.add.sprite(randX, randY, bulletHole);
-                scene.time.delayedCall(2000, () => { tmp_bh.destroy()})        
-            // }
+                tmp_bh.setScale( bhScaleMap.get(bulletHole) || 3 );
+                tmp_bh.setAngle(Phaser.Math.Between(0,359));
+                
+                scene.time.delayedCall(disappearDelay, () => { 
+                    tmp_bh.destroy();
+                })        
+            }
         },[],scene);
         delay += delta;
     }

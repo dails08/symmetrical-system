@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { OverlayScene } from "../scenes/overlay";
+import { PreloadScene } from "../scenes/preload";
 import { initDDDice } from "./dddice";
 
 const config: Phaser.Types.Core.GameConfig = {
@@ -14,8 +15,8 @@ const config: Phaser.Types.Core.GameConfig = {
         // autoCenter: Phaser.Scale.CENTER_BOTH
     },
     parent: "game-container",
-    scene: [OverlayScene]
+    scene: [PreloadScene,OverlayScene]
 }
 
 const TheGame = new Phaser.Game(config);
-var dddice = initDDDice();
+// var dddice = initDDDice();

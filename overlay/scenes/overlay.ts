@@ -3,8 +3,10 @@ import { room } from "../src/colyseus";
 import { EMessageTypes, IBaseMsg, IPlayAnimationMsg, IPlayGunshotAnimationMsg, IPlayRollSwapMsg } from "../../common/messageFormat";
 import { loadTacticianContent, playSwapAnimation } from "../playbooks/tactician";
 import { loadGunslingerContent, playGunshotsAnimation } from "../playbooks/gunslinger";
-import { DiceEvent, IApiResponse, IRoll, ThreeDDiceRollEvent } from "dddice-js";
+import { DiceEvent, IApiResponse, IRoll, ThreeDDice, ThreeDDiceRollEvent } from "dddice-js";
 export class OverlayScene extends Scene {
+
+    dddice: ThreeDDice;
 
 
     width: number;
@@ -27,6 +29,12 @@ export class OverlayScene extends Scene {
 
     constructor(){
         super({key: "overlay"})
+    }
+
+    init(diceClient: ThreeDDice){
+        this.dddice = diceClient;
+        console.log(this.dddice.apiKey);
+        console.log("overlay init fn");
     }
 
     preload(){
@@ -68,8 +76,12 @@ export class OverlayScene extends Scene {
         })
 
         room.onMessage(EMessageTypes.playGunshotAnimation, (msg: IPlayGunshotAnimationMsg) => {
-            console.log(msg);
-            playGunshotsAnimation(this, msg.shots);
+            // console.log(msg);
+            this.dddice.on(ThreeDDiceRollEvent.RollFinished,() => {
+                playGunshotsAnimation(this, msg.shots);
+                this.dddice.off(ThreeDDiceRollEvent.RollFinished);
+            })
+            
         })
 
         // demarcate background
