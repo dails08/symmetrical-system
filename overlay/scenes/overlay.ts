@@ -69,6 +69,8 @@ export class OverlayScene extends Scene {
         this.center_width = this.width / 2;
         this.center_height = this.height / 2;
 
+        this.sound.pauseOnBlur = false;
+
         // colyseus triggers
 
         room.onMessage(EMessageTypes.playRollSwap, (msg: IPlayRollSwapMsg) => {
