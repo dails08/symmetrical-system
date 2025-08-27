@@ -5,7 +5,7 @@ import { ColyseusService } from '../../services/colyseusService';
 import { getStateCallbacks,  } from 'colyseus.js';
 import { ArraySchema } from "@colyseus/schema";
 import { DragDropModule, CdkDragDrop } from '@angular/cdk/drag-drop';
-import { EMessageTypes, ISwapRollMsg } from '../../../../../../common/messageFormat';
+import { EMessageTypes, IRollPlansMsg, ISwapRollMsg } from '../../../../../../common/messageFormat';
 
 @Component({
   selector: 'app-char-sheet-tactician',
@@ -35,7 +35,7 @@ export class CharSheetTactician {
   recentRolls: RecentRoll[] = [];
 
   mode: "add" | "swap" | "subtract" | "neutral" = "neutral";
-  
+
   constructor(
     private cjs: ColyseusService
   ){
@@ -59,8 +59,8 @@ export class CharSheetTactician {
         this.resetPlans();
       })
       this.resetPlans();
-    })  
-    
+    })
+
   }
 
   resetPlans() {
@@ -88,13 +88,15 @@ export class CharSheetTactician {
   }
 
   sendPlansRoll(){
-    const msg: any = {
+    const msg: IRollPlansMsg = {
+      kind: EMessageTypes.rollPlans,
       fours: this.planningRollsDeeFours,
       sixes: this.planningRollsDeeSixes,
       eights: this.planningRollsDeeEights
+
     };
     this.resetPlans();
-    console.log(msg);
+    this.cjs.sendMessage(msg);
   }
 
   checkAdvances(){
@@ -136,7 +138,7 @@ export class CharSheetTactician {
       this.prepCount = tmpPrepCount;
       this.resetPlans();
     }
-    
+
   }
 
 

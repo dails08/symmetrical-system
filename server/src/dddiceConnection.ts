@@ -5,7 +5,7 @@ export async function customRoll(
     // rollName: string, 
     dice: IDiceRoll[],
     actor: string
-    ) {
+    ): Promise<IApiResponse<string, IRoll>> {
     console.log("Building roll");
     const url = new URL(
         "https://dddice.com/api/1.0/roll"

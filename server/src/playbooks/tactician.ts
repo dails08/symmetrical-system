@@ -1,5 +1,6 @@
+import { IRoll } from "dddice-js";
 import { EPlaybooks } from "../../../common/common";
-import { EMessageTypes, IAddPlanMsg, IPlayRollSwapMsg, IRemovePlanMsg, ISwapRollMsg } from "../../../common/messageFormat";
+import { EMessageTypes, IAddPlanMsg, IPlayRollSwapMsg, IRemovePlanMsg, IRollPlansMsg, ISwapRollMsg } from "../../../common/messageFormat";
 import { SlayerRoom } from "../rooms/SlayerRoom";
 import { SlayerRoomState, Tactician } from "../SlayerRoomState";
 
@@ -87,4 +88,58 @@ export function addTacticianCallbacks(room: SlayerRoom){
         } 
 
     });
+
+    room.onMessage(EMessageTypes.rollPlans, (client, msg: IRollPlansMsg) => {
+      console.log(msg);
+      const slayer = room.getCharacterFromSession(client);
+      if ( slayer){
+        if (slayer.class == EPlaybooks.Tactician){
+          const assignedTactician = slayer as Tactician;
+          if (room.isGM(client) || room.controlsCharacter(client, slayer)){
+            const toRoll = [];
+            for (let i = 0; i < msg.fours; i++){
+              toRoll.push({
+                label: "plan",
+                type: "d4",
+                theme: "neon-ember-ljgxs7xb"
+              })
+            };
+            for (let i = 0; i < msg.sixes; i++){
+              toRoll.push({
+                label: "plan",
+                type: "d6",
+                theme: "neon-ember-ljgxs7xb"
+              })
+            };
+            for (let i = 0; i < msg.eights; i++){
+              toRoll.push({
+                label: "plan",
+                type: "d8",
+                theme: "neon-ember-ljgxs7xb"
+              })
+            };
+            console.log("Tactician plan dice:");
+            console.log(toRoll);
+            room.roll(toRoll, assignedTactician.name, true).then(result => {
+              setTimeout(() => {
+                assignedTactician.plans.clear();
+                console.log(result);
+                const justValues = result.data.values.map((val, ix, arr) => {
+                  return val.value > 6 ? 6 : val.value;
+                })
+                for (const value of justValues.sort()){
+                  assignedTactician.plans.push(value);
+                }
+              }, 3000); // sane guess instead of setting up another message round trip from overlay
+            })
+          } else {
+            console.log("Not authorized to!");
+          }
+        } else {
+          console.log("Not a tactician!");
+        } 
+      } else {
+        console.log("Slayer not found in roster!");
+      }
+    })
 }

@@ -181,8 +181,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     const resp = customRoll(dice, actor)
     if (!skipUpdate){
       resp.then(value => {
-        const rollData = value.data as IRoll;
-        for (const roll of rollData.values){
+        for (const roll of value.data.values){
           this.setRecentRolls([{
             actor: actor,
             action: roll.label,
