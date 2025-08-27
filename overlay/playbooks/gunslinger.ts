@@ -15,12 +15,15 @@ export function loadGunslingerContent(scene: OverlayScene){
     scene.load.image("seekerRune", "assets/images/seeker.svg");
     scene.load.image("snareRune", "assets/images/snare.svg");
     scene.load.image("tarRune", "assets/images/tar.svg");
+
+    scene.load.audio("gunshot1", "assets/audio/pistolShot1.mp3");
+    
     
 
 }
 
 export function playGunshotsAnimation(scene: OverlayScene, shots: {rune: string, hit: boolean}[]){
-
+    scene.sound.add("gunshot1");
     const rng = new Phaser.Math.RandomDataGenerator();
     const bulletholes = ["bh2", "bh3", "bh4", "bh5"];
     const bhScaleMap = new Map<string, number>();
@@ -40,6 +43,7 @@ export function playGunshotsAnimation(scene: OverlayScene, shots: {rune: string,
                 const tmp_bh = scene.add.sprite(randX, randY, bulletHole);
                 tmp_bh.setScale( bhScaleMap.get(bulletHole) || 3 );
                 tmp_bh.setAngle(Phaser.Math.Between(0,359));
+                scene.sound.play("gunshot1");
                 
                 scene.time.delayedCall(disappearDelay, () => { 
                     tmp_bh.destroy();

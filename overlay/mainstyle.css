@@ -1,6 +1,6 @@
 #dice {
     position: absolute;
-    height: 100%;
+    width: 100%;
     top: 0;
     aspect-ratio: 16/9;
 
