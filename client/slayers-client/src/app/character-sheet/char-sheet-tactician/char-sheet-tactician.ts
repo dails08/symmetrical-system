@@ -5,7 +5,7 @@ import { ColyseusService } from '../../services/colyseusService';
 import { getStateCallbacks,  } from 'colyseus.js';
 import { ArraySchema } from "@colyseus/schema";
 import { DragDropModule, CdkDragDrop } from '@angular/cdk/drag-drop';
-import { EMessageTypes, IRollPlansMsg, ISwapRollMsg } from '../../../../../../common/messageFormat';
+import { EMessageTypes, IRallyMsg, IRollPlansMsg, IStabMsg, ISwapRollMsg } from '../../../../../../common/messageFormat';
 
 @Component({
   selector: 'app-char-sheet-tactician',
@@ -71,11 +71,17 @@ export class CharSheetTactician {
   }
 
   rollRally(){
-    console.log("Rally!");
+    const msg: IRallyMsg = {
+      kind: EMessageTypes.rally
+    };
+    this.cjs.sendMessage(msg);
   }
 
   shootStab(){
-    console.log("Shoot/stab!");
+    const msg: IStabMsg = {
+      kind: EMessageTypes.shootStab
+    };
+    this.cjs.sendMessage(msg);
   }
 
   adjustPlanRoll(fours: number, sixes: number, eights: number){

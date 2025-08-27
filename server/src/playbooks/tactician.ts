@@ -1,6 +1,6 @@
 import { IRoll } from "dddice-js";
 import { EPlaybooks } from "../../../common/common";
-import { EMessageTypes, IAddPlanMsg, IPlayRollSwapMsg, IRemovePlanMsg, IRollPlansMsg, ISwapRollMsg } from "../../../common/messageFormat";
+import { EMessageTypes, IAddPlanMsg, IPlayRollSwapMsg, IRallyMsg, IRemovePlanMsg, IRollPlansMsg, IStabMsg, ISwapRollMsg } from "../../../common/messageFormat";
 import { SlayerRoom } from "../rooms/SlayerRoom";
 import { SlayerRoomState, Tactician } from "../SlayerRoomState";
 
@@ -88,6 +88,69 @@ export function addTacticianCallbacks(room: SlayerRoom){
         } 
 
     });
+
+    room.onMessage(EMessageTypes.rally, (client, msg: IRallyMsg) => {
+      console.log(msg);
+      const slayer = room.getCharacterFromSession(client);
+      if ( slayer){
+        if (slayer.class == EPlaybooks.Tactician){
+          const assignedTactician = slayer as Tactician;
+          if (room.isGM(client) || room.controlsCharacter(client, slayer)){
+            const toRoll = [];
+
+              toRoll.push({
+                label: "plan",
+                type: "d6",
+                theme: "neon-ember-ljgxs7xb"
+              })
+            room.roll(toRoll, assignedTactician.name, true).then(result => {
+              setTimeout(() => {
+                const justValues = result.data.values.map((val, ix, arr) => {
+                  return val.value > 6 ? 6 : val.value;
+                })
+                for (const value of justValues.sort()){
+                  assignedTactician.plans.push(value);
+                }
+              }, 3000); // sane guess instead of setting up another message round trip from overlay
+            })
+          } else {
+            console.log("Not authorized to!");
+          }
+        } else {
+          console.log("Not a tactician!");
+        } 
+      } else {
+        console.log("Slayer not found in roster!");
+      }
+    })
+
+    room.onMessage(EMessageTypes.shootStab, (client, msg: IStabMsg) => {
+      console.log(msg);
+      const slayer = room.getCharacterFromSession(client);
+      if ( slayer){
+        if (slayer.class == EPlaybooks.Tactician){
+          const assignedTactician = slayer as Tactician;
+          if (room.isGM(client) || room.controlsCharacter(client, slayer)){
+            const toRoll = [];
+
+              toRoll.push({
+                label: "Shoot/Stab",
+                type: "d6",
+                theme: "neon-ember-ljgxs7xb"
+              })
+            room.roll(toRoll, assignedTactician.name).then(result => {
+
+            })
+          } else {
+            console.log("Not authorized to!");
+          }
+        } else {
+          console.log("Not a tactician!");
+        } 
+      } else {
+        console.log("Slayer not found in roster!");
+      }
+    })
 
     room.onMessage(EMessageTypes.rollPlans, (client, msg: IRollPlansMsg) => {
       console.log(msg);

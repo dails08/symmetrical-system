@@ -23,6 +23,8 @@ export enum EMessageTypes {
     removePlan,
     setRecentRolls,
     rollPlans,
+    rally,
+    shootStab,
     // gunslinger
     RuneChange,
     LoadedChange,
@@ -210,6 +212,14 @@ export interface IRollPlansMsg extends IBaseMsg {
     fours: number,
     sixes: number,
     eights: number
+}
+
+export interface IRallyMsg extends IBaseMsg {
+    kind: EMessageTypes.rally,
+}
+
+export interface IStabMsg extends IBaseMsg {
+    kind: EMessageTypes.shootStab
 }
 
 // Gunslinger related
