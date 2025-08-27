@@ -106,7 +106,8 @@ export function addTacticianCallbacks(room: SlayerRoom){
             room.roll(toRoll, assignedTactician.name, true).then(result => {
               setTimeout(() => {
                 const justValues = result.data.values.map((val, ix, arr) => {
-                  return val.value > 6 ? 6 : val.value;
+                  // return val.value > 6 ? 6 : val.value;
+                  return val.value;
                 })
                 for (const value of justValues.sort()){
                   assignedTactician.plans.push(value);
