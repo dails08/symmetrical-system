@@ -104,6 +104,17 @@ export interface IJoinResponseMsg extends IBaseMsg {
     player: Player
 }
 
+export interface IRollMsg extends IBaseMsg {
+    kind: EMessageTypes.Roll,
+    label: string,
+    family?: string, // skill etc
+    DNA: string,
+    dice: {
+        type: number,
+        theme?: string
+    }[]
+}
+
 export interface IStanceChangeMsg extends IBaseMsg {
     kind: EMessageTypes.StanceChange,
     stance: EStances,

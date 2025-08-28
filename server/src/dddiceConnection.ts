@@ -21,7 +21,7 @@ export async function customRoll(
     var diceArray = dice.map(element => {
         return {
             "type": element.type,
-            "theme": element.theme,
+            "theme": element.theme || "wendigo-lw9r7tr1",
             "label": element.label
         }
     });

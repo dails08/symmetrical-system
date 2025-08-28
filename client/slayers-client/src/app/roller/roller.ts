@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { injectTippyRef } from '@ngneat/helipopper';
+import { EMessageTypes, IRollMsg } from '../../../../../common/messageFormat';
+import { ColyseusService } from '../services/colyseusService';
 
 @Component({
   selector: 'app-roller',
@@ -9,11 +11,13 @@ import { injectTippyRef } from '@ngneat/helipopper';
 })
 export class Roller {
   tippy = injectTippyRef();
-  @Input() name!: string;
+  @Input({required: true}) name!: string;
   // kind!: "d" | "n" | "a";
-  @Input() size!: number;
+  @Input({required: true}) size!: number;
 
-  constructor(){
+  constructor(
+    private cjs: ColyseusService
+  ){
     // const {
     //   name = "Null",
     //   kind = "n",
@@ -22,8 +26,25 @@ export class Roller {
     // console.log(this.tippy.data ?? "No data");
   }
 
-  sendRoll(kind: string){
-    console.log("Rolling " + kind);
+  sendRoll(DNA: string){
+    const dice = [];
+    dice.push({
+      type: this.size
+    });
+    if (DNA != "N"){
+      dice.push({
+        type: this.size
+      })
+    };
+    const msg: IRollMsg = {
+      kind: EMessageTypes.Roll,
+      label: this.name,
+      family: "skill",
+      DNA: DNA,
+      dice: dice
+    };
+    console.log(msg);
+    this.cjs.sendMessage(msg);
     this.tippy.hide();
   }
 

@@ -1,9 +1,10 @@
 import { SlayerRoom } from "../rooms/SlayerRoom";
 import { Advance, Arcanist, Blade, Gunslinger, InventoryItem, KnownSpell, SlayerRoomState, Tactician } from "../SlayerRoomState";
-import { EMessageTypes, IAddSpellMsg, IArrayChangeMsg, IAssignmentMsg, IKillMsg, IPlayAnimationMsg, IPlayerUpdateMsg, IRemoveSpellMsg, IRosterAddMsg, ISetEnhancedMsg, ISetFavoredSpell, ISetRecentRolls, IStanceChangeMsg, IUpdateNumericalMsg, IWeaponChangeMsg,  } from "../../../common/messageFormat";
+import { EMessageTypes, IAddSpellMsg, IArrayChangeMsg, IAssignmentMsg, IKillMsg, IPlayAnimationMsg, IPlayerUpdateMsg, IRemoveSpellMsg, IRollMsg, IRosterAddMsg, ISetEnhancedMsg, ISetFavoredSpell, ISetRecentRolls, IStanceChangeMsg, IUpdateNumericalMsg, IWeaponChangeMsg,  } from "../../../common/messageFormat";
 import { EPlaybooks, IArcanist, IBlade, IGunslinger, ITactician } from "../../../common/common";
 
 export function addGMCallbacks(room: SlayerRoom){
+
 
 
   room.onMessage(EMessageTypes.SaveCampaign, (client, msg) => {

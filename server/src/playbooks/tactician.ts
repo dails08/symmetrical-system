@@ -103,7 +103,7 @@ export function addTacticianCallbacks(room: SlayerRoom){
                 type: "d6",
                 theme: "neon-ember-ljgxs7xb"
               })
-            room.roll(toRoll, assignedTactician.name, true).then(result => {
+            room.roll(toRoll, assignedTactician.name, "N", true).then(result => {
               setTimeout(() => {
                 const justValues = result.data.values.map((val, ix, arr) => {
                   // return val.value > 6 ? 6 : val.value;
@@ -184,7 +184,7 @@ export function addTacticianCallbacks(room: SlayerRoom){
             };
             console.log("Tactician plan dice:");
             console.log(toRoll);
-            room.roll(toRoll, assignedTactician.name, true).then(result => {
+            room.roll(toRoll, assignedTactician.name, "N", true).then(result => {
               setTimeout(() => {
                 assignedTactician.plans.clear();
                 console.log(result);

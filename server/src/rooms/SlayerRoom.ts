@@ -2,7 +2,7 @@ import { Room, Client, logger, debugMessage } from "@colyseus/core";
 import { SlayerRoomState, Advance, Player, Slayer, Blade, Tactician, Gunslinger, Arcanist, InventoryItem, KnownSpell, RecentRoll } from "../SlayerRoomState";
 import { EPlaybooks, ICampaign, IJoinOptions, ISlayer, IBlade, IGunslinger, IArcanist, ITactician, ERunes } from "../../../common/common";
 import { Clint, Ryze, Cervantes, Gene} from "../../../common/examples";
-import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg, IWeaponChangeMsg, IAddPlanMsg, IRemovePlanMsg, IAddSpellMsg, IRemoveSpellMsg, ISetEnhancedMsg, ISetFavoredSpell, IPlayAnimationMsg, ISwapRollMsg, IPlayRollSwapMsg, ISetRecentRolls, ISprayLeadMsg, IPlayGunshotAnimationMsg } from "../../../common/messageFormat";
+import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg, IWeaponChangeMsg, IAddPlanMsg, IRemovePlanMsg, IAddSpellMsg, IRemoveSpellMsg, ISetEnhancedMsg, ISetFavoredSpell, IPlayAnimationMsg, ISwapRollMsg, IPlayRollSwapMsg, ISetRecentRolls, ISprayLeadMsg, IPlayGunshotAnimationMsg, IRollMsg } from "../../../common/messageFormat";
 import { db } from "../firestoreConnection";
 import { v4 as uuidv4 } from "uuid";
 import { customRoll } from "../dddiceConnection";
@@ -164,7 +164,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     }
   }
 
-  roll(dice: IDiceRoll[], actor: string, skipUpdate?: boolean){
+  roll(dice: IDiceRoll[], actor: string, DNA?: string, skipUpdate?: boolean){
     // const rolls: IDiceRoll[] = [];
     if (!skipUpdate)
     {
@@ -178,20 +178,40 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     //   })
     // };
     // const resp = dddice.roll.create(rolls);
-    const resp = customRoll(dice, actor)
+    const resp = customRoll(dice, actor);
     if (!skipUpdate){
       resp.then(value => {
-        for (const roll of value.data.values){
-          this.setRecentRolls([{
+        // console.log(value);
+        const toRecentRolls = [];
+        if (DNA == "D"){
+          toRecentRolls.push({
+            actor: actor,
+            action: value.data.values[0].label,
+            value: Math.min(...value.data.values.map((val, ix, arr) => {return val.value}))
+          })
+        } else if (DNA == "A"){
+          toRecentRolls.push({
+            actor: actor,
+            action: value.data.values[0].label,
+            value: Math.max(...value.data.values.map((val, ix, arr) => {return val.value}))
+          })
+        } else { // DNA == "N"
+          for (const roll of value.data.values){
+            toRecentRolls.push({
             actor: actor,
             action: roll.label,
             value: roll.value
-          }], "add");
-        }
-      })  
-    }
-    return resp
-  }
+            })
+          }        
+      }  
+        console.log("Sending to set recent rolls:");
+        console.log(toRecentRolls);
+        this.setRecentRolls(toRecentRolls, "set");
+
+    });
+  };
+  return resp
+}
 
   onCreate (options: any) {
 
@@ -200,6 +220,21 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     addArcanistCallbacks(this);
     addBladeCallbacks(this);
     addGMCallbacks(this);
+
+    this.onMessage(EMessageTypes.Roll, (client, msg: IRollMsg) => {
+    console.log(msg);
+    const assignedSlayer = this.getCharacterFromSession(client);
+    const toDiceRolls: IDiceRoll[] = [];
+    for (const die of msg.dice){
+      toDiceRolls.push({
+        type: "d" + die.type.toString(),
+        label: msg.label
+      })
+    }
+    this.roll(toDiceRolls, assignedSlayer.name, msg.DNA).then(result => {
+
+    })
+  })
 
 
   }
