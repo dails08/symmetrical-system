@@ -1,0 +1,47 @@
+.corruption{
+  &-healthbar {
+    // margin: 10px 10px;
+    // box-sizing: content-box;
+    // border-bottom: 1px solid gray;
+
+    padding: 5px 5px 15px 5px;
+    position: relative;
+    width: 98%;
+    height: 30px;
+    // display: flex;
+    // justify-content: start;
+
+    &-barcontent {
+      position: absolute;
+      background-color: lightblue;
+    /*   border: 1px solid gray; */
+      flex: 1 1 auto;
+      transform: skewX(-20deg);
+    /*   margin: 0px 10px; */
+      top: 20%;
+      bottom: 20%;
+      left: 0;
+      right: 0;
+      }
+      &-segment {
+        background-color: black;
+        // height: 90%;
+      /*   transform: skewX(-20deg); */
+        width: 6px;
+        position: absolute;
+        transform: skewX(-20deg);
+        top:20%;
+        bottom:20%;
+
+      }
+      &-segment.halfhp {
+        background-color: teal;
+        width: 4px;
+        top: 10%;
+        bottom: 10%;
+      }
+
+
+    }
+
+}

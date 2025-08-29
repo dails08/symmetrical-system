@@ -132,7 +132,10 @@
             @if (slayer.class == playbooks.Gunslinger){
                 <app-char-sheet-gunslinger [slayer]="slayer | asGunslinger"></app-char-sheet-gunslinger>
             }
-            <div class="arcanistData" *ngIf="slayer.class == playbooks.Arcanist">
+            @if (slayer.class == playbooks.Arcanist){
+                <app-char-sheet-arcanist [slayer]="slayer | asArcanist"></app-char-sheet-arcanist>
+            }
+            <!-- <div class="arcanistData" *ngIf="slayer.class == playbooks.Arcanist">
                 @let castSlayer = slayer | asArcanist;
                 <div class="stance">
                     <p>Corruption: {{castSlayer.corruption}}</p>
@@ -143,7 +146,7 @@
                 <div class="knownSpells">
                     <p *ngFor="let knownSpell of castSlayer.knownSpells">{{knownSpell | json}}</p>
                 </div>
-            </div>
+            </div> -->
               <!-- @let castSlayer = slayer | asTactician; -->
                @if (slayer.class == playbooks.Tactician){
                 <app-char-sheet-tactician  [slayer]="slayer | asTactician"></app-char-sheet-tactician>
