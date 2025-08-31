@@ -6,7 +6,7 @@ import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChang
 import { db } from "../firestoreConnection";
 import { v4 as uuidv4 } from "uuid";
 import { customRoll } from "../dddiceConnection";
-import { IDiceRoll, IDieType, IRoll, ThreeDDiceRollEvent } from "dddice-js";
+import { IApiResponse, IDiceRoll, IDieType, IRoll, ThreeDDiceRollEvent } from "dddice-js";
 import { addTacticianCallbacks } from "../playbooks/tactician";
 import { addGunslingerCallbacks } from "../playbooks/gunslinger";
 import { addArcanistCallbacks } from "../playbooks/arcanist";
@@ -165,48 +165,68 @@ export class SlayerRoom extends Room<SlayerRoomState> {
   }
 
   roll(dice: IDiceRoll[], actor: string, DNA?: string, skipUpdate?: boolean){
-    // const rolls: IDiceRoll[] = [];
+    let resp: Promise<IApiResponse<string, IRoll>>;
+
     if (!skipUpdate)
     {
       this.state.recentRolls.clear();
     }
-    // for (const die of dice){
-    //   rolls.push({
-    //     label: die.name,
-    //     type: die.size.toString(),
-    //     theme: die.themeId
-    //   })
-    // };
-    // const resp = dddice.roll.create(rolls);
-    const resp = customRoll(dice, actor);
+
+    if (DNA == "A" || DNA == "D"){
+      const rollOne = customRoll(dice, actor);
+      const rollTwo = customRoll(dice, actor);
+      Promise.all([rollOne, rollTwo]).then(rollResponses => {
+        const rollOneResult = rollResponses[0].data as IRoll;
+        const rollTwoResult = rollResponses[1].data as IRoll;
+        const finalResult = [];
+        for (let i = 0; i < rollOneResult.values.length; i++){
+          const valueOne = rollOneResult.values[i];
+          const valueTwo = rollTwoResult.values[i];
+          if (DNA == "A"){ // I know there are more clever ways to do this, but more clever == harder to read
+            if (valueOne.value >= valueTwo.value){
+              finalResult.push(valueOne)
+            } else {
+              finalResult.push(valueTwo);
+            }
+          }
+          if (DNA == "D"){
+            if (valueOne.value >= valueTwo.value){
+              finalResult.push(valueTwo)
+            } else {
+              finalResult.push(valueOne);
+            }
+          }
+        } // done comparing rolls
+        const tmpRoll: IRoll = rollOneResult;
+        tmpRoll.values = finalResult;
+        const tmpResponse: IApiResponse<string, IRoll> = {
+          type: "IRoll",
+          data: tmpRoll
+        }
+        resp = new Promise((resolve, reject) => {
+          resolve(tmpResponse);
+        });
+      })
+    } else { //"N", neutral roll
+      resp = customRoll(dice, actor);
+    }
+
     if (!skipUpdate){
       resp.then(value => {
         // console.log(value);
-        const toRecentRolls = [];
-        if (DNA == "D"){
-          toRecentRolls.push({
-            actor: actor,
-            action: value.data.values[0].label,
-            value: Math.min(...value.data.values.map((val, ix, arr) => {return val.value}))
-          })
-        } else if (DNA == "A"){
-          toRecentRolls.push({
-            actor: actor,
-            action: value.data.values[0].label,
-            value: Math.max(...value.data.values.map((val, ix, arr) => {return val.value}))
-          })
-        } else { // DNA == "N"
+        setTimeout(() => { // so the Tactician doesn't see the result before the roll animation finishes
+          const toRecentRolls = [];
           for (const roll of value.data.values){
             toRecentRolls.push({
             actor: actor,
             action: roll.label,
             value: roll.value
             })
-          }        
-      }  
-        console.log("Sending to set recent rolls:");
-        console.log(toRecentRolls);
-        this.setRecentRolls(toRecentRolls, "set");
+          };
+          console.log("Sending to set recent rolls:");
+          console.log(toRecentRolls);
+          this.setRecentRolls(toRecentRolls, "set");  
+        },2000)
 
     });
   };
