@@ -1,1 +1,33 @@
-<p>char-sheet-blade works!</p>
+<div class="stanceSection">
+    <div id="parrySection" class="stance" (click)="shiftStance(EStances.Parry)" [ngClass]="{'selectedStance':this.slayer.stance == EStances.Parry}" ><p>PARRY</p></div>
+    <div id="flowSection"  class="stance" (click)="shiftStance(EStances.Flow)"  [ngClass]="{'selectedStance':this.slayer.stance == EStances.Flow}"  ><p>FLOW</p></div>
+    <div id="slaySection"  class="stance" (click)="shiftStance(EStances.Slay)"  [ngClass]="{'selectedStance':this.slayer.stance == EStances.Slay}"><p>SLAY</p></div>
+</div>
+<div class="attackSection">
+    <div class="DNASection">
+        <div id="disadvantage" class="DNAOption" [ngClass]="{'selectedDNA': this.attackType=='D', 'unselectedDNA': this.attackType!='D'}" (click)="setDNA('D')">
+            @if (this.attackType == "D"){
+                <p class="full">Disadvantage</p>
+            } @else {
+                <p>D</p>
+            }
+        </div>
+        <div id="neutral" class="DNAOption" [ngClass]="{'selectedDNA': this.attackType=='N', 'unselectedDNA': this.attackType!='N'}" (click)="setDNA('N')">
+            @if (this.attackType == "N"){
+                <p class="full">Neutral</p>
+            } @else {
+                <p>N</p>
+            }
+        </div>
+        <div id="advantage" class="DNAOption" [ngClass]="{'selectedDNA': this.attackType=='A', 'unselectedDNA': this.attackType!='A'}" (click)="setDNA('A')">
+            @if (this.attackType == "A"){
+                <p class="full">Advantage</p>
+            } @else {
+                <p>A</p>
+            }
+        </div>
+    </div>
+    <div class="attackButtonSection" (click)="sendAttack()">
+        <p>Attack!</p>
+    </div>
+</div>

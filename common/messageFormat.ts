@@ -15,8 +15,6 @@ export enum EMessageTypes {
     PlayerUpdate,
     SaveCampaign,
     JoinResponse,
-    StanceChange,
-    setWeapon,
     // tactician
     swapRoll,
     addPlan,
@@ -36,7 +34,11 @@ export enum EMessageTypes {
     removeSpell,
     setEnhanced,
     setFavoredSpell,
-
+    // blade
+    StanceChange,
+    setWeapon,
+    bladeAttack,
+    updateCombo,
     // overlay message types
     playAnimation,
     playRollSwap,
@@ -115,72 +117,10 @@ export interface IRollMsg extends IBaseMsg {
     }[]
 }
 
-export interface IStanceChangeMsg extends IBaseMsg {
-    kind: EMessageTypes.StanceChange,
-    stance: EStances,
-    characterId: string
-}
 
-export interface IRuneChangeMsg extends IBaseMsg {
-    kind: EMessageTypes.RuneChange,
-    rune: ERunes,
-    slayerId: string,
-    chamber: number
-}
 
-export interface ILoadedChangeMsg extends IBaseMsg {
-    kind: EMessageTypes.LoadedChange,
-    loaded: boolean,
-    slayerId: string,
-    chamber: number
-}
 
-export interface IWeaponChangeMsg extends IBaseMsg {
-    kind: EMessageTypes.setWeapon,
-    dmgN: number,
-    dmgS: number,
-    slayerId: string
-}
 
-export interface IAddPlanMsg extends IBaseMsg {
-    kind: EMessageTypes.addPlan,
-    slayerId: string,
-    planVal: number
-}
-
-export interface IRemovePlanMsg extends IBaseMsg {
-    kind: EMessageTypes.removePlan,
-    slayerId: string,
-    planIx: number
-}
-
-export interface IAddSpellMsg extends IBaseMsg {
-    kind: EMessageTypes.addSpell,
-    slayerId: string,
-    name: string,
-    effect: string,
-    boostedEffect: string,
-    enhancedEffect: string
-}
-
-export interface IRemoveSpellMsg extends IBaseMsg {
-    kind: EMessageTypes.removeSpell,
-    slayerId: string,
-    ix: number
-}
-
-export interface ISetEnhancedMsg extends IBaseMsg {
-    kind: EMessageTypes.setEnhanced,
-    slayerId: string,
-    ix: number,
-    enhanced: boolean
-}
-
-export interface ISetFavoredSpell extends IBaseMsg {
-    kind: EMessageTypes.setFavoredSpell,
-    slayerId: string,
-    favoredSpell: string
-}
 
 export interface ISetRecentRolls extends IBaseMsg {
     kind: EMessageTypes.setRecentRolls,
@@ -233,6 +173,19 @@ export interface IStabMsg extends IBaseMsg {
     kind: EMessageTypes.shootStab
 }
 
+export interface IAddPlanMsg extends IBaseMsg {
+    kind: EMessageTypes.addPlan,
+    slayerId: string,
+    planVal: number
+}
+
+export interface IRemovePlanMsg extends IBaseMsg {
+    kind: EMessageTypes.removePlan,
+    slayerId: string,
+    planIx: number
+}
+
+
 // Gunslinger related
 
 
@@ -247,4 +200,76 @@ export interface IPlayGunshotAnimationMsg extends IBaseMsg {
         rune: string, //jank
         hit: boolean
     }[]
+}
+
+export interface IRuneChangeMsg extends IBaseMsg {
+    kind: EMessageTypes.RuneChange,
+    rune: ERunes,
+    slayerId: string,
+    chamber: number
+}
+
+export interface ILoadedChangeMsg extends IBaseMsg {
+    kind: EMessageTypes.LoadedChange,
+    loaded: boolean,
+    slayerId: string,
+    chamber: number
+}
+// Blade related
+
+export interface IStanceChangeMsg extends IBaseMsg {
+    kind: EMessageTypes.StanceChange,
+    stance: EStances,
+    characterId: string
+}
+
+
+export interface IWeaponChangeMsg extends IBaseMsg {
+    kind: EMessageTypes.setWeapon,
+    dmgN: number,
+    dmgS: number,
+    slayerId: string
+}
+
+export interface IBladeAttackMsg extends IBaseMsg {
+    kind: EMessageTypes.bladeAttack,
+    DNA: string
+}
+
+export interface IUpdateComboMsg extends IBaseMsg {
+    kind: EMessageTypes.updateCombo,
+    action: "inc" | "finish"
+}
+
+// Arcanist related
+
+
+
+
+export interface IAddSpellMsg extends IBaseMsg {
+    kind: EMessageTypes.addSpell,
+    slayerId: string,
+    name: string,
+    effect: string,
+    boostedEffect: string,
+    enhancedEffect: string
+}
+
+export interface IRemoveSpellMsg extends IBaseMsg {
+    kind: EMessageTypes.removeSpell,
+    slayerId: string,
+    ix: number
+}
+
+export interface ISetEnhancedMsg extends IBaseMsg {
+    kind: EMessageTypes.setEnhanced,
+    slayerId: string,
+    ix: number,
+    enhanced: boolean
+}
+
+export interface ISetFavoredSpell extends IBaseMsg {
+    kind: EMessageTypes.setFavoredSpell,
+    slayerId: string,
+    favoredSpell: string
 }

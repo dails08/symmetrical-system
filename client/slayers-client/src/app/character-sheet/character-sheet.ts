@@ -16,7 +16,7 @@ import { TippyDirective } from '@ngneat/helipopper';
 import { JoinScreen } from "../join-screen/join-screen";
 import { CharSheetTactician } from "./char-sheet-tactician/char-sheet-tactician";
 import { CharSheetGunslinger } from "./char-sheet-gunslinger/char-sheet-gunslinger";
-
+import { CharSheetBlade } from "./char-sheet-blade/char-sheet-blade";
 @Component({
   selector: 'app-character-sheet',
   imports: [
@@ -29,7 +29,8 @@ import { CharSheetGunslinger } from "./char-sheet-gunslinger/char-sheet-gunsling
     Roller,
     JoinScreen,
     CharSheetTactician,
-    CharSheetGunslinger
+    CharSheetGunslinger,
+    CharSheetBlade
 ],
   templateUrl: './character-sheet.html',
   styleUrl: './character-sheet.scss'
