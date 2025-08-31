@@ -2,46 +2,46 @@ import { Player, RecentRoll, Slayer } from "../server/src/SlayerRoomState"
 import { EStances, IPlayer, ISlayer, ERunes } from "./common"
 
 export enum EMessageTypes {
-    CharacterUpdate,
-    NumericalUpdate,
-    ArrayChange,
-    Assignment, 
-    Kill,
-    RosterAdd,
-    Roll,
-    OptionsChoice,
-    OptionsSelection,
-    Kick,
-    PlayerUpdate,
-    SaveCampaign,
-    JoinResponse,
+    CharacterUpdate = "characterUpdate",
+    NumericalUpdate = "numericalUpdate",
+    ArrayChange = "arrayChange",
+    Assignment = "assignment", 
+    Kill = "kill",
+    RosterAdd = "rosterAdd",
+    Roll = "roll",
+    OptionsChoice = "optionsChoice",
+    OptionsSelection = "optionsSelection",
+    Kick = "kick",
+    PlayerUpdate = "playerUpdate",
+    SaveCampaign = "saveCampaign",
+    JoinResponse = "joinResponse",
     // tactician
-    swapRoll,
-    addPlan,
-    removePlan,
-    setRecentRolls,
-    rollPlans,
-    rally,
-    shootStab,
+    swapRoll = "swapRoll",
+    addPlan = "addPlan",
+    removePlan = "removePlan",
+    setRecentRolls = "setRecentRolls",
+    rollPlans = "rollPlans",
+    rally = "rally",
+    shootStab = "shootstab",
     // gunslinger
-    RuneChange,
-    LoadedChange,
-    reloadChambers,
-    sprayLead,
-    playGunshotAnimation,
+    RuneChange = "runeChance",
+    LoadedChange = "loadedChange",
+    reloadChambers = "reloadChambers",
+    sprayLead = "sprayLear",
+    playGunshotAnimation = "playGunshotAnimation",
     // arcanist
-    addSpell,
-    removeSpell,
-    setEnhanced,
-    setFavoredSpell,
+    addSpell = "addSpell",
+    removeSpell = "removeSpell",
+    setEnhanced = "setEnhanced",
+    setFavoredSpell = "setFavoredSpell",
     // blade
-    StanceChange,
-    setWeapon,
-    bladeAttack,
-    updateCombo,
+    StanceChange = "stanceChange",
+    setWeapon = "setWeapon",
+    bladeAttack = "bladeAttack",
+    updateCombo = "updateCombo",
     // overlay message types
-    playAnimation,
-    playRollSwap,
+    playAnimation = "playAnimation",
+    playRollSwap = "playRollSwap",
 
 }
 
@@ -238,6 +238,7 @@ export interface IBladeAttackMsg extends IBaseMsg {
 
 export interface IUpdateComboMsg extends IBaseMsg {
     kind: EMessageTypes.updateCombo,
+    target: "damage" | "combo",
     action: "inc" | "finish"
 }
 
