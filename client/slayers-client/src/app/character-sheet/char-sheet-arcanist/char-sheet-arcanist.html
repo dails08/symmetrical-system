@@ -42,6 +42,20 @@
       <p><strong>Range: </strong>{{spell.range}}</p>
       <p><strong>Boost: </strong>{{spell.boostedEffect}}</p>
       <p><strong>Enhance: </strong>{{spell.enhancedEffect}}</p>
+      <div class="castSection">
+        <div class="boostSection">
+          <p><mat-slide-toggle #boostToggle>Boost</mat-slide-toggle></p>
+        </div>
+        <div class="CastDNASection">
+          <mat-button-toggle-group [multiple]="false" #DNAToggle="matButtonToggleGroup" name="DNA" >
+            <mat-button-toggle value="D">D</mat-button-toggle>
+            <mat-button-toggle value="N">N</mat-button-toggle>
+            <mat-button-toggle value="A">A</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+        <button matButton="filled" class="castButton" (click)="castSpell(spell, boostToggle.checked, DNAToggle.selected); boostToggle.checked = false; ">Cast!</button>
+      </div>
+
     </mat-expansion-panel>
 
   }

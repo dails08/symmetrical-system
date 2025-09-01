@@ -100,6 +100,16 @@
 }
 .spellPanel {
   margin: 0px 10px 10px 10px;
+
+  .castSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .castButton {
+
+  }
 }
 
 .spellIcon {

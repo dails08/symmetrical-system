@@ -1,4 +1,5 @@
-import { Component, Input, ViewChild, } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { animate } from 'animejs';
 import { Arcanist, KnownSpell } from '../../../../../../server/src/SlayerRoomState';
 import { CentralService } from '../../services/central-service';
@@ -7,15 +8,24 @@ import { getStateCallbacks } from 'colyseus.js';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { TitleCasePipe, NgClass } from '@angular/common';
-import { EMessageTypes, ISetFavoredSpell } from '../../../../../../common/messageFormat';
+import { EMessageTypes, ICastSpellMsg, ISetFavoredSpell } from '../../../../../../common/messageFormat';
 import { CdkDropList } from "@angular/cdk/drag-drop";
-import { CdkDrag } from "../../../../node_modules/@angular/cdk/drag-drop/index";
 import { DragDropModule } from '@angular/cdk/drag-drop';
-
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule, MatButtonToggle } from '@angular/material/button-toggle';
 
 @Component({
   selector: 'app-char-sheet-arcanist',
-  imports: [MatExpansionModule, MatSelectModule, NgClass, CdkDropList, DragDropModule],
+  imports: [
+    CommonModule,
+    MatExpansionModule,
+    MatSelectModule,
+    DragDropModule,
+    MatSlideToggleModule,
+    MatButtonModule,
+    MatButtonToggleModule
+  ],
   templateUrl: './char-sheet-arcanist.html',
   styleUrl: './char-sheet-arcanist.scss'
 })
@@ -60,6 +70,18 @@ export class CharSheetArcanist {
       this.fresh = false;
 
     }
+
+  }
+
+  castSpell(spell: KnownSpell, boost: boolean, DNA: MatButtonToggle | MatButtonToggle[]){
+    const singleDNA = DNA as MatButtonToggle;
+    const msg: ICastSpellMsg = {
+      kind: EMessageTypes.castSpell,
+      spell: spell,
+      boost: boost,
+      DNA: singleDNA.value || "N"
+    };
+    this.cjs.sendMessage(msg);
 
   }
   ngAfterViewInit(): void {
