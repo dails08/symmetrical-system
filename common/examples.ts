@@ -99,6 +99,8 @@ export const Ryze: IArcanist = {
         {
             name: "Create Potato",
             effect: "Creates a potato",
+            range: "Anywhere",
+            spellId: "13",
             boostedEffect: "Creates two potatoes",
             enhancedEffect: "Creates baked potatoes",
             enhanced: false

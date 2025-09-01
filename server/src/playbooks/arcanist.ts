@@ -37,6 +37,8 @@ export function addArcanistCallbacks(room: SlayerRoom){
                const classedSlayer = slayer as Arcanist;
                const newSpell: KnownSpell = new KnownSpell({
                  name: msg.name,
+                 range: msg.range,
+                 spellId: msg.spellId,
                  effect: msg.effect,
                  boostedEffect: msg.boostedEffect,
                  enhancedEffect: msg.enhancedEffect,

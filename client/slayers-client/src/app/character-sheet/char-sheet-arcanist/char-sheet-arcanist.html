@@ -1,9 +1,12 @@
-<div class="corruption-healthbar">
-  <div class="corruption-healthbar-barcontent"></div>
-    @for (_ of [].constructor(6 + 1);let ix = $index;  track $index){
-      <div  class="corruption-healthbar-segment" [style.left]="'calc('+100*(ix)/6 +'%)'"></div>
-    }
+<div id="corruptionAndFavoredSpellSection">
+  <div class="corruptionAndFavoredSpellSection-corruptionSection">
+    <div class="corruption"></div>
+      @for (_ of [].constructor(this.slayer.corruption);let ix = $index;  track $index){
+        <div  class="corruption-healthbar-segment"></div>
+      }
+  </div>
 </div>
+
  <div id="favoredSpellSection">
   <mat-form-field>
     <mat-label>{{this.slayer.favoredSpell}}</mat-label>
@@ -16,7 +19,20 @@
  </div>
  <div id="spellbookSection">
   @for (spell of slayer.knownSpells; track spell.name){
-    <div class="spellOption"></div>
+    <mat-expansion-panel class="spellPanel" hideToggle>
+      <mat-expansion-panel-header collapsedHeight="120px" expandedHeight="110px" class="spellHeaderName" [ngClass]="{'enhancedSpell': spell.enhanced}">
+        <mat-panel-title>
+          <img class="spellIcon" [src]="this.cs.storageURLBase + this.spellIconURLBase + spell.spellId + '.png'">
+        </mat-panel-title>
+        <mat-panel-description>
+          <p>{{spell.name}}</p>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <p><strong>Base: </strong>{{spell.effect}}</p>
+      <p><strong>Range: </strong>{{spell.range}}</p>
+      <p><strong>Boost: </strong>{{spell.boostedEffect}}</p>
+      <p><strong>Enhance: </strong>{{spell.enhancedEffect}}</p>
+    </mat-expansion-panel>
 
   }
  </div>

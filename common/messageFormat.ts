@@ -158,6 +158,8 @@ export interface IAddSpellMsg extends IBaseMsg {
     kind: EMessageTypes.addSpell,
     slayerId: string,
     name: string,
+    range: string,
+    spellId: string,
     effect: string,
     boostedEffect: string,
     enhancedEffect: string

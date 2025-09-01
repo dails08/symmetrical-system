@@ -1,3 +1,10 @@
+@use "@angular/material" as mat;
+
+:host {
+  @include mat.expansion-overrides((
+    container-background-color: #F2F2F3,
+  ));
+}
 .corruption{
   &-healthbar {
     // margin: 10px 10px;
@@ -13,7 +20,7 @@
 
     &-barcontent {
       position: absolute;
-      background-color: lightblue;
+      background-color: cyan;
     /*   border: 1px solid gray; */
       flex: 1 1 auto;
       transform: skewX(-20deg);
@@ -45,3 +52,17 @@
     }
 
 }
+
+.spellIcon {
+  height: 80px;
+  padding: 3px;
+  border: 2px solid gray;
+  border-radius: 2px;
+  flex-grow: 0;
+}
+
+
+
+// .spellPanel {
+//   height: 100px;
+// }

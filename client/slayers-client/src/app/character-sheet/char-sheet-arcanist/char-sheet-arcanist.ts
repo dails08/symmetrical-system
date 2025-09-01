@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, } from '@angular/core';
 import { animate } from 'animejs';
 import { Arcanist, KnownSpell } from '../../../../../../server/src/SlayerRoomState';
 import { CentralService } from '../../services/central-service';
@@ -6,12 +6,14 @@ import { ColyseusService } from '../../services/colyseusService';
 import { getStateCallbacks } from 'colyseus.js';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
-import { TitleCasePipe } from '@angular/common';
+import { TitleCasePipe, NgClass } from '@angular/common';
 import { EMessageTypes, ISetFavoredSpell } from '../../../../../../common/messageFormat';
+
+
 
 @Component({
   selector: 'app-char-sheet-arcanist',
-  imports: [MatExpansionModule, MatSelectModule, TitleCasePipe],
+  imports: [MatExpansionModule, MatSelectModule, TitleCasePipe, NgClass],
   templateUrl: './char-sheet-arcanist.html',
   styleUrl: './char-sheet-arcanist.scss'
 })
@@ -21,6 +23,8 @@ export class CharSheetArcanist {
 
   @ViewChild("favoredSpellSelect") favoredSpellSelect!: MatSelect;
   fresh = true;
+
+  spellIconURLBase = "icons/spells/";
 
   constructor(
     protected cs: CentralService,

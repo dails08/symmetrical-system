@@ -16,6 +16,8 @@ export class CentralService {
   // public assignmentChange: Subject<Slayer>;
   public role: "player" | "gm" = "player";
 
+  public storageURLBase = "https://storage.googleapis.com/slayers-media/";
+
 
   constructor(
     // private cjs: ColyseusService,
@@ -27,44 +29,9 @@ export class CentralService {
       chekhovPoints: 0
     });
 
-    // this.assignmentChange = new Subject<Slayer>();
-
-    // cjs.room.then((room) => {
-    //   console.log("Attaching join resp callback")
-    //   room.onMessage(EMessageTypes.JoinResponse, ((resp: IJoinResponseMsg) => {
-    //     console.log("Received join response message");
-    //     this.role = resp.role;
-    //     if (this.role == "gm"){
-    //       console.log("Navigating to gm screen");
-    //       this.router.navigate(["/gm"]);
-    //     }
-    //     this.player = resp.player;
-    //     const $ = getStateCallbacks(room);
-    //     $(this.player).bindTo(this.player);
-    //   }))
-    // })
-    
 
 
-    // cjs.getAssignmentChange().subscribe(([newAssignment, ix]) => {
-    //   cjs.room.then((room) => {
-    //     const $ = getStateCallbacks(room);
-    //     console.log("Assignment change")
-    //     if (ix == room.sessionId){
-    //       console.log("Assigned " + newAssignment.name)
-    //       this.slayer = newAssignment;
-    //       $(this.slayer).bindTo(this.slayer);
-    //       this.assignmentChange.next(this.slayer);
-    //     } else {
-    //       console.log("Not our assignment: " + ix);
-    //     }
-  
-    //   })
-    // })
   }
 
-  // getAssignmentChange() {
-  //   return this.assignmentChange.asObservable();
-  // }
 
 }

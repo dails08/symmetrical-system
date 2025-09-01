@@ -42,9 +42,11 @@
       </mat-expansion-panel-header>
 
       <div class="newSpellSection">
-        <form class="newSpellForm" #newSpell (ngSubmit)="addSpell(newSpellName.value, newSpellEffect.value, newSpellBoostedEffect.value, newSpellEnhancedEffect.value)">
+        <form class="newSpellForm" #newSpell (ngSubmit)="addSpell(newSpellName.value, newSpellRange.value, newSpellId.value, newSpellEffect.value, newSpellBoostedEffect.value, newSpellEnhancedEffect.value)">
           <!-- <label for="newSpellName">Name</label> -->
           <input matInput pInputText id="newSpellName" #newSpellName placeholder="Spell name">
+          <input matInput pInputText id="newSpellRange" #newSpellRange placeholder="Spell range">
+          <input matInput pInputText id="newSpellId" #newSpellId placeholder="SpellId">
 
           <!-- <label for="newSpellEffect">Effect</label> -->
           <textarea id="newSpellEffect" #newSpellEffect placeholder="Effect"></textarea>

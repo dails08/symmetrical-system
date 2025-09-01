@@ -185,6 +185,8 @@ export class KnownSpell extends Schema {
     newSpell: {
       name: string, 
       effect: string,
+      range: string,
+      spellId: string,
       boostedEffect: string,
       enhancedEffect: string,
       enhanced: boolean}){
@@ -196,6 +198,8 @@ export class KnownSpell extends Schema {
     return {
       name: this.name,
       effect: this.effect,
+      range: this.range,
+      spellId: this.spellId,
       boostedEffect: this.boostedEffect,
       enhancedEffect: this.enhancedEffect,
       enhanced: this.enhanced
@@ -203,6 +207,8 @@ export class KnownSpell extends Schema {
   }
   @type("string") name = "";
   @type("string") effect = "";
+  @type("string") range = "";
+  @type("string") spellId = "00";
   @type("string") boostedEffect = "";
   @type("string") enhancedEffect = "";
   @type("boolean") enhanced = false;
