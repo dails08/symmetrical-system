@@ -71,7 +71,7 @@ export class GmControlsArcanist {
   }
 
   modCorruption(delta: number) {
-    const newCorruption = Math.min(Math.max(0, this.slayer.corruption + delta), 6);
+    const newCorruption = Math.min(Math.max(0, this.slayer.corruption + delta), 8);
     const msg: IUpdateNumericalMsg = {
       kind: EMessageTypes.NumericalUpdate,
       field: "corruption",
