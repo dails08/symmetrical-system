@@ -2,7 +2,7 @@
 
 :host {
   @include mat.expansion-overrides((
-    container-background-color: #F2F2F3,
+    container-background-color: #CF9FFF,
   ));
 }
 
@@ -92,9 +92,10 @@
 
 #spellbookSection {
   overflow-y: scroll;
+  max-height: calc(100vh - 380px);
 
   .enhancedSpell {
-    background-color: #CF9FFF;
+    background-color: #F2F2F3;
   }
 }
 .spellPanel {
