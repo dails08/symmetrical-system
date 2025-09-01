@@ -136,6 +136,7 @@ export function addArcanistCallbacks(room: SlayerRoom){
                   label: "Boost!"
               });
               classedSlayer.corruption++
+              classedSlayer.corruption = Math.min(classedSlayer.corruption, 8);
               };
               room.roll(toRolls, classedSlayer.name, msg.DNA).then(results => {
                 const rollResults = results.data as IRoll;
