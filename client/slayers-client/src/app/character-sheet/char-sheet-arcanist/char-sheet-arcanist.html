@@ -8,28 +8,31 @@
       }
     </div>
   </div>
-   <div id="favoredSpellSection">
+   <div id="favoredSpellSection" cdkDropList #favoredSpellDrop="cdkDropList" (cdkDropListDropped)="updateFavoredSpell($event.item.data)">
+    <p class="favoredSpellLabel">favored spell</p>
+    @if (slayer.favoredSpell){
+      <!-- <img class="favoredIcon" [src]="this.cs.storageURLBase + this.spellIconURLBase + favoredSpellSpellId + '.png'"> -->
+      <p class="favoredSpellName">{{slayer.favoredSpell}}</p>
+    }
 
-
-
-  <mat-form-field>
+  <!-- <mat-form-field>
     <mat-label>{{this.slayer.favoredSpell}}</mat-label>
     <mat-select [(value)]="this.slayer.favoredSpell" #favoredSpellSelect (valueChange)="updateFavoredSpell(favoredSpellSelect.value)">
       @for (spell of slayer.knownSpells; track spell.name){
         <mat-option [value]="spell" class="favoredSpellOption">{{spell.name | titlecase}}</mat-option>
       }
     </mat-select>
-  </mat-form-field>
+  </mat-form-field> -->
  </div>
 </div>
 
 
  <div id="spellbookSection">
   @for (spell of slayer.knownSpells; track spell.name){
-    <mat-expansion-panel class="spellPanel" hideToggle>
+    <mat-expansion-panel class="spellPanel" [ngClass]="{'enhancedSpell': spell.enhanced}" hideToggle>
       <mat-expansion-panel-header collapsedHeight="120px" expandedHeight="110px" class="spellHeaderName" [ngClass]="{'enhancedSpell': spell.enhanced}">
         <mat-panel-title>
-          <img class="spellIcon" [src]="this.cs.storageURLBase + this.spellIconURLBase + spell.spellId + '.png'">
+          <img cdkDrag [cdkDragData]="spell" class="spellIcon" [src]="this.cs.storageURLBase + this.spellIconURLBase + spell.spellId + '.png'">
         </mat-panel-title>
         <mat-panel-description>
           <p>{{spell.name}}</p>

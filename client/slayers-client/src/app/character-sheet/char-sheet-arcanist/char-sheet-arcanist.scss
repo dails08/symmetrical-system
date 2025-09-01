@@ -9,6 +9,9 @@
 #corruptionAndFavoredSpellSection {
   display: flex;
   flex-direction: row;
+  margin-bottom: 10px;
+  // padding-bottom: 10px;
+  border-bottom: 1px solid gray;
 
   #corruptionSection {
     width: 100px;
@@ -20,14 +23,15 @@
   flex-direction: row;
   justify-content: start;
   padding-left: 2px;
-  min-height: 54px;
+  min-height: 64px;
   position: relative;
+  border-right: 1px solid gray;
     .sectionLabel {
       font-family: "sarina";
       color: gray;
       position:absolute;
       left: 0;
-      bottom: -13px;
+      bottom: -5px;
     }
 
   &-segment {
@@ -86,6 +90,17 @@
 
 }
 
+#spellbookSection {
+  overflow-y: scroll;
+
+  .enhancedSpell {
+    background-color: #CF9FFF;
+  }
+}
+.spellPanel {
+  margin: 0px 10px 10px 10px;
+}
+
 .spellIcon {
   height: 80px;
   padding: 3px;
@@ -93,6 +108,23 @@
   border-radius: 2px;
   flex-grow: 0;
 }
+
+#favoredSpellSection{
+  position:relative;
+  .favoredSpellLabel {
+    font-family: "sarina";
+    color: gray;
+    position:absolute;
+    left: 3px;
+    bottom: -5px;
+    width: 200px;
+  }
+  .favoredSpellName {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 30pt;
+  }
+}
+
 
 
 

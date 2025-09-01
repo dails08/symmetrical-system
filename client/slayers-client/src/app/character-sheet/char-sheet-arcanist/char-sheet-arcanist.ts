@@ -8,12 +8,14 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { TitleCasePipe, NgClass } from '@angular/common';
 import { EMessageTypes, ISetFavoredSpell } from '../../../../../../common/messageFormat';
-
+import { CdkDropList } from "@angular/cdk/drag-drop";
+import { CdkDrag } from "../../../../node_modules/@angular/cdk/drag-drop/index";
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 @Component({
   selector: 'app-char-sheet-arcanist',
-  imports: [MatExpansionModule, MatSelectModule, TitleCasePipe, NgClass],
+  imports: [MatExpansionModule, MatSelectModule, NgClass, CdkDropList, DragDropModule],
   templateUrl: './char-sheet-arcanist.html',
   styleUrl: './char-sheet-arcanist.scss'
 })
@@ -23,6 +25,8 @@ export class CharSheetArcanist {
 
   @ViewChild("favoredSpellSelect") favoredSpellSelect!: MatSelect;
   fresh = true;
+  favoredSpellSpellId: string | undefined;
+  favoredSpellName: string | undefined;
 
   spellIconURLBase = "icons/spells/";
 
@@ -34,6 +38,7 @@ export class CharSheetArcanist {
   }
 
   updateFavoredSpell(selection: KnownSpell){
+    this.favoredSpellSpellId = selection.spellId;
     const msg: ISetFavoredSpell = {
       kind: EMessageTypes.setFavoredSpell,
       favoredSpell: selection.name,
