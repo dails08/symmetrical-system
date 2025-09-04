@@ -80,19 +80,30 @@ export function addBladeCallbacks(room: SlayerRoom){
                 efficientKiller = true;
               }
               let stanceIsSlay = classedSlayer.stance == EStances.Slay;
-            const toDiceRolls: IDiceRoll[] = [];
-            for (let i = 0; i < classedSlayer.weaponNumber; i++){
-              toDiceRolls.push({
-                type: "d" + classedSlayer.weaponSides,
-                theme: "rime-of-the-frostmaiden-ljkrrxwr",
-                label: "Combo!"
-              });
-            };
+
             let combo = true;
+            const finalRollValues = [];
             while (combo) {
+              if (shrewdIsAvailable){
+                console.log("Shrewding");
+              }
               const DNA = shrewdIsAvailable? "A": msg.DNA;
               console.log("DNA: " + DNA);
               shrewdIsAvailable = false;
+
+              let rollValueNumbers = [];
+              const toDiceRolls: IDiceRoll[] = [];
+              for (let i = 0; i < classedSlayer.weaponNumber; i++){
+                const rollValueNumber = Math.floor(Math.random() * 6) + 1;
+                rollValueNumbers.push(rollValueNumber);
+                toDiceRolls.push({
+                  type: "d" + classedSlayer.weaponSides,
+                  theme: "rime-of-the-frostmaiden-ljkrrxwr",
+                  label: "Combo!",
+                  // value: rollValueNumber
+                });
+              };
+  
               const rollResultOne = await room.roll(toDiceRolls, classedSlayer.name, shrewdIsAvailable? "A": msg.DNA);
               console.log(rollResultOne.data.values.map((val, ix, arr) => { return val.value }));
               if (footingIsAvailable){
@@ -114,6 +125,7 @@ export function addBladeCallbacks(room: SlayerRoom){
               // count hits
               let hitCount = 0;
               for (const rollResult of rollResultOne.data.values){
+                finalRollValues.push(rollResult.value);
                 if (rollResult.value >= (honedBlade ? 3 : 4)){
                   hitCount++;
                 }
@@ -151,7 +163,8 @@ export function addBladeCallbacks(room: SlayerRoom){
                 }
               }
             }
-           
+            console.log(finalRollValues);
+
               //  check for efficient slayer
             // if hits > 0, repeat
           } else {

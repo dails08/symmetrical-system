@@ -173,15 +173,17 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     }
 
     if (DNA == "A" || DNA == "D"){
-      const rollOne = customRoll(dice, actor);
-      const rollTwo = customRoll(dice, actor);
-      Promise.all([rollOne, rollTwo]).then(rollResponses => {
-        const rollOneResult = rollResponses[0].data as IRoll;
-        const rollTwoResult = rollResponses[1].data as IRoll;
+      // const rollOne = customRoll(dice, actor);
+      // const rollTwo = customRoll(dice, actor);
+
+      resp = customRoll(dice.concat(dice), actor).then(advantageRollResult => {
+        const rollResultOne = advantageRollResult.data.values.slice(0, advantageRollResult.data.values.length / 2);
+        const rollResultTwo = advantageRollResult.data.values.slice(advantageRollResult.data.values.length / 2);
         const finalResult = [];
-        for (let i = 0; i < rollOneResult.values.length; i++){
-          const valueOne = rollOneResult.values[i];
-          const valueTwo = rollTwoResult.values[i];
+        for (let i = 0; i < rollResultOne.length; i++){
+          const valueOne = rollResultOne[i];
+          const valueTwo = rollResultTwo[i];
+          console.log("Checking " + valueOne.value + " <> " + valueTwo.value);
           if (DNA == "A"){ // I know there are more clever ways to do this, but more clever == harder to read
             if (valueOne.value >= valueTwo.value){
               finalResult.push(valueOne)
@@ -197,15 +199,16 @@ export class SlayerRoom extends Room<SlayerRoomState> {
             }
           }
         } // done comparing rolls
-        const tmpRoll: IRoll = rollOneResult;
+        const tmpRoll: IRoll = advantageRollResult.data;
         tmpRoll.values = finalResult;
         const tmpResponse: IApiResponse<string, IRoll> = {
           type: "IRoll",
           data: tmpRoll
         }
-        resp = new Promise((resolve, reject) => {
+        return new Promise<IApiResponse<string, IRoll>>((resolve, reject) => {
           resolve(tmpResponse);
         });
+        
       })
     } else { //"N", neutral roll
       resp = customRoll(dice, actor);
