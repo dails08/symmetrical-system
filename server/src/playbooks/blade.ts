@@ -83,6 +83,7 @@ export function addBladeCallbacks(room: SlayerRoom){
 
             let combo = true;
             const finalRollValues = [];
+            let totalDamage = 0;
             while (combo) {
               if (shrewdIsAvailable){
                 console.log("Shrewding");
@@ -91,11 +92,11 @@ export function addBladeCallbacks(room: SlayerRoom){
               console.log("DNA: " + DNA);
               shrewdIsAvailable = false;
 
-              let rollValueNumbers = [];
+              // let rollValueNumbers = [];
               const toDiceRolls: IDiceRoll[] = [];
               for (let i = 0; i < classedSlayer.weaponNumber; i++){
-                const rollValueNumber = Math.floor(Math.random() * 6) + 1;
-                rollValueNumbers.push(rollValueNumber);
+                // const rollValueNumber = Math.floor(Math.random() * 6) + 1;
+                // rollValueNumbers.push(rollValueNumber);
                 toDiceRolls.push({
                   type: "d" + classedSlayer.weaponSides,
                   theme: "rime-of-the-frostmaiden-ljkrrxwr",
@@ -152,21 +153,21 @@ export function addBladeCallbacks(room: SlayerRoom){
                   target: "combo",
                   action: "inc"
                 };
+                totalDamage += dmgPerHit;
                 room.sendOverlayMessage(bumpComboMsg);
-                for (let j = 0; j < dmgPerHit; j++){
-                  const bumpDamageMsg: IUpdateComboMsg = {
-                    kind: EMessageTypes.updateCombo,
-                    target: "damage",
-                    action: "inc"
-                  };
-                  room.sendOverlayMessage(bumpDamageMsg);  
-                }
-              }
-            }
+                // for (let j = 0; j < dmgPerHit; j++){
+                //   const bumpDamageMsg: IUpdateComboMsg = {
+                //     kind: EMessageTypes.updateCombo,
+                //     target: "damage",
+                //     action: "inc"
+                //   };
+                //   room.sendOverlayMessage(bumpDamageMsg);  
+                // } // end of counting damage
+              } // end of counting hits
+            } // end of combo
             console.log(finalRollValues);
+            console.log(totalDamage);
 
-              //  check for efficient slayer
-            // if hits > 0, repeat
           } else {
             console.log("Not authorized to!");
           }

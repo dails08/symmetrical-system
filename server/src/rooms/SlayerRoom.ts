@@ -159,7 +159,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
 
   sendOverlayMessage(msg: IBaseMsg) {
     for (let overlay of this.overlayClients){
-      console.log("Forwarding message to overlay: " + JSON.stringify(msg));
+      // console.log("Forwarding message to overlay: " + JSON.stringify(msg));
       overlay.send(msg.kind, msg);
     }
   }
