@@ -67,7 +67,7 @@ export function loadArcanistContent(scene: OverlayScene){
         }
         
         // scene.load.audio(spell.shortName + "sfx", "https://storage.googleapis.com/slayers-media/audio/sfx/" + spell.shortName);
-        scene.load.audio(spell.shortName + "sfx", mediaLocations[currentMediaLocation] + "/audio/sfx/" + spell.shortName + ".ogg");
+        scene.load.audio(spell.shortName, mediaLocations[currentMediaLocation] + "/audio/sfx/" + spell.shortName + ".ogg");
     }
 
 
@@ -97,6 +97,11 @@ export function createArcanistContent(scene: OverlayScene){
             showOnStart: true
         })    
         scene.setAnimations.set(spell.shortName, spellAnimationSprite)
+
+        if (scene.cache.audio.exists(spell.shortName)){
+            scene.sound.add(spell.shortName);
+        }
+        
     }        
 }
 

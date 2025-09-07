@@ -76,12 +76,12 @@ export class OverlayScene extends Scene {
         filenameText.setColor("0xFFFFFF");
         const percentText = this.add.text(300, 600, "Loading", { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' });
         percentText.setFontSize(30);
-        percentText.setColor("0xFFFFFF");
+        percentText.setFill("0xFFFFFF");
 
         this.load.on("progress", (val: number) => {
-            console.log(100 * val + "%");
+            console.log((100 * val).toLocaleString(undefined, { maximumFractionDigits: 1}) + "%");
             progressBar.clear();
-            progressBar.fillStyle(0xffffff, 1);
+            progressBar.fillStyle(0xFFFFFF, 1);
             progressBar.fillRect(this.width / 3 + 10, this.height * .6 + 10, (this.width / 3 - 20) * val, 30);
             percentText.setText(100 * val + "%");
         });
@@ -153,12 +153,13 @@ export class OverlayScene extends Scene {
             } else {
                 console.log("No animation found!");
             }
-
-            if (this.sound.get(msg.key + "sfx")){
+            console.log("Looking for audio key " + msg.key);
+            if (this.sound.get(msg.key)){
                 console.log("Matching audio!");
-                const matchingAudio = this.sound.play(msg.key + "sfx");
+                const matchingAudio = this.sound.play(msg.key);
             } else {
                 console.log("No matching audio!");
+                console.log(this.cache.audio.getKeys());
             }
             
 
