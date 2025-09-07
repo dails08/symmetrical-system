@@ -9,6 +9,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { EMessageTypes, IAddSpellMsg, IRemoveSpellMsg, ISetEnhancedMsg, ISetFavoredSpell, IUpdateNumericalMsg } from '../../../../../../../common/messageFormat';
 import {FormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
+import { spellData } from '../../../../../../../common/common';
 
 @Component({
   selector: 'app-gm-controls-arcanist',
@@ -29,6 +30,8 @@ export class GmControlsArcanist {
   @Input({required: true}) player!: Player;
   @Input({required: true }) playerIx!: String;
   @Input({ required: true }) slayer!: Arcanist;
+
+  spellData = spellData;
 
   constructor(
     private cjs: ColyseusService

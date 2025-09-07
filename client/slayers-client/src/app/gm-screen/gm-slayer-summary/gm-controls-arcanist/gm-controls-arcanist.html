@@ -42,6 +42,16 @@
       </mat-expansion-panel-header>
 
       <div class="newSpellSection">
+        <mat-select #presetSpells placeholder="Preset Spells" >
+          @for ( spell of spellData; track spell.displayName){
+            <mat-option (click)="newSpellName.value = spell.displayName;
+            newSpellRange.value = spell.range;
+            newSpellId.value = spell.iconID.toString();
+            newSpellEffect.value = spell.base;
+            newSpellBoostedEffect.value = spell.boost;
+            newSpellEnhancedEffect.value = spell.enhance" [value]="spell" >{{spell.displayName}}</mat-option>
+          }
+        </mat-select>
         <form class="newSpellForm" #newSpell (ngSubmit)="addSpell(newSpellName.value, newSpellRange.value, newSpellId.value, newSpellEffect.value, newSpellBoostedEffect.value, newSpellEnhancedEffect.value)">
           <!-- <label for="newSpellName">Name</label> -->
           <input matInput pInputText id="newSpellName" #newSpellName placeholder="Spell name">
