@@ -1,9 +1,11 @@
 import { Scene } from "phaser";
 import { room } from "../src/colyseus";
-import { EMessageTypes, IBaseMsg, IPlayAnimationMsg, IPlayGunshotAnimationMsg, IPlayRollSwapMsg } from "../../common/messageFormat";
-import { loadTacticianContent, playSwapAnimation } from "../playbooks/tactician";
-import { loadGunslingerContent, playGunshotsAnimation } from "../playbooks/gunslinger";
+import { EMessageTypes, IBaseMsg, IPlayAnimationMsg } from "../../common/messageFormat";
+import { loadTacticianContent } from "../playbooks/tactician";
+import { loadGunslingerContent } from "../playbooks/gunslinger";
 import { DiceEvent, IApiResponse, IRoll, ThreeDDice, ThreeDDiceRollEvent } from "dddice-js";
+import { createArcanistContent, loadArcanistContent } from "../playbooks/arcanist";
+
 export class OverlayScene extends Scene {
 
     dddice: ThreeDDice;
@@ -19,12 +21,25 @@ export class OverlayScene extends Scene {
 
     cc: ComboCounter;
 
+    setAnimations: Map<string, Phaser.GameObjects.Sprite>;
+
     // testAnim: Phaser.Animations.Animation;
 
     // tactician variables
     solidArrow: Phaser.GameObjects.Sprite;
     exchangeArrows: Phaser.GameObjects.Sprite;
 
+    playSpellAnimation(spellName: string){
+        console.log("Casting " + spellName);
+        const spellSprite = this.setAnimations.get(spellName);
+        if (spellSprite){
+            console.log("Found spell!");
+            console.log(spellSprite);
+            spellSprite.play("spellAnimation")
+        } else {
+            console.log("No spell found!");
+        }
+    }
 
 
     constructor(){
@@ -44,6 +59,7 @@ export class OverlayScene extends Scene {
 
         loadTacticianContent(this);
         loadGunslingerContent(this);
+        loadArcanistContent(this);
 
         // for visual debugging
 
@@ -71,25 +87,44 @@ export class OverlayScene extends Scene {
 
         this.sound.pauseOnBlur = false;
 
-        // colyseus triggers
-
-        room.onMessage(EMessageTypes.playRollSwap, (msg: IPlayRollSwapMsg) => {
-            playSwapAnimation(this, msg.actor, msg.action, msg.oldValue, msg.newValue);
-        })
-
-        room.onMessage(EMessageTypes.playGunshotAnimation, (msg: IPlayGunshotAnimationMsg) => {
-            // console.log(msg);
-            this.dddice.on(ThreeDDiceRollEvent.RollFinished,() => {
-                playGunshotsAnimation(this, msg.shots);
-                this.dddice.off(ThreeDDiceRollEvent.RollFinished);
-            })
-            
-        })
-
         // demarcate background
         const backgroundShade = this.add.graphics();
         backgroundShade.fillStyle(0x000000, 1);
         backgroundShade.fillRect(0,0,this.width, this.height);
+
+
+        createArcanistContent(this);
+
+        room.onMessage(EMessageTypes.playAnimation, (msg: IPlayAnimationMsg) => {
+            console.log("Received play animation message!")
+            console.log("Playing " + msg.key);
+            const spellSprite = this.setAnimations.get(msg.key);
+            if (spellSprite){
+                console.log("Found animation!");
+                console.log(spellSprite);
+                spellSprite.play("spellAnimation")
+            } else {
+                console.log("No animation found!");
+            }
+
+        
+        })
+
+        // colyseus triggers
+
+        // room.onMessage(EMessageTypes.playRollSwap, (msg: IPlayRollSwapMsg) => {
+        //     playSwapAnimation(this, msg.actor, msg.action, msg.oldValue, msg.newValue);
+        // })
+
+        // room.onMessage(EMessageTypes.playGunshotAnimation, (msg: IPlayGunshotAnimationMsg) => {
+        //     // console.log(msg);
+        //     this.dddice.on(ThreeDDiceRollEvent.RollFinished,() => {
+        //         playGunshotsAnimation(this, msg.shots);
+        //         this.dddice.off(ThreeDDiceRollEvent.RollFinished);
+        //     })
+            
+        // })
+
 
 
 
@@ -101,7 +136,10 @@ export class OverlayScene extends Scene {
         }
 
 
-
+        this.SPACE.addListener("down", () => {
+            console.log("Casting spell");
+            this.playSpellAnimation("hex");
+        })
         
 
         
@@ -115,6 +153,8 @@ export class OverlayScene extends Scene {
 
 
 }
+
+
 
 class ComboCounter extends Phaser.GameObjects.Container {
     

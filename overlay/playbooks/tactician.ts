@@ -1,5 +1,7 @@
 import { Scene } from "phaser";
 import { OverlayScene } from "../scenes/overlay";
+import { EMessageTypes, IPlayRollSwapMsg } from "../../common/messageFormat";
+import { room } from "../src/colyseus";
 
 
 export function loadTacticianContent(scene: OverlayScene){
@@ -30,6 +32,11 @@ export function loadTacticianContent(scene: OverlayScene){
             .fillCircle(150,150,150)
             .generateTexture("tacticianCircle", 300, 300)
             .destroy();
+
+        room.onMessage(EMessageTypes.playRollSwap, (msg: IPlayRollSwapMsg) => {
+            playSwapAnimation(this, msg.actor, msg.action, msg.oldValue, msg.newValue);
+        })
+
 
 }
 

@@ -55,7 +55,7 @@ export class CharSheetArcanist {
     this.favoredSpellSpellId = selection.spellId;
     const msg: ISetFavoredSpell = {
       kind: EMessageTypes.setFavoredSpell,
-      favoredSpell: selection.name,
+      favoredSpell: selection.displayName,
       slayerId: this.slayer.id
     };
     this.cjs.sendMessage(msg);

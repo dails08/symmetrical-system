@@ -1,6 +1,6 @@
 import { SlayerRoom } from "../rooms/SlayerRoom";
 import { Arcanist, Blade, KnownSpell, SlayerRoomState } from "../SlayerRoomState";
-import { EMessageTypes, IAddSpellMsg, IAlterCorruption, ICastSpellMsg, IRemoveSpellMsg, ISetEnhancedMsg, ISetFavoredSpell, IStanceChangeMsg, IUpdateNumericalMsg, IWeaponChangeMsg,  } from "../../../common/messageFormat";
+import { EMessageTypes, IAddSpellMsg, IAlterCorruption, ICastSpellMsg, IPlayAnimationMsg, IRemoveSpellMsg, ISetEnhancedMsg, ISetFavoredSpell, IStanceChangeMsg, IUpdateNumericalMsg, IWeaponChangeMsg,  } from "../../../common/messageFormat";
 import { EPlaybooks } from "../../../common/common";
 import { IDiceRoll, IRoll } from "dddice-js";
 
@@ -37,7 +37,8 @@ export function addArcanistCallbacks(room: SlayerRoom){
              if (room.isGM(client) || room.controlsCharacter(client, slayer)){
                const classedSlayer = slayer as Arcanist;
                const newSpell: KnownSpell = new KnownSpell({
-                 name: msg.name,
+                 displayName: msg.displayName,
+                 shortName: msg.shortName,
                  range: msg.range,
                  spellId: msg.spellId,
                  effect: msg.effect,
@@ -108,7 +109,7 @@ export function addArcanistCallbacks(room: SlayerRoom){
              if (room.isGM(client) || room.controlsCharacter(client, slayer)){
               const classedSlayer = slayer as Arcanist;
               const spellTheme = "neon-ice-ljfnpn6v";
-              console.log("Casting " + msg.spell.name + ":" + (msg.boost? "boost" : "unboost") + ":" + (msg.spell.enhanced ? "enhanced" : "not enhanced"));
+              console.log("Casting " + msg.spell.shortName + ":" + (msg.boost? "boost" : "unboost") + ":" + (msg.spell.enhanced ? "enhanced" : "not enhanced"));
               
               const toRolls: IDiceRoll[] = [];
               
@@ -143,6 +144,14 @@ export function addArcanistCallbacks(room: SlayerRoom){
                 if (rollResults.values.some((val, ix, arr) => { return val.value >= 4})) {
                   // successful cast
                   console.log("Success!");
+                  setTimeout(() => {
+                    const playAnimationMsg: IPlayAnimationMsg = {
+                      kind: EMessageTypes.playAnimation,
+                      key: msg.spell.shortName
+                    };
+                    room.sendOverlayMessage(playAnimationMsg);
+                  }, 3000 )
+                  
                 } else {
                   // failed cast
                   console.log("Failure!");

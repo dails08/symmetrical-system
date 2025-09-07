@@ -49,10 +49,11 @@ export class GmControlsArcanist {
     this.cjs.sendMessage(msg);
   }
 
-  addSpell(name: string, range: string, id: string, effect: string, boostedEffect: string, enhancedEffect: string){
+  addSpell(name: string, shortName: string, range: string, id: string, effect: string, boostedEffect: string, enhancedEffect: string){
     const msg: IAddSpellMsg = {
       kind: EMessageTypes.addSpell,
-      name: name,
+      displayName: name,
+      shortName: shortName,
       range: range,
       spellId: id,
       effect: effect,

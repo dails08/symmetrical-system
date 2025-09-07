@@ -31,14 +31,14 @@
 
 
  <div id="spellbookSection">
-  @for (spell of slayer.knownSpells; track spell.name){
+  @for (spell of slayer.knownSpells; track spell.shortName){
     <mat-expansion-panel class="spellPanel" [ngClass]="{'enhancedSpell': spell.enhanced}" hideToggle>
       <mat-expansion-panel-header collapsedHeight="120px" expandedHeight="110px" class="spellHeaderName" [ngClass]="{'enhancedSpell': spell.enhanced}">
         <mat-panel-title>
           <img cdkDrag [cdkDragData]="spell" class="spellIcon" [src]="this.cs.storageURLBase + this.spellIconURLBase + spell.spellId + '.png'">
         </mat-panel-title>
         <mat-panel-description>
-          <p>{{spell.name}}</p>
+          <p>{{spell.displayName}}</p>
         </mat-panel-description>
       </mat-expansion-panel-header>
       <p><strong>Base: </strong>{{spell.effect}}</p>

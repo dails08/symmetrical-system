@@ -1,5 +1,8 @@
 import { Scene } from "phaser";
 import { OverlayScene } from "../scenes/overlay";
+import { room } from "../src/colyseus";
+import { ThreeDDiceRollEvent } from "dddice-js";
+import { EMessageTypes, IPlayGunshotAnimationMsg } from "../../common/messageFormat";
 
 
 export function loadGunslingerContent(scene: OverlayScene){
@@ -17,6 +20,16 @@ export function loadGunslingerContent(scene: OverlayScene){
     scene.load.image("tarRune", "assets/images/tar.svg");
 
     scene.load.audio("gunshot1", "assets/audio/pistolShot1.mp3");
+
+    room.onMessage(EMessageTypes.playGunshotAnimation, (msg: IPlayGunshotAnimationMsg) => {
+    // console.log(msg);
+        this.dddice.on(ThreeDDiceRollEvent.RollFinished,() => {
+            playGunshotsAnimation(this, msg.shots);
+            this.dddice.off(ThreeDDiceRollEvent.RollFinished);
+        })
+    
+    })
+
     
     
 

@@ -245,6 +245,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
   async onJoin (client: Client, options: IJoinOptions) {
     console.log(client.sessionId, "joined: " + JSON.stringify(options));
     if (options.id == "overlay"){
+      console.log("Adding to overlay client list");
       this.overlayClients.push(client);
     }
 
@@ -293,7 +294,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
         console.log(v.displayName);
       } )
     } else {
-      console.log("Not assigning to overlay or GM.");
+      console.log("Client is overlay or GM; not assigning Slayer.");
     }
 
     if (this.campaign.gms)
@@ -322,6 +323,10 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     } else {
       console.log(client.sessionId + " not in playermap: ");
       console.log(JSON.stringify(this.state.playerMap));
+    }
+    const overlayIx = this.overlayClients.indexOf(client);
+    if (overlayIx){
+      this.overlayClients.splice(overlayIx, 1);
     }
   }
 

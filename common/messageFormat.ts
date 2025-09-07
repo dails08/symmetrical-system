@@ -140,7 +140,8 @@ export interface IPlayRollSwapMsg extends IBaseMsg {
 export interface IAddSpellMsg extends IBaseMsg {
     kind: EMessageTypes.addSpell,
     slayerId: string,
-    name: string,
+    displayName: string,
+    shortName: string,
     range: string,
     spellId: string,
     effect: string,

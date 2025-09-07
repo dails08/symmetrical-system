@@ -66,7 +66,7 @@ export interface IGunslinger extends ISlayer {
 export interface IArcanist extends ISlayer {
     corruption: number,
     favoredSpell: string,
-    knownSpells: {name: string, effect: string, range: string, spellId: string, boostedEffect: string, enhancedEffect: string, enhanced: boolean}[]
+    knownSpells: {displayName: string, shortName: string, effect: string, range: string, spellId: string, boostedEffect: string, enhancedEffect: string, enhanced: boolean}[]
 }
 
 export interface ITactician extends ISlayer {
@@ -103,6 +103,7 @@ export interface IJoinOptions {
 export const spellData = [
     {
         displayName: "Corrupting Touch",
+        shortName: "corrupting-touch",
         iconID: 34,
         description: "The corruption inside you leaps from your hands to those you touch.",
         base: "Target is infected by your corruption. Every time you cast a spell after this, the infected target takes 1 damage. Effect lasts until the target or you are Downed.",
@@ -112,6 +113,7 @@ export const spellData = [
     },
     {
         displayName: "Corrupting Wave",
+        shortName: "corrupting-wave",
         iconID: 36,
         description: "The corruption inside you erupts out, lashing out at all around you.",
         base: "Everyone within Engaged and Near range, including allies, takes damage equal to your current Corruption score.",
@@ -121,6 +123,7 @@ export const spellData = [
     },
     {
         displayName: "Energy Bolt",
+        shortName: "energy-bolt",
         iconID: 51,
         description: "Cast a bolt of raw energy, crackling with power.",
         base: "First a bolt of energy at a target, dealing 2 damage per Hit.",
@@ -130,6 +133,7 @@ export const spellData = [
     },
     {
         displayName: "Fear Cloud",
+        shortName: "fear-cloud",
         iconID: 14,
         description: "Plant the worst fears into the minds of your foes and watch them panic.",
         base: "Target and anyone at Engaged with them always make a Move action away from you until the start of your next turn.",
@@ -139,6 +143,7 @@ export const spellData = [
     },
     {
         displayName: "Hex",
+        shortName: "hex",
         iconID: 28,
         description: "You always have just the right trick to weaken your foes and make them vulnerable.",
         base: "Choose 1 effect. Effect lasts until the end of the target's next turn. Haze: Target must roll 5+ to hit. Lock Up: Target cannot Move. Betray: Target attacks nearest fellow enemy.",
@@ -148,6 +153,7 @@ export const spellData = [
     },
     {
         displayName: "Mend",
+        shortName: "mend",
         iconID: 13,
         description: "Though corrupting, your power can mend those you care about...for a cost.",
         base: "Target heals for 1d6 HP per Hit. This can also revive a downed character.",
@@ -157,6 +163,7 @@ export const spellData = [
     },
     {
         displayName: "Siphon",
+        shortName: "siphon",
         iconID: 55,
         description: "Drain the life force directly from your foes and make it your own.",
         base: "Target loses 2 HP and you heal 2 HP.",
@@ -166,6 +173,7 @@ export const spellData = [
     },
     {
         displayName: "Temporal Shift",
+        shortName: "temporal-shift",
         iconID: 70,
         description: "Breaking time is dangerous, but you know how to give it a little nudge.",
         base: "Chose 1 effect: Slow: Target takes 1 fewer action during their next turn. Haste: Target takes 1 more action during their next turn.",

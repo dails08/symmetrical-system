@@ -97,7 +97,8 @@ export const Ryze: IArcanist = {
     favoredSpell: "",
     knownSpells: [
         {
-            name: "Create Potato",
+            displayName: "Create Potato",
+            shortName: "create-potato",
             effect: "Creates a potato",
             range: "Anywhere",
             spellId: "13",
