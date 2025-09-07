@@ -7,7 +7,7 @@ import { room } from "../src/colyseus";
 export function loadTacticianContent(scene: OverlayScene){
     scene.load.bitmapFont("traffic-white","assets/fonts/bmfs/BostonTraffic/BostonTraffic.png", "assets/fonts/bmfs/BostonTraffic/BostonTraffic.xml");
     scene.load.image("solidArrow", "assets/images/up-arrow.png");
-        scene.load.image("exchangeArrows", "assets/images/exchange.png");
+    scene.load.image("exchangeArrows", "assets/images/exchange.png");
 
         // tactician content
         const swapTriangleHeight = 500;
@@ -39,6 +39,7 @@ export function loadTacticianContent(scene: OverlayScene){
 
 
 }
+
 
 export function playSwapAnimation(scene: OverlayScene, actor: string, action: string, oldValue: number, newValue: number){
         

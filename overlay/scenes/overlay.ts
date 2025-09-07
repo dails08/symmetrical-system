@@ -50,9 +50,53 @@ export class OverlayScene extends Scene {
         this.dddice = diceClient;
         console.log(this.dddice.apiKey);
         console.log("overlay init fn");
+
     }
 
     preload(){
+        this.width = this.sys.game.config.width as number;
+        this.height = this.sys.game.config.height as number;
+        this.center_width = this.width / 2;
+        this.center_height = this.height / 2;
+
+        // demarcate background
+        const backgroundShade = this.add.graphics();
+        backgroundShade.fillStyle(0x000000, 1);
+        backgroundShade.fillRect(0,0,this.width, this.height);
+
+
+        const progressBar = this.add.graphics();
+        const progressBox = this.add.graphics();
+
+        progressBox.fillStyle(0x222222, 0.8);
+        progressBox.fillRect(this.width / 3, this.height * .6, this.width / 3, 50);
+
+        const filenameText = this.add.text(300, 300, "Loading", { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' });
+        filenameText.setFontSize(30);
+        filenameText.setColor("0xFFFFFF");
+        const percentText = this.add.text(300, 600, "Loading", { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' });
+        percentText.setFontSize(30);
+        percentText.setColor("0xFFFFFF");
+
+        this.load.on("progress", (val: number) => {
+            console.log(100 * val + "%");
+            progressBar.clear();
+            progressBar.fillStyle(0xffffff, 1);
+            progressBar.fillRect(this.width / 3 + 10, this.height * .6 + 10, (this.width / 3 - 20) * val, 30);
+            percentText.setText(100 * val + "%");
+        });
+        this.load.on("fileprogress", (file) => {
+            filenameText.setText(file.key);
+            // console.log(filename);
+
+        });
+        this.load.on("complete", () => {
+            console.log("Loading complete!");
+            progressBar.destroy();
+            progressBox.destroy();
+            filenameText.destroy();
+        });
+
         this.load.bitmapFont("angel-red","assets/fonts/bmfs/Angel-red/Angel-red.png", "assets/fonts/bmfs/Angel-red/Angel-red.xml");
        
 
@@ -80,17 +124,17 @@ export class OverlayScene extends Scene {
     }
 
     create(){
-        this.width = this.sys.game.config.width as number;
-        this.height = this.sys.game.config.height as number;
-        this.center_width = this.width / 2;
-        this.center_height = this.height / 2;
+        // this.width = this.sys.game.config.width as number;
+        // this.height = this.sys.game.config.height as number;
+        // this.center_width = this.width / 2;
+        // this.center_height = this.height / 2;
 
         this.sound.pauseOnBlur = false;
 
-        // demarcate background
-        const backgroundShade = this.add.graphics();
-        backgroundShade.fillStyle(0x000000, 1);
-        backgroundShade.fillRect(0,0,this.width, this.height);
+        // // demarcate background
+        // const backgroundShade = this.add.graphics();
+        // backgroundShade.fillStyle(0x000000, 1);
+        // backgroundShade.fillRect(0,0,this.width, this.height);
 
         this.setAnimations = new Map<string, Phaser.GameObjects.Sprite>();
 
@@ -109,6 +153,14 @@ export class OverlayScene extends Scene {
             } else {
                 console.log("No animation found!");
             }
+
+            if (this.sound.get(msg.key + "sfx")){
+                console.log("Matching audio!");
+                const matchingAudio = this.sound.play(msg.key + "sfx");
+            } else {
+                console.log("No matching audio!");
+            }
+            
 
         
         })
