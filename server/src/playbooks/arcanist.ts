@@ -1,6 +1,6 @@
 import { SlayerRoom } from "../rooms/SlayerRoom";
 import { Arcanist, Blade, KnownSpell, SlayerRoomState } from "../SlayerRoomState";
-import { EMessageTypes, IAddSpellMsg, ICastSpellMsg, IRemoveSpellMsg, ISetEnhancedMsg, ISetFavoredSpell, IStanceChangeMsg, IWeaponChangeMsg,  } from "../../../common/messageFormat";
+import { EMessageTypes, IAddSpellMsg, IAlterCorruption, ICastSpellMsg, IRemoveSpellMsg, ISetEnhancedMsg, ISetFavoredSpell, IStanceChangeMsg, IUpdateNumericalMsg, IWeaponChangeMsg,  } from "../../../common/messageFormat";
 import { EPlaybooks } from "../../../common/common";
 import { IDiceRoll, IRoll } from "dddice-js";
 
@@ -168,5 +168,24 @@ export function addArcanistCallbacks(room: SlayerRoom){
          }
        })
 
+        room.onMessage(EMessageTypes.alterCorruption, (client, msg: IAlterCorruption) => {
+            
+          console.log("Setting corruption:")
+          console.log(msg);
+          const slayer = room.getCharacterFromSession(client);
+          if ( slayer){
+            if (slayer.class == EPlaybooks.Arcanist){
+              const thisArcanist = slayer as Arcanist;
+              if (room.controlsCharacter(client, slayer)){
+                thisArcanist.corruption = Math.min(Math.max(0, thisArcanist.corruption + msg.delta), 8);
+              }
+
+              } else {
+                console.log("Not authorized to!");
+              }
+            } else {
+              console.log("Not an arcanist!");
+            } 
+          })
         
 }

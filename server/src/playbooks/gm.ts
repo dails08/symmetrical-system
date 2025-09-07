@@ -59,7 +59,9 @@ export function addGMCallbacks(room: SlayerRoom){
             elem[field] = msg.newValue as 4 | 6 | 8 | 10 | 12;
           }
           if (msg.field == "corruption") {
+            console.log("Setting corruption")
             if (elem.class == EPlaybooks.Arcanist){
+              console.log("It's an arcanist");
               const arcanistElem = elem as Arcanist;
               arcanistElem.corruption = msg.newValue;
             }

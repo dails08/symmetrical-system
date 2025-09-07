@@ -1,5 +1,8 @@
 <div id="corruptionAndFavoredSpellSection">
-  <div id="corruptionSection">
+  <div id="corruptionSection" [tp]="banePopover">
+    <ng-template #banePopover>
+      <app-bane-menu [slayer]="this.slayer"></app-bane-menu>
+    </ng-template>
     <div class="corruption">
       <p class="sectionLabel">corruption</p>
 

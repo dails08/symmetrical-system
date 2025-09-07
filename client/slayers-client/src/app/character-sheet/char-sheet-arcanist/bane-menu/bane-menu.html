@@ -1,0 +1,18 @@
+<div id="topRow">
+  <div id="purgeButton" class="baneMenuButton" (click)="sendAlterCorruption(-1)">Purge</div>
+  <div id="burnButton" class="baneMenuButton" (click)="sendAlterCorruption(1)">Burn</div>
+</div>
+<div id="baneTable">
+  <ol>
+    <li>-1 on next Skill roll</li>
+    <li>Cast next Spell with Disadvantage</li>
+    <li>Can't use Move action next turn</li>
+    <li>Can't use Quick action next turn</li>
+    <li>Can only take 1 action next turn</li>
+    <li>Take damage equal to corruption</li>
+  </ol>
+</div>
+<div id="baneRollMenu">
+  <div id="rollPurge" class="baneMenuButton" (click)="rollPurge()">Roll Purge</div>
+  <div id="rollBane" class="baneMenuButton" (click)="rollBane()">Roll Bane</div>
+</div>

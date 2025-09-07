@@ -1,0 +1,37 @@
+.baneMenuButton {
+  height: 50px;
+  margin: 5px;
+  padding:5px;
+  border: 1px solid white;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  font-size:2rem;
+  font-weight: bold;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+#topRow {
+  display: flex;
+
+  #purgeButton {
+    background-color: purple;
+    height: 50px;
+  }
+  #burnButton {
+    background-color: cyan;
+    height: 50px;
+    color: black
+  }
+}
+#baneRollMenu {
+  display:flex;
+  #rollPurge {
+    background-color: plum;
+  }
+  #rollBane {
+    background-color: darkred
+  }
+}

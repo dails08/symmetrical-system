@@ -37,6 +37,7 @@ export enum EMessageTypes {
     setEnhanced,
     setFavoredSpell,
     castSpell,
+    alterCorruption,
 
     // overlay message types
     playAnimation,
@@ -48,6 +49,7 @@ export interface IBaseMsg {
     kind: EMessageTypes
 }
 
+// GM related
 export interface IArrayChangeMsg extends IBaseMsg {
     kind: EMessageTypes.ArrayChange,
     characterId: string,
@@ -116,44 +118,24 @@ export interface IRollMsg extends IBaseMsg {
     }[]
 }
 
-export interface IStanceChangeMsg extends IBaseMsg {
-    kind: EMessageTypes.StanceChange,
-    stance: EStances,
-    characterId: string
+
+
+// Overlay message format
+
+export interface IPlayAnimationMsg extends IBaseMsg {
+    kind: EMessageTypes.playAnimation,
+    key: string
 }
 
-export interface IRuneChangeMsg extends IBaseMsg {
-    kind: EMessageTypes.RuneChange,
-    rune: ERunes,
-    slayerId: string,
-    chamber: number
+export interface IPlayRollSwapMsg extends IBaseMsg {
+    kind: EMessageTypes.playRollSwap,
+    actor: string,
+    action: string,
+    oldValue: number,
+    newValue: number
 }
 
-export interface ILoadedChangeMsg extends IBaseMsg {
-    kind: EMessageTypes.LoadedChange,
-    loaded: boolean,
-    slayerId: string,
-    chamber: number
-}
-
-export interface IWeaponChangeMsg extends IBaseMsg {
-    kind: EMessageTypes.setWeapon,
-    dmgN: number,
-    dmgS: number,
-    slayerId: string
-}
-
-export interface IAddPlanMsg extends IBaseMsg {
-    kind: EMessageTypes.addPlan,
-    slayerId: string,
-    planVal: number
-}
-
-export interface IRemovePlanMsg extends IBaseMsg {
-    kind: EMessageTypes.removePlan,
-    slayerId: string,
-    planIx: number
-}
+// Arcanist related
 
 export interface IAddSpellMsg extends IBaseMsg {
     kind: EMessageTypes.addSpell,
@@ -200,24 +182,14 @@ export interface ISetRecentRolls extends IBaseMsg {
         action: string,
         value: number
     }[]
-        
-    
 }
 
-// Overlay message format
-
-export interface IPlayAnimationMsg extends IBaseMsg {
-    kind: EMessageTypes.playAnimation,
-    key: string
+export interface IAlterCorruption extends IBaseMsg {
+    kind: EMessageTypes.alterCorruption,
+    delta: number
 }
 
-export interface IPlayRollSwapMsg extends IBaseMsg {
-    kind: EMessageTypes.playRollSwap,
-    actor: string,
-    action: string,
-    oldValue: number,
-    newValue: number
-}
+
 
 // Tactician related
 
@@ -243,6 +215,18 @@ export interface IStabMsg extends IBaseMsg {
     kind: EMessageTypes.shootStab
 }
 
+export interface IAddPlanMsg extends IBaseMsg {
+    kind: EMessageTypes.addPlan,
+    slayerId: string,
+    planVal: number
+}
+
+export interface IRemovePlanMsg extends IBaseMsg {
+    kind: EMessageTypes.removePlan,
+    slayerId: string,
+    planIx: number
+}
+
 // Gunslinger related
 
 
@@ -257,4 +241,34 @@ export interface IPlayGunshotAnimationMsg extends IBaseMsg {
         rune: string, //jank
         hit: boolean
     }[]
+}
+
+export interface IRuneChangeMsg extends IBaseMsg {
+    kind: EMessageTypes.RuneChange,
+    rune: ERunes,
+    slayerId: string,
+    chamber: number
+}
+
+export interface ILoadedChangeMsg extends IBaseMsg {
+    kind: EMessageTypes.LoadedChange,
+    loaded: boolean,
+    slayerId: string,
+    chamber: number
+}
+
+// Blade related
+
+
+export interface IStanceChangeMsg extends IBaseMsg {
+    kind: EMessageTypes.StanceChange,
+    stance: EStances,
+    characterId: string
+}
+
+export interface IWeaponChangeMsg extends IBaseMsg {
+    kind: EMessageTypes.setWeapon,
+    dmgN: number,
+    dmgS: number,
+    slayerId: string
 }

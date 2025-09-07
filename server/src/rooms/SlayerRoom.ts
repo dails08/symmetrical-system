@@ -228,7 +228,8 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     for (const die of msg.dice){
       toDiceRolls.push({
         type: "d" + die.type.toString(),
-        label: msg.label
+        label: msg.label,
+        theme: die.theme ? die.theme : "wendigo-lw9r7tr1"
       })
     }
     this.roll(toDiceRolls, assignedSlayer.name, msg.DNA).then(result => {

@@ -2,7 +2,7 @@
 
 :host {
   @include mat.expansion-overrides((
-    container-background-color: #CF9FFF,
+    container-background-color: darkgrey,
   ));
 }
 
@@ -95,7 +95,7 @@
   max-height: calc(100vh - 380px);
 
   .enhancedSpell {
-    background-color: #F2F2F3;
+    background-color: #CF9FFF;
   }
 }
 .spellPanel {

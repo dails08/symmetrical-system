@@ -8,12 +8,14 @@ import { getStateCallbacks } from 'colyseus.js';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { TitleCasePipe, NgClass } from '@angular/common';
-import { EMessageTypes, ICastSpellMsg, ISetFavoredSpell } from '../../../../../../common/messageFormat';
+import { EMessageTypes, ICastSpellMsg, ISetFavoredSpell, IUpdateNumericalMsg } from '../../../../../../common/messageFormat';
 import { CdkDropList } from "@angular/cdk/drag-drop";
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule, MatButtonToggle } from '@angular/material/button-toggle';
+import { TippyDirective } from '@ngneat/helipopper';
+import { BaneMenu } from "./bane-menu/bane-menu";
 
 @Component({
   selector: 'app-char-sheet-arcanist',
@@ -24,8 +26,10 @@ import { MatButtonToggleModule, MatButtonToggle } from '@angular/material/button
     DragDropModule,
     MatSlideToggleModule,
     MatButtonModule,
-    MatButtonToggleModule
-  ],
+    MatButtonToggleModule,
+    TippyDirective,
+    BaneMenu
+],
   templateUrl: './char-sheet-arcanist.html',
   styleUrl: './char-sheet-arcanist.scss'
 })
@@ -84,6 +88,10 @@ export class CharSheetArcanist {
     this.cjs.sendMessage(msg);
 
   }
+
+
+
+
   ngAfterViewInit(): void {
     const room = this.cjs.room.then((room) => {
       const $ = getStateCallbacks(room);
