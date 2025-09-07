@@ -92,6 +92,9 @@ export class OverlayScene extends Scene {
         backgroundShade.fillStyle(0x000000, 1);
         backgroundShade.fillRect(0,0,this.width, this.height);
 
+        this.setAnimations = new Map<string, Phaser.GameObjects.Sprite>();
+
+
 
         createArcanistContent(this);
 
