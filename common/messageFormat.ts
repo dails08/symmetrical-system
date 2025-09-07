@@ -2,46 +2,48 @@ import { KnownSpell, Player, RecentRoll, Slayer } from "../server/src/SlayerRoom
 import { EStances, IPlayer, ISlayer, ERunes } from "./common"
 
 export enum EMessageTypes {
-    CharacterUpdate,
-    NumericalUpdate,
-    ArrayChange,
-    Assignment, 
-    Kill,
-    RosterAdd,
-    Roll,
-    OptionsChoice,
-    OptionsSelection,
-    Kick,
-    PlayerUpdate,
-    SaveCampaign,
-    JoinResponse,
-    StanceChange,
-    setWeapon,
+    CharacterUpdate = "characterUpdate",
+    NumericalUpdate = "numericalUpdate",
+    ArrayChange = "arrayChange",
+    Assignment = "assignment", 
+    Kill = "kill",
+    RosterAdd = "rosterAdd",
+    Roll = "roll",
+    OptionsChoice = "optionsChoice",
+    OptionsSelection = "optionsSelection",
+    Kick = "kick",
+    PlayerUpdate = "playerUpdate",
+    SaveCampaign = "saveCampaign",
+    JoinResponse = "joinResponse",
     // tactician
-    swapRoll,
-    addPlan,
-    removePlan,
-    setRecentRolls,
-    rollPlans,
-    rally,
-    shootStab,
+    swapRoll = "swapRoll",
+    addPlan = "addPlan",
+    removePlan = "removePlan",
+    setRecentRolls = "setRecentRolls",
+    rollPlans = "rollPlans",
+    rally = "rally",
+    shootStab = "shootstab",
     // gunslinger
-    RuneChange,
-    LoadedChange,
-    reloadChambers,
-    sprayLead,
-    playGunshotAnimation,
+    RuneChange = "runeChance",
+    LoadedChange = "loadedChange",
+    reloadChambers = "reloadChambers",
+    sprayLead = "sprayLear",
+    playGunshotAnimation = "playGunshotAnimation",
     // arcanist
-    addSpell,
-    removeSpell,
-    setEnhanced,
-    setFavoredSpell,
-    castSpell,
-    alterCorruption,
-
+    addSpell = "addSpell",
+    removeSpell = "removeSpell",
+    setEnhanced = "setEnhanced",
+    setFavoredSpell = "setFavoredSpell",
+    alterCorruption = "alterCorruption",
+    castSpell = "castSpell",
+    // blade
+    StanceChange = "stanceChange",
+    setWeapon = "setWeapon",
+    bladeAttack = "bladeAttack",
+    updateCombo = "updateCombo",
     // overlay message types
-    playAnimation,
-    playRollSwap,
+    playAnimation = "playAnimation",
+    playRollSwap = "playRollSwap",
 
 }
 
@@ -168,6 +170,7 @@ export interface ISetFavoredSpell extends IBaseMsg {
     favoredSpell: string
 }
 
+
 export interface ICastSpellMsg extends IBaseMsg {
     kind: EMessageTypes.castSpell,
     spell: KnownSpell,
@@ -260,7 +263,6 @@ export interface ILoadedChangeMsg extends IBaseMsg {
 
 // Blade related
 
-
 export interface IStanceChangeMsg extends IBaseMsg {
     kind: EMessageTypes.StanceChange,
     stance: EStances,
@@ -272,4 +274,50 @@ export interface IWeaponChangeMsg extends IBaseMsg {
     dmgN: number,
     dmgS: number,
     slayerId: string
+}
+
+export interface IBladeAttackMsg extends IBaseMsg {
+    kind: EMessageTypes.bladeAttack,
+    DNA: string
+}
+
+export interface IUpdateComboMsg extends IBaseMsg {
+    kind: EMessageTypes.updateCombo,
+    target: "damage" | "combo",
+    action: "inc" | "finish"
+}
+
+// Arcanist related
+
+
+
+
+export interface IAddSpellMsg extends IBaseMsg {
+    kind: EMessageTypes.addSpell,
+    slayerId: string,
+    displayName: string,
+    shortName: string,
+    spellId: string,
+    effect: string,
+    boostedEffect: string,
+    enhancedEffect: string
+}
+
+export interface IRemoveSpellMsg extends IBaseMsg {
+    kind: EMessageTypes.removeSpell,
+    slayerId: string,
+    ix: number
+}
+
+export interface ISetEnhancedMsg extends IBaseMsg {
+    kind: EMessageTypes.setEnhanced,
+    slayerId: string,
+    ix: number,
+    enhanced: boolean
+}
+
+export interface ISetFavoredSpell extends IBaseMsg {
+    kind: EMessageTypes.setFavoredSpell,
+    slayerId: string,
+    favoredSpell: string
 }

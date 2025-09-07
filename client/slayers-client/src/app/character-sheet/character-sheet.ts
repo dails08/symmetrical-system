@@ -18,6 +18,7 @@ import { CharSheetTactician } from "./char-sheet-tactician/char-sheet-tactician"
 import { CharSheetGunslinger } from "./char-sheet-gunslinger/char-sheet-gunslinger";
 import { CharSheetArcanist } from "./char-sheet-arcanist/char-sheet-arcanist";
 
+import { CharSheetBlade } from "./char-sheet-blade/char-sheet-blade";
 @Component({
   selector: 'app-character-sheet',
   imports: [
@@ -31,7 +32,8 @@ import { CharSheetArcanist } from "./char-sheet-arcanist/char-sheet-arcanist";
     JoinScreen,
     CharSheetTactician,
     CharSheetGunslinger,
-    CharSheetArcanist
+    CharSheetArcanist,
+    CharSheetBlade
 ],
   templateUrl: './character-sheet.html',
   styleUrl: './character-sheet.scss'

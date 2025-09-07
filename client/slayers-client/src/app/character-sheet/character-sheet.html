@@ -122,13 +122,10 @@
 
         </div>
         <div class="bottomHalf">
-            <div class="bladeData" *ngIf="slayer.class == playbooks.Blade">
-                @let castSlayer = slayer | asBlade;
-                <div class="stance">
-                    <p>Stance: {{castSlayer.stance}}</p>
-                    <p>{{castSlayer.weaponNumber}}d{{castSlayer.weaponSides}}</p>
-                </div>
-            </div>
+            @if (slayer.class == playbooks.Blade){
+                <app-char-sheet-blade [slayer]="slayer | asBlade"></app-char-sheet-blade>
+            }
+
             @if (slayer.class == playbooks.Gunslinger){
                 <app-char-sheet-gunslinger [slayer]="slayer | asGunslinger"></app-char-sheet-gunslinger>
             }
