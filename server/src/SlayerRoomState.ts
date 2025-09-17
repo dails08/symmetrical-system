@@ -166,6 +166,12 @@ export class Blade extends Slayer {
     if (data){
       this.stance = data.stance;
     }
+    if (this.advances.some(elem => {return elem.name == "shrewd"})){
+      this.shrewdAvailable = true;
+    }
+    if (this.advances.some(elem => {return elem.name == "footing"})){
+      this.footingAvailable = true;
+    }
   }
 
   toIBlade(){
@@ -178,6 +184,11 @@ export class Blade extends Slayer {
   @type("number") weaponNumber: number = 1;
   @type("number") weaponSides: number = 6;
   @type("string") stance: EStances = EStances.Flow;
+  @type("boolean") footingAvailable: boolean = false;
+  @type("boolean") shrewdAvailable: boolean = false;
+  @type("number") comboCount: number = 0;
+  @type("number") comboDamage: number = 0;
+  @type("boolean") midCombo: boolean = false;
 }
 
 export class KnownSpell extends Schema {

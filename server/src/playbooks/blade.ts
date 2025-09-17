@@ -1,6 +1,6 @@
 import { SlayerRoom } from "../rooms/SlayerRoom";
 import { Blade, SlayerRoomState } from "../SlayerRoomState";
-import { EMessageTypes, IBladeAttackMsg, IStanceChangeMsg, IUpdateComboMsg, IWeaponChangeMsg,  } from "../../../common/messageFormat";
+import { EMessageTypes, IBladeAttackMsg, IStanceChangeMsg, IOverlayUpdateComboMsg, IWeaponChangeMsg,  } from "../../../common/messageFormat";
 import { EPlaybooks, EStances } from "../../../common/common";
 import { IDiceRoll } from "dddice-js";
 
@@ -58,39 +58,22 @@ export function addBladeCallbacks(room: SlayerRoom){
             const classedSlayer = slayer as Blade;
 
             // roll attack dice
-              // check for Footing
-              let footingIsAvailable = false;
-              if (classedSlayer.advances.map((val, ix, arr) => { return val.name.toLowerCase()}).includes("footing")){
-                footingIsAvailable = true;
-              }
-              let shrewdIsAvailable = false;
-              if (classedSlayer.advances.map((val, ix, arr) => { return val.name.toLowerCase()}).includes("shrewd")){
-                shrewdIsAvailable = true;
-              }
               let honedBlade = false;
-              if (classedSlayer.advances.map((val, ix, arr) => { return val.name.toLowerCase()}).includes("honed blade")){
+              if (classedSlayer.advances.some(elem => { return elem.name.toLowerCase() == "honed blade"})){
                 honedBlade = true;
               }
               let killer = false;
-              if (classedSlayer.advances.map((val, ix, arr) => { return val.name.toLowerCase()}).includes("killer")){
+              if (classedSlayer.advances.some((elem) => { return elem.name.toLowerCase() == "killer"})){
                 killer = true;
               }
-              let efficientKiller = false;
-              if (classedSlayer.advances.map((val, ix, arr) => { return val.name.toLowerCase()}).includes("efficient")){
-                efficientKiller = true;
+              let efficient = false;
+              if (classedSlayer.advances.some(elem => {return elem.name.toLowerCase() == "efficient"})){
+                efficient = true;
               }
-              let stanceIsSlay = classedSlayer.stance == EStances.Slay;
 
-            let combo = true;
-            const finalRollValues = [];
-            let totalDamage = 0;
-            while (combo) {
-              if (shrewdIsAvailable){
-                console.log("Shrewding");
-              }
-              const DNA = shrewdIsAvailable? "A": msg.DNA;
+              const DNA = classedSlayer.shrewdAvailable? "A": msg.DNA;
               console.log("DNA: " + DNA);
-              shrewdIsAvailable = false;
+              classedSlayer.shrewdAvailable = false;
 
               // let rollValueNumbers = [];
               const toDiceRolls: IDiceRoll[] = [];
@@ -105,69 +88,48 @@ export function addBladeCallbacks(room: SlayerRoom){
                 });
               };
   
-              const rollResultOne = await room.roll(toDiceRolls, classedSlayer.name, shrewdIsAvailable? "A": msg.DNA);
+              const rollResultOne = await room.roll(toDiceRolls, classedSlayer.name, DNA);
               console.log(rollResultOne.data.values.map((val, ix, arr) => { return val.value }));
-              if (footingIsAvailable){
+              if (classedSlayer.footingAvailable){
                 for (let i = 0; i < rollResultOne.data.values.length; i++){ 
-                  if (footingIsAvailable){ // yes I know I check twice
                     const originalRoll = rollResultOne.data.values[i];
                     if (originalRoll.value == 1){
                       const footingReRoll: IDiceRoll = {
                         type: originalRoll.type,
                         theme: originalRoll.theme
                       };
-                      footingIsAvailable = false;
+                      classedSlayer.footingAvailable = false;
                       const footingReRollResult = await room.roll([footingReRoll], classedSlayer.name, msg.DNA);
                       rollResultOne.data.values[i] = footingReRollResult.data.values[0];
                     }
-                  }
                 }
               }
-              // count hits
-              let hitCount = 0;
+              // Set recent rolls to account for rerolls etc
+              room.setRecentRolls(rollResultOne.data.values.map((val,ix, arr) => { return {actor: classedSlayer.name, action: "Combo!", value: val.value}}), "set");
+              // Bump combo counter
               for (const rollResult of rollResultOne.data.values){
-                finalRollValues.push(rollResult.value);
                 if (rollResult.value >= (honedBlade ? 3 : 4)){
-                  hitCount++;
+                  classedSlayer.comboCount += 1;
+                  const bumpComboMsg: IOverlayUpdateComboMsg = {
+                    kind: EMessageTypes.updateCombo,
+                  };
+                  room.sendOverlayMessage(bumpComboMsg);
                 }
               };
-              if (hitCount == 0){ // don't count on truthiness
-                combo = false;
-              }
-              // bump combo and damage
-              let dmgPerHit = classedSlayer.damage;
-              if (stanceIsSlay) {
-                dmgPerHit++;
+              // Normal damage
+              classedSlayer.comboDamage += classedSlayer.damage;
+              // Extra damage for slay
+              if (classedSlayer.stance == EStances.Slay){
+                classedSlayer.comboDamage += 1;
+                // Extra damage for slay + killer
                 if (killer){
-                  dmgPerHit++;
+                  classedSlayer.comboDamage += 1;
                 }
+              };
+              // Extra damage for advantage and Efficient
+              if (DNA == "A" && efficient){
+                classedSlayer.comboDamage += 1;
               }
-              if (efficientKiller && DNA == "A"){
-                dmgPerHit++;
-              }
-
-              console.log("Hitting " + hitCount + " times for " + hitCount * dmgPerHit + " damage!");
-              for (let i = 0; i < hitCount; i++){
-                const bumpComboMsg: IUpdateComboMsg = {
-                  kind: EMessageTypes.updateCombo,
-                  target: "combo",
-                  action: "inc"
-                };
-                totalDamage += dmgPerHit;
-                room.sendOverlayMessage(bumpComboMsg);
-                // for (let j = 0; j < dmgPerHit; j++){
-                //   const bumpDamageMsg: IUpdateComboMsg = {
-                //     kind: EMessageTypes.updateCombo,
-                //     target: "damage",
-                //     action: "inc"
-                //   };
-                //   room.sendOverlayMessage(bumpDamageMsg);  
-                // } // end of counting damage
-              } // end of counting hits
-            } // end of combo
-            console.log(finalRollValues);
-            console.log(totalDamage);
-
           } else {
             console.log("Not authorized to!");
           }

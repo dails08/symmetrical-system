@@ -41,9 +41,11 @@ export enum EMessageTypes {
     setWeapon = "setWeapon",
     bladeAttack = "bladeAttack",
     updateCombo = "updateCombo",
+    resetCombo = "resetCombo",
     // overlay message types
     playAnimation = "playAnimation",
     playRollSwap = "playRollSwap",
+    finishCombo = "finishCombo",
 
 }
 
@@ -281,11 +283,19 @@ export interface IBladeAttackMsg extends IBaseMsg {
     DNA: string
 }
 
-export interface IUpdateComboMsg extends IBaseMsg {
-    kind: EMessageTypes.updateCombo,
-    target: "damage" | "combo",
-    action: "inc" | "finish"
+export interface IResetBladeCombo extends IBaseMsg{
+    kind: EMessageTypes.resetCombo,
+    slayerId: string
 }
+
+export interface IOverlayFinishCombo extends IBaseMsg{
+    kind: EMessageTypes.finishCombo
+}
+
+export interface IOverlayUpdateComboMsg extends IBaseMsg {
+    kind: EMessageTypes.updateCombo,
+}
+
 
 // Arcanist related
 
