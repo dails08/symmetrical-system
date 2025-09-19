@@ -2,7 +2,7 @@ import { Scene } from "phaser";
 import { OverlayScene } from "../scenes/overlay";
 import { room } from "../src/colyseus";
 import { ThreeDDiceRollEvent } from "dddice-js";
-import { EMessageTypes, IOverlayUpdateComboMsg, IPlayGunshotAnimationMsg } from "../../common/messageFormat";
+import { EMessageTypes, IOverlayFinishCombo, IOverlayUpdateComboMsg, IPlayGunshotAnimationMsg } from "../../common/messageFormat";
 
 
 export function loadBladeContent(scene: OverlayScene){
@@ -30,6 +30,10 @@ export function createBladeContent(scene: OverlayScene){
         setTimeout(() => {
             cc.incrementCombo()
         }, 1000);
+    })
+
+    room.onMessage(EMessageTypes.finishCombo, (msg: IOverlayFinishCombo) => {
+        console.log("Finishing combo");
     })
     
 }

@@ -289,7 +289,8 @@ export interface IResetBladeCombo extends IBaseMsg{
 }
 
 export interface IOverlayFinishCombo extends IBaseMsg{
-    kind: EMessageTypes.finishCombo
+    kind: EMessageTypes.finishCombo,
+    damage: number
 }
 
 export interface IOverlayUpdateComboMsg extends IBaseMsg {

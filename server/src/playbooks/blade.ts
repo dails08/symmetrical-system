@@ -1,6 +1,6 @@
 import { SlayerRoom } from "../rooms/SlayerRoom";
 import { Blade, SlayerRoomState } from "../SlayerRoomState";
-import { EMessageTypes, IBladeAttackMsg, IStanceChangeMsg, IOverlayUpdateComboMsg, IWeaponChangeMsg,  } from "../../../common/messageFormat";
+import { EMessageTypes, IBladeAttackMsg, IStanceChangeMsg, IOverlayUpdateComboMsg, IWeaponChangeMsg, IResetBladeCombo, IOverlayFinishCombo,  } from "../../../common/messageFormat";
 import { EPlaybooks, EStances } from "../../../common/common";
 import { IDiceRoll } from "dddice-js";
 
@@ -99,6 +99,7 @@ export function addBladeCallbacks(room: SlayerRoom){
                         theme: originalRoll.theme
                       };
                       classedSlayer.footingAvailable = false;
+                      console.log("Rerolling 1 for footing");
                       const footingReRollResult = await room.roll([footingReRoll], classedSlayer.name, msg.DNA);
                       rollResultOne.data.values[i] = footingReRollResult.data.values[0];
                     }
@@ -140,6 +141,35 @@ export function addBladeCallbacks(room: SlayerRoom){
         console.log("Slayer not found in roster!");
       }
     })
+
+    room.onMessage(EMessageTypes.resetCombo, async (client, msg: IResetBladeCombo) => {
+      console.log(msg);
+      // const slayer = room.getCharacterFromSession(client);
+      const slayer = room.state.roster.find(elem => { return elem.id == msg.slayerId});
+      if ( slayer){
+        if (slayer.class == EPlaybooks.Blade){
+          if (room.isGM(client) || room.controlsCharacter(client, slayer)){
+            const classedSlayer = slayer as Blade;
+            if (classedSlayer.advances.some(elem => {return elem.name.toLowerCase() == "footing"})){
+              classedSlayer.footingAvailable = true;
+            }
+            if (classedSlayer.advances.some(elem => {return elem.name.toLowerCase() == "shrewd"})){
+              classedSlayer.shrewdAvailable = true;
+            }
+
+            const msg:IOverlayFinishCombo = {
+              kind: EMessageTypes.finishCombo,
+              damage: classedSlayer.comboDamage
+            };
+            room.sendOverlayMessage(msg);
+            classedSlayer.comboCount = 0;
+            classedSlayer.comboDamage = 0;
+
+          }
+        }
+
+      }
+    });
 
         
 }
