@@ -2,7 +2,7 @@ import { Scene } from "phaser";
 import { OverlayScene } from "../scenes/overlay";
 import { room } from "../src/colyseus";
 import { ThreeDDiceRollEvent } from "dddice-js";
-import { EMessageTypes, IOverlayFinishCombo, IOverlayUpdateComboMsg, IPlayGunshotAnimationMsg } from "../../common/messageFormat";
+import { EMessageTypes, IOverlayUpdateComboMsg, IPlayGunshotAnimationMsg } from "../../common/messageFormat";
 
 
 export function loadBladeContent(scene: OverlayScene){
@@ -22,19 +22,27 @@ export function loadBladeContent(scene: OverlayScene){
 
 export function createBladeContent(scene: OverlayScene){
 
-    const cc: ComboCounter = new ComboCounter(scene, 100,100);
+    const cc: ComboCounter = new ComboCounter(scene, -500,100);
     scene.add.existing(cc);
 
     room.onMessage(EMessageTypes.updateCombo, (msg: IOverlayUpdateComboMsg) => {
-        // console.log(msg);
-        setTimeout(() => {
-            cc.incrementCombo()
-        }, 1000);
+        console.log(msg);
+        if (msg.action == "bump:roll"){
+            console.log("Adding callback");
+            scene.dddice.on(ThreeDDiceRollEvent.RollFinished, () => {
+                console.log("Running callback");
+                cc.incrementCombo();
+                scene.dddice.off(ThreeDDiceRollEvent.RollFinished);
+                console.log("Removing callback");
+            })
+        } else if (msg.action == "finish"){
+            console.log("Finish combo with " + msg.damage + " damage");
+            cc.finishCombo();
+        } else if (msg.action == "bump:immediate"){
+            cc.incrementCombo();
+        }
     })
 
-    room.onMessage(EMessageTypes.finishCombo, (msg: IOverlayFinishCombo) => {
-        console.log("Finishing combo");
-    })
     
 }
 
@@ -47,6 +55,7 @@ class ComboCounter extends Phaser.GameObjects.Container {
     comboPrefix: Phaser.GameObjects.BitmapText;
     fontName: string;
     pulseTween: Phaser.Tweens.Tween | undefined;
+    displayTween: Phaser.Tweens.Tween | undefined;
     parentScene: Phaser.Scene;
 
     constructor(scene: OverlayScene, x: number, y: number){
@@ -64,11 +73,35 @@ class ComboCounter extends Phaser.GameObjects.Container {
         this.add(this.comboText)
     }
 
+    finishCombo(){
+        this.displayTween = this.scene.tweens.add({
+            targets: this,
+            x: -500,
+            ease: "linear",
+            duration: 200,
+            onComplete: () => {
+                this.comboNumber = 0;
+                this.comboText.setText(this.comboNumber.toString() + "!");        
+            }
+        })
+
+    }
+
     incrementCombo(){
         if (this.pulseTween){
             this.pulseTween.stop();
             this.scale = 1;
         }
+
+        if (this.comboNumber == 0){
+            this.displayTween = this.scene.tweens.add({
+                targets: this,
+                x: 100,
+                ease: "linear",
+                duration: 50
+            })
+        }
+
         this.comboNumber += 1;
         // console.log(this.comboNumber);
         // console.log(this.comboNumber.toString());

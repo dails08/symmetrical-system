@@ -23,9 +23,9 @@ export function loadGunslingerContent(scene: OverlayScene){
 
     room.onMessage(EMessageTypes.playGunshotAnimation, (msg: IPlayGunshotAnimationMsg) => {
     // console.log(msg);
-        this.dddice.on(ThreeDDiceRollEvent.RollFinished,() => {
-            playGunshotsAnimation(this, msg.shots);
-            this.dddice.off(ThreeDDiceRollEvent.RollFinished);
+        scene.dddice.on(ThreeDDiceRollEvent.RollFinished,() => {
+            playGunshotsAnimation(scene, msg.shots);
+            scene.dddice.off(ThreeDDiceRollEvent.RollFinished);
         })
     
     })

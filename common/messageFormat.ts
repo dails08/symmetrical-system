@@ -41,6 +41,7 @@ export enum EMessageTypes {
     setWeapon = "setWeapon",
     bladeAttack = "bladeAttack",
     updateCombo = "updateCombo",
+    bumpCombo = "bumpCombo",
     resetCombo = "resetCombo",
     // overlay message types
     playAnimation = "playAnimation",
@@ -288,13 +289,16 @@ export interface IResetBladeCombo extends IBaseMsg{
     slayerId: string
 }
 
-export interface IOverlayFinishCombo extends IBaseMsg{
-    kind: EMessageTypes.finishCombo,
-    damage: number
+export interface IBumpBladeComboMsg extends IBaseMsg {
+    kind: EMessageTypes.bumpCombo,
+    slayerId: string
 }
+
 
 export interface IOverlayUpdateComboMsg extends IBaseMsg {
     kind: EMessageTypes.updateCombo,
+    action: "bump:roll" | "bump:immediate" | "finish",
+    damage?: number
 }
 
 

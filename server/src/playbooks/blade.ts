@@ -1,6 +1,6 @@
 import { SlayerRoom } from "../rooms/SlayerRoom";
 import { Blade, SlayerRoomState } from "../SlayerRoomState";
-import { EMessageTypes, IBladeAttackMsg, IStanceChangeMsg, IOverlayUpdateComboMsg, IWeaponChangeMsg, IResetBladeCombo, IOverlayFinishCombo,  } from "../../../common/messageFormat";
+import { EMessageTypes, IBladeAttackMsg, IStanceChangeMsg, IOverlayUpdateComboMsg, IWeaponChangeMsg, IResetBladeCombo, IBumpBladeComboMsg,  } from "../../../common/messageFormat";
 import { EPlaybooks, EStances } from "../../../common/common";
 import { IDiceRoll } from "dddice-js";
 
@@ -113,6 +113,7 @@ export function addBladeCallbacks(room: SlayerRoom){
                   classedSlayer.comboCount += 1;
                   const bumpComboMsg: IOverlayUpdateComboMsg = {
                     kind: EMessageTypes.updateCombo,
+                    action: "bump:roll"
                   };
                   room.sendOverlayMessage(bumpComboMsg);
                 }
@@ -157,13 +158,46 @@ export function addBladeCallbacks(room: SlayerRoom){
               classedSlayer.shrewdAvailable = true;
             }
 
-            const msg:IOverlayFinishCombo = {
-              kind: EMessageTypes.finishCombo,
+            const msg:IOverlayUpdateComboMsg = {
+              kind: EMessageTypes.updateCombo,
+              action: "finish",
               damage: classedSlayer.comboDamage
             };
             room.sendOverlayMessage(msg);
             classedSlayer.comboCount = 0;
             classedSlayer.comboDamage = 0;
+
+          }
+        }
+
+      }
+    });
+
+    room.onMessage(EMessageTypes.bumpCombo, async (client, msg: IBumpBladeComboMsg) => {
+      console.log(msg);
+      // const slayer = room.getCharacterFromSession(client);
+      const slayer = room.state.roster.find(elem => { return elem.id == msg.slayerId});
+      if ( slayer){
+        if (slayer.class == EPlaybooks.Blade){
+          if (room.isGM(client) || room.controlsCharacter(client, slayer)){
+            const classedSlayer = slayer as Blade;
+            
+            classedSlayer.comboCount += 1;
+            // Normal damage
+            classedSlayer.comboDamage += classedSlayer.damage;
+            // Extra damage for slay
+            if (classedSlayer.stance == EStances.Slay){
+              classedSlayer.comboDamage += 1;
+              // Extra damage for slay + killer
+              if (classedSlayer.advances.some((elem) => { return elem.name.toLowerCase() == "killer"})){
+                classedSlayer.comboDamage += 1;
+              }
+            };
+            const msg:IOverlayUpdateComboMsg = {
+              kind: EMessageTypes.updateCombo,
+              action: "bump:immediate",
+            };
+            room.sendOverlayMessage(msg);
 
           }
         }

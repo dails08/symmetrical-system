@@ -5,7 +5,7 @@ import { EStances } from '../../../../../../../common/common';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TitleCasePipe } from '@angular/common';
-import { EMessageTypes, IResetBladeCombo, IStanceChangeMsg, IWeaponChangeMsg } from '../../../../../../../common/messageFormat';
+import { EMessageTypes, IBumpBladeComboMsg, IOverlayUpdateComboMsg, IResetBladeCombo, IStanceChangeMsg, IWeaponChangeMsg } from '../../../../../../../common/messageFormat';
 import { ColyseusService } from '../../../services/colyseusService';
 @Component({
   selector: 'app-gm-controls-blade',
@@ -34,6 +34,11 @@ export class GmControlsBlade {
   EStances = EStances
 
   bumpCombo(){
+    const msg: IBumpBladeComboMsg = {
+      kind: EMessageTypes.bumpCombo,
+      slayerId: this.slayer.id
+    };
+    this.cjs.sendMessage(msg);
 
   }
 
