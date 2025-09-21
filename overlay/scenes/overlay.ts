@@ -60,9 +60,9 @@ export class OverlayScene extends Scene {
         this.center_height = this.height / 2;
 
         // demarcate background
-        const backgroundShade = this.add.graphics();
-        backgroundShade.fillStyle(0x000000, 1);
-        backgroundShade.fillRect(0,0,this.width, this.height);
+        // const backgroundShade = this.add.graphics();
+        // backgroundShade.fillStyle(0x000000, 1);
+        // backgroundShade.fillRect(0,0,this.width, this.height);
 
 
         const progressBar = this.add.graphics();
@@ -95,6 +95,7 @@ export class OverlayScene extends Scene {
             progressBar.destroy();
             progressBox.destroy();
             filenameText.destroy();
+            percentText.destroy();
         });
 
         this.load.bitmapFont("angel-red","assets/fonts/bmfs/Angel-red/Angel-red.png", "assets/fonts/bmfs/Angel-red/Angel-red.xml");
@@ -161,6 +162,13 @@ export class OverlayScene extends Scene {
                 console.log("No matching audio!");
                 console.log(this.cache.audio.getKeys());
             }
+
+            setInterval(() => {
+                const msg: IBaseMsg = {
+                    kind: EMessageTypes.SaveCampaign
+                };
+                room.send(EMessageTypes.SaveCampaign, msg);
+            }, 1000 * 60)
             
 
         

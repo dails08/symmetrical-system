@@ -12,8 +12,6 @@ import { GmSlayerSummary } from "./gm-slayer-summary/gm-slayer-summary";
 import { CdkDrag, CdkDropList, CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { PARENT_OR_NEW_INLINE_MENU_STACK_PROVIDER } from '@angular/cdk/menu';
-import { P } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-gm-screen',
@@ -32,6 +30,7 @@ export class GmScreen {
   kia: Slayer[];
 
   players: Map<String, Player>;
+  connectedStatus: Map<Player, boolean>;
 
   assignments: Map<Player, Slayer>;
   @ViewChild("playerSlot") playerDropSlots!: CdkDropList;
@@ -45,6 +44,7 @@ export class GmScreen {
       this.kia = []
       this.assignments = new Map<Player, Slayer>();
       this.players = new Map<String, Player>();
+      this.connectedStatus = new Map<Player, boolean>();
       // this.assignments: {player: Player, slayer: Slayer}[] = []
       this.cjs.room.then((room) => {
 

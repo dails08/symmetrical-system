@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { IPlayer } from '../../../../common/common';
 // import { Chris } from '../../../../common/examples';
-import { Study } from './study/study';
 import { CharacterSheet } from './character-sheet/character-sheet';
 import { ColyseusService } from './services/colyseusService';
 import { CentralService } from './services/central-service';

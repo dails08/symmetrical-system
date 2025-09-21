@@ -2,7 +2,7 @@ import { Room, Client, logger, debugMessage } from "@colyseus/core";
 import { SlayerRoomState, Advance, Player, Slayer, Blade, Tactician, Gunslinger, Arcanist, InventoryItem, KnownSpell, RecentRoll } from "../SlayerRoomState";
 import { EPlaybooks, ICampaign, IJoinOptions, ISlayer, IBlade, IGunslinger, IArcanist, ITactician, ERunes } from "../../../common/common";
 import { Clint, Ryze, Cervantes, Gene} from "../../../common/examples";
-import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg, IWeaponChangeMsg, IAddPlanMsg, IRemovePlanMsg, IAddSpellMsg, IRemoveSpellMsg, ISetEnhancedMsg, ISetFavoredSpell, IPlayAnimationMsg, ISwapRollMsg, IPlayRollSwapMsg, ISetRecentRolls, ISprayLeadMsg, IPlayGunshotAnimationMsg, IRollMsg } from "../../../common/messageFormat";
+import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg, IWeaponChangeMsg, IAddPlanMsg, IRemovePlanMsg, IAddSpellMsg, IRemoveSpellMsg, ISetEnhancedMsg, ISetFavoredSpell, IPlayAnimationMsg, ISwapRollMsg, IPlayRollSwapMsg, ISetRecentRolls, ISprayLeadMsg, IPlayGunshotAnimationMsg, IRollMsg, IPingMsg } from "../../../common/messageFormat";
 import { db } from "../firestoreConnection";
 import { v4 as uuidv4 } from "uuid";
 import { customRoll } from "../dddiceConnection";
@@ -19,6 +19,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
   state = new SlayerRoomState();
   sessionIDtoPlayerIdMap = new Map<string, string>()
   overlayClients: Client[] = [];
+  historicalAssignmentsPlayerIdToSlayerId = new Map<string, string>();
   // campaign: ICampaign | undefined;
   campaign: ICampaign | undefined = {
     id: "",
@@ -83,8 +84,10 @@ export class SlayerRoom extends Room<SlayerRoomState> {
       }
       tempCampaign.roomId = this.roomId;
       db.collection("campaigns").doc(campaignID).set(tempCampaign);
+      return true
     } else {
       console.log("No campaign found with id " + campaignID);
+      return false
     }
     
       
@@ -237,6 +240,14 @@ export class SlayerRoom extends Room<SlayerRoomState> {
 }
 
   onCreate (options: any) {
+    this.onMessage(EMessageTypes.ping, (client, msg: IPingMsg) => {
+      console.log("Got ping");
+      const player = this.sessionIdToPlayer(client.sessionId);
+      if (player){
+        console.log("\tPing from " + player.displayName);
+      }
+      client.send(EMessageTypes.pong, {kind: EMessageTypes.pong});
+    })
 
     addTacticianCallbacks(this);
     addGunslingerCallbacks(this);
@@ -261,12 +272,15 @@ export class SlayerRoom extends Room<SlayerRoomState> {
   })
 
 
+
   }
 
   
 
   async onJoin (client: Client, options: IJoinOptions) {
     console.log(client.sessionId, "joined: " + JSON.stringify(options));
+
+    
     if (options.id == "overlay"){
       console.log("Adding to overlay client list");
       this.overlayClients.push(client);
@@ -275,7 +289,12 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     if (this.state.playerMap.size == 0){
       if (this.campaign.id == "" && options.campaignId != ""){
         console.log("On join, loading campaign " + options.campaignId);
-        await this.loadCampaign(options.campaignId);
+        if (!(await this.loadCampaign(options.campaignId))){
+          console.log("Creating campaign");
+          this.campaign.gms.push(options.id)
+          db.collection("campaigns").doc(options.campaignId).set(this.campaign);
+
+        }
         this.state.recentRolls.push(
           new RecentRoll("Clint", "Hollowpoint", 6),
           new RecentRoll("Clint", "Bullet", 4),
@@ -289,6 +308,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
 
     const player = new Player();
     player.displayName = options.displayName || "U.N. Owen";
+    console.log("Reconnect token for " + player.displayName + " is " + client.reconnectionToken);
     if (options.id == ""){
       player.id = uuidv4().slice(0,4)
     } else {
@@ -306,11 +326,12 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     
     this.state.playerMap.set(player.id, player);
     this.sessionIDtoPlayerIdMap.set(client.sessionId, player.id);
+
     if (!this.isGM(client) && !this.isOverlay(client)){
       const ix = Math.floor(Math.random() * this.state.roster.length);
       // console.log(this.state.roster)
-      console.log("Assigning " + this.state.roster[ix].name);
-      this.state.currentAssignments.set(player.id, this.state.roster[ix]);
+      // console.log("Assigning " + this.state.roster[ix].name);
+      // this.state.currentAssignments.set(player.id, this.state.roster[ix]);
       console.log("Added " + player.id)
       console.log("Playermap:")
       this.state.playerMap.forEach((v, k) => {
@@ -325,32 +346,58 @@ export class SlayerRoom extends Room<SlayerRoomState> {
 
   }
 
-  onLeave (client: Client, consented: boolean) {
+  async onLeave (client: Client, consented: boolean) {
     const clientPlayer = this.sessionIdToPlayer(client.sessionId);
-    if (clientPlayer){
-      console.log(clientPlayer.displayName + " (" + clientPlayer.id + "): " + client.sessionId, "left!");
-      if (this.state.currentAssignments.has(clientPlayer.id) ){
-        console.log("Assignment deleted? " + this.state.currentAssignments.delete(clientPlayer.id));
-  
+
+    try {
+      console.log(clientPlayer.displayName + " leaving. Waiting for reconnect...");
+      
+      // const assignedSlayer = this.state.currentAssignments.get(clientPlayer.id);
+      // const deferredClient = await this.allowReconnection(client, 5 * 60);
+      // // deferredClient.
+      // console.log("...reconnected!");
+      // const role: "gm" | "player" = this.campaign.gms.includes(clientPlayer.id) ? "gm" : "player";
+      // const joinResponseMessage: IJoinResponseMsg = {
+      //   kind: EMessageTypes.JoinResponse,
+      //   role: role,
+      //   player: clientPlayer
+      // }
+      // console.log("Sending join message with role = " + role);
+      // client.send(EMessageTypes.JoinResponse, joinResponseMessage);
+    
+      // this.state.playerMap.set(clientPlayer.id, clientPlayer);
+      // this.sessionIDtoPlayerIdMap.set(client.sessionId, clientPlayer.id);
+
+      
+    } catch (e){
+      if (clientPlayer){
+        console.log(clientPlayer.displayName + " did not reconnect. Removing");
+        console.log(clientPlayer.displayName + " (" + clientPlayer.id + "): " + client.sessionId, "left!");
+        // if (this.state.currentAssignments.has(clientPlayer.id) ){
+        //   console.log("Assignment deleted? " + this.state.currentAssignments.delete(clientPlayer.id));
+    
+        // }
+        if (this.state.playerMap.has(clientPlayer.id)){
+          console.log("Player deleted? " + this.state.playerMap.delete(clientPlayer.id));
+          console.log("Session removed? " + this.sessionIDtoPlayerIdMap.delete(client.sessionId));
+        }
+        console.log("Deleted " + clientPlayer.id)
+        console.log("Playermap:")
+        this.state.playerMap.forEach((v, k) => {
+          console.log(v.displayName);
+        } )
+        console.log("==========");  
+      } else {
+        console.log(client.sessionId + " not in playermap: ");
+        console.log(JSON.stringify(this.state.playerMap));
       }
-      if (this.state.playerMap.has(clientPlayer.id)){
-        console.log("Player deleted? " + this.state.playerMap.delete(clientPlayer.id));
-        console.log("Session removed? " + this.sessionIDtoPlayerIdMap.delete(client.sessionId));
+      const overlayIx = this.overlayClients.indexOf(client);
+      if (overlayIx){
+        this.overlayClients.splice(overlayIx, 1);
       }
-      console.log("Deleted " + clientPlayer.id)
-      console.log("Playermap:")
-      this.state.playerMap.forEach((v, k) => {
-        console.log(v.displayName);
-      } )
-      console.log("==========");  
-    } else {
-      console.log(client.sessionId + " not in playermap: ");
-      console.log(JSON.stringify(this.state.playerMap));
     }
-    const overlayIx = this.overlayClients.indexOf(client);
-    if (overlayIx){
-      this.overlayClients.splice(overlayIx, 1);
-    }
+
+    
   }
 
   onDispose() {

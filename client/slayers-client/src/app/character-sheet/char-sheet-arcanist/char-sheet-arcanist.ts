@@ -23,7 +23,6 @@ import { BaneMenu } from "./bane-menu/bane-menu";
     CommonModule,
     MatExpansionModule,
     MatSelectModule,
-    DragDropModule,
     MatSlideToggleModule,
     MatButtonModule,
     MatButtonToggleModule,

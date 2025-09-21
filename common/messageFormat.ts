@@ -15,6 +15,8 @@ export enum EMessageTypes {
     PlayerUpdate = "playerUpdate",
     SaveCampaign = "saveCampaign",
     JoinResponse = "joinResponse",
+    ping = "ping",
+    pong = "pong",
     // tactician
     swapRoll = "swapRoll",
     addPlan = "addPlan",
@@ -49,6 +51,14 @@ export enum EMessageTypes {
 
 export interface IBaseMsg {
     kind: EMessageTypes
+}
+
+export interface IPingMsg {
+    kind: EMessageTypes.ping
+};
+
+export interface IPongMsg {
+    kind: EMessageTypes.pong
 }
 
 // GM related

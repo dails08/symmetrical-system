@@ -23,6 +23,7 @@ export function addGMCallbacks(room: SlayerRoom){
         for (const elem of room.state.roster){
           if (elem.id == msg.slayerId) {
             room.state.currentAssignments.set(msg.playerId, elem);
+            room.historicalAssignmentsPlayerIdToSlayerId.set(msg.playerId, elem.id);
           }
         }
       }

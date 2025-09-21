@@ -88,7 +88,7 @@ export interface ICampaign {
     id: string,
     name: string,
     gms: string[],
-    players: string[],
+    players: IPlayer[],
     roster: ISlayer[],
     kia: ISlayer[],
     roomId?: string;

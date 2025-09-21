@@ -4,6 +4,7 @@
     </div>
 }
 <div class="playerSection">
+  <div id="connectedIcon" [ngClass]="{connectedState: this.cjs.connected, disconnectedState: !this.cjs.connected}"></div>
     <p> <span class="playerDisplayName">{{this.cs.player.displayName}} </span> <span class="playerId">({{cs.player.id}})</span></p>
 </div>
 <div class="joined" *ngIf="this.cjs.roomType == 'gameplay'">

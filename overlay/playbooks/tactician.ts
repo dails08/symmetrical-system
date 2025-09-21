@@ -34,7 +34,7 @@ export function loadTacticianContent(scene: OverlayScene){
             .destroy();
 
         room.onMessage(EMessageTypes.playRollSwap, (msg: IPlayRollSwapMsg) => {
-            playSwapAnimation(this, msg.actor, msg.action, msg.oldValue, msg.newValue);
+            playSwapAnimation(scene, msg.actor, msg.action, msg.oldValue, msg.newValue);
         })
 
 

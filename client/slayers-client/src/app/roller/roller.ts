@@ -31,11 +31,6 @@ export class Roller {
     dice.push({
       type: this.size
     });
-    if (DNA != "N"){
-      dice.push({
-        type: this.size
-      })
-    };
     const msg: IRollMsg = {
       kind: EMessageTypes.Roll,
       label: this.name,

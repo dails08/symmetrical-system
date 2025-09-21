@@ -11,7 +11,7 @@
       }
     </div>
   </div>
-   <div id="favoredSpellSection" cdkDropList #favoredSpellDrop="cdkDropList" (cdkDropListDropped)="updateFavoredSpell($event.item.data)">
+   <div id="favoredSpellSection" >
     <p class="favoredSpellLabel">favored spell</p>
     @if (slayer.favoredSpell){
       <!-- <img class="favoredIcon" [src]="this.cs.storageURLBase + this.spellIconURLBase + favoredSpellSpellId + '.png'"> -->
@@ -35,7 +35,7 @@
     <mat-expansion-panel class="spellPanel" [ngClass]="{'enhancedSpell': spell.enhanced}" hideToggle>
       <mat-expansion-panel-header collapsedHeight="120px" expandedHeight="110px" class="spellHeaderName" [ngClass]="{'enhancedSpell': spell.enhanced}">
         <mat-panel-title>
-          <img cdkDrag [cdkDragData]="spell" class="spellIcon" [src]="this.cs.storageURLBase + this.spellIconURLBase + spell.spellId + '.png'">
+          <img   class="spellIcon" [src]="this.cs.storageURLBase + this.spellIconURLBase + spell.spellId + '.png'">
         </mat-panel-title>
         <mat-panel-description>
           <p>{{spell.displayName}}</p>

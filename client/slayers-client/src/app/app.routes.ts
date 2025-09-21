@@ -9,7 +9,7 @@ export const routes: Routes = [
         component: GmScreen,
     },
     {
-        path: "",
+        path: "slayer",
         component: CharacterSheet
     },
     {

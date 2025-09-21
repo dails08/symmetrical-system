@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Player, Slayer } from '../../../../../server/src/SlayerRoomState';
-import { IPlayer } from '../../../../../common/common';
-import { ColyseusService } from './colyseusService';
-import { Subject } from 'rxjs';
-import { getStateCallbacks } from 'colyseus.js';
-import { EMessageTypes, IJoinResponseMsg } from '../../../../../common/messageFormat';
 import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
