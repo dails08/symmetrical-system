@@ -94,6 +94,18 @@ export interface ICampaign {
     roomId?: string;
 }
 
+export interface ICampaignRecord {
+    id: string,
+    name: string,
+    gms: string[],
+    players: IPlayer[],
+    roster: ISlayer[],
+    kia: ISlayer[],
+    roomId?: string,
+    administrativeAssignments: {playerId: string, slayerId: string}[],
+
+}
+
 export interface IJoinOptions {
     id: string,
     displayName: string;

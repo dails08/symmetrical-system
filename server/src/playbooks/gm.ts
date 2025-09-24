@@ -17,13 +17,14 @@ export function addGMCallbacks(room: SlayerRoom){
       if (msg.action == "unassign") {
         console.log("Unassigning " + msg.playerId)
         room.state.currentAssignments.delete(msg.playerId);
+        room.administrativeAssignments.delete(msg.playerId);
       }
       if (msg.action == "assign") {
         console.log("Assigning " + msg.slayerId + " to " + msg.playerId);
         for (const elem of room.state.roster){
           if (elem.id == msg.slayerId) {
             room.state.currentAssignments.set(msg.playerId, elem);
-            room.historicalAssignmentsPlayerIdToSlayerId.set(msg.playerId, elem.id);
+            room.administrativeAssignments.set(msg.playerId, elem.id);
           }
         }
       }

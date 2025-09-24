@@ -1,6 +1,6 @@
 import { Room, Client, logger, debugMessage } from "@colyseus/core";
 import { SlayerRoomState, Advance, Player, Slayer, Blade, Tactician, Gunslinger, Arcanist, InventoryItem, KnownSpell, RecentRoll } from "../SlayerRoomState";
-import { EPlaybooks, ICampaign, IJoinOptions, ISlayer, IBlade, IGunslinger, IArcanist, ITactician, ERunes } from "../../../common/common";
+import { EPlaybooks, ICampaign, IJoinOptions, ISlayer, IBlade, IGunslinger, IArcanist, ITactician, ERunes, ICampaignRecord } from "../../../common/common";
 import { Clint, Ryze, Cervantes, Gene} from "../../../common/examples";
 import { EMessageTypes, IBaseMsg, IRuneChangeMsg, ILoadedChangeMsg, IStanceChangeMsg, IRosterAddMsg, IKillMsg, IAssignmentMsg, IArrayChangeMsg, IPlayerUpdateMsg, ICharacterUpdateMsg, IUpdateNumericalMsg, IJoinResponseMsg, IWeaponChangeMsg, IAddPlanMsg, IRemovePlanMsg, IAddSpellMsg, IRemoveSpellMsg, ISetEnhancedMsg, ISetFavoredSpell, IPlayAnimationMsg, ISwapRollMsg, IPlayRollSwapMsg, ISetRecentRolls, ISprayLeadMsg, IPlayGunshotAnimationMsg, IRollMsg, IPingMsg } from "../../../common/messageFormat";
 import { db } from "../firestoreConnection";
@@ -19,7 +19,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
   state = new SlayerRoomState();
   sessionIDtoPlayerIdMap = new Map<string, string>()
   overlayClients: Client[] = [];
-  historicalAssignmentsPlayerIdToSlayerId = new Map<string, string>();
+  administrativeAssignments = new Map<string, string>();
   // campaign: ICampaign | undefined;
   campaign: ICampaign | undefined = {
     id: "",
@@ -51,7 +51,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     const campaignRef = await db.collection("campaigns").doc(campaignID).get();
     const campaignValue = campaignRef.data();
     if (campaignValue){
-      const tempCampaign: ICampaign = campaignValue as ICampaign;
+      const tempCampaign: ICampaignRecord = campaignValue as ICampaignRecord;
       console.log("Found campaign " + tempCampaign.id); //\n" + JSON.stringify(campaignValue));
       this.campaign.name = tempCampaign.name;
       this.campaign.id = tempCampaign.id;
@@ -83,7 +83,16 @@ export class SlayerRoom extends Room<SlayerRoomState> {
         this.state.kia.push(SlayerRoom.schemaFromISlayer(casualty));
       }
       tempCampaign.roomId = this.roomId;
-      db.collection("campaigns").doc(campaignID).set(tempCampaign);
+      this.administrativeAssignments = new Map<string, string>()
+      if (tempCampaign.administrativeAssignments){
+        for (const elem of tempCampaign.administrativeAssignments){
+          this.administrativeAssignments.set(elem.playerId, elem.slayerId);
+        }
+      } else {
+        this.administrativeAssignments = new Map<string, string>();
+      }
+      
+      // db.collection("campaigns").doc(campaignID).set(tempCampaign);
       return true
     } else {
       console.log("No campaign found with id " + campaignID);
@@ -104,14 +113,19 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     // }
     console.log(this.state.roster.length);
     // console.log(this.state.roster.toArray());
-    const cleanCampaign: ICampaign = {
+    const cleanCampaign: ICampaignRecord = {
       id: this.campaign.id,
       name: this.campaign.name,
       roster: this.state.roster.toJSON(),
       kia: this.state.kia.toJSON(),
       roomId: this.roomId,
       gms: this.campaign.gms,
-      players: this.campaign.players
+      players: this.campaign.players,
+      administrativeAssignments: []
+    }
+
+    for (const key of this.administrativeAssignments.keys()){
+      cleanCampaign.administrativeAssignments.push({playerId: key, slayerId: this.administrativeAssignments.get(key)});
     }
     // console.log("Saving:");
     // console.log(JSON.stringify(cleanCampaign));
@@ -149,6 +163,15 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     const clientPlayer = this.sessionIdToPlayer(client.sessionId);
     const assignment = this.state.currentAssignments.get(clientPlayer.id)
     return assignment;
+  }
+
+  getCharacterFromId(id: string){
+    for (const elem of this.state.roster){
+      if (elem.id == id){
+        return elem
+      }
+    }
+    return undefined;
   }
 
   setRecentRolls(rolls: {actor: string, action: string, value: number}[], action: "add" | "set"){
@@ -241,10 +264,10 @@ export class SlayerRoom extends Room<SlayerRoomState> {
 
   onCreate (options: any) {
     this.onMessage(EMessageTypes.ping, (client, msg: IPingMsg) => {
-      console.log("Got ping");
+      // console.log("Got ping");
       const player = this.sessionIdToPlayer(client.sessionId);
       if (player){
-        console.log("\tPing from " + player.displayName);
+        // console.log("\tPing from " + player.displayName);
       }
       client.send(EMessageTypes.pong, {kind: EMessageTypes.pong});
     })
@@ -327,46 +350,60 @@ export class SlayerRoom extends Room<SlayerRoomState> {
     this.state.playerMap.set(player.id, player);
     this.sessionIDtoPlayerIdMap.set(client.sessionId, player.id);
 
-    if (!this.isGM(client) && !this.isOverlay(client)){
-      const ix = Math.floor(Math.random() * this.state.roster.length);
-      // console.log(this.state.roster)
-      // console.log("Assigning " + this.state.roster[ix].name);
-      // this.state.currentAssignments.set(player.id, this.state.roster[ix]);
-      console.log("Added " + player.id)
-      console.log("Playermap:")
-      this.state.playerMap.forEach((v, k) => {
-        console.log(v.displayName);
-      } )
+    // check admin assignments and make active assignment if found
+    if (this.administrativeAssignments.has(player.id)){
+      const assignedSlayer = this.getCharacterFromId(this.administrativeAssignments.get(player.id)!);
+      this.state.currentAssignments.set(player.id, assignedSlayer);
     } else {
-      console.log("Client is overlay or GM; not assigning Slayer.");
+      console.log("No admin assignment found");
+      console.log("====");
+      this.administrativeAssignments.keys().forEach(key => { console.log(key+ ": " + this.administrativeAssignments.get(key))})
+      console.log("====");
     }
 
-    if (this.campaign.gms)
+    // // assign a random slayer
+    // if (!this.isGM(client) && !this.isOverlay(client)){
+    //   const ix = Math.floor(Math.random() * this.state.roster.length);
+    //   // console.log(this.state.roster)
+    //   // console.log("Assigning " + this.state.roster[ix].name);
+    //   // this.state.currentAssignments.set(player.id, this.state.roster[ix]);
+    //   console.log("Added " + player.id)
+    //   console.log("Playermap:")
+    //   this.state.playerMap.forEach((v, k) => {
+    //     console.log(v.displayName);
+    //   } )
+    // } else {
+    //   console.log("Client is overlay or GM; not assigning Slayer.");
+    // }
+
+    // if (this.campaign.gms)
     console.log("==========");
 
   }
 
   async onLeave (client: Client, consented: boolean) {
     const clientPlayer = this.sessionIdToPlayer(client.sessionId);
+    console.log("CP: " + clientPlayer.chekhovPoints);
 
     try {
       console.log(clientPlayer.displayName + " leaving. Waiting for reconnect...");
       
-      // const assignedSlayer = this.state.currentAssignments.get(clientPlayer.id);
-      // const deferredClient = await this.allowReconnection(client, 5 * 60);
+      const assignedSlayer = this.state.currentAssignments.get(clientPlayer.id);
+      const deferredClient = await this.allowReconnection(client, 5 * 60);
       // // deferredClient.
-      // console.log("...reconnected!");
-      // const role: "gm" | "player" = this.campaign.gms.includes(clientPlayer.id) ? "gm" : "player";
-      // const joinResponseMessage: IJoinResponseMsg = {
-      //   kind: EMessageTypes.JoinResponse,
-      //   role: role,
-      //   player: clientPlayer
-      // }
-      // console.log("Sending join message with role = " + role);
-      // client.send(EMessageTypes.JoinResponse, joinResponseMessage);
+      console.log("...reconnected!");
+      const role: "gm" | "player" = this.campaign.gms.includes(clientPlayer.id) ? "gm" : "player";
+      const joinResponseMessage: IJoinResponseMsg = {
+        kind: EMessageTypes.JoinResponse,
+        role: role,
+        player: clientPlayer
+      }
+      console.log("Sending join message with role = " + role);
+      client.send(EMessageTypes.JoinResponse, joinResponseMessage);
     
-      // this.state.playerMap.set(clientPlayer.id, clientPlayer);
-      // this.sessionIDtoPlayerIdMap.set(client.sessionId, clientPlayer.id);
+      this.state.playerMap.set(clientPlayer.id, clientPlayer);
+      this.sessionIDtoPlayerIdMap.delete(client.sessionId);
+      this.sessionIDtoPlayerIdMap.set(deferredClient.sessionId, clientPlayer.id);
 
       
     } catch (e){
@@ -382,6 +419,9 @@ export class SlayerRoom extends Room<SlayerRoomState> {
           console.log("Session removed? " + this.sessionIDtoPlayerIdMap.delete(client.sessionId));
         }
         console.log("Deleted " + clientPlayer.id)
+        if (this.state.currentAssignments.has(clientPlayer.id)){
+          console.log("Current assignment deleted? " + this.state.currentAssignments.delete(clientPlayer.id));
+        }
         console.log("Playermap:")
         this.state.playerMap.forEach((v, k) => {
           console.log(v.displayName);

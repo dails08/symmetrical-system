@@ -29,6 +29,7 @@ export class ColyseusService {
 
   public connected: boolean = false;
   private timeoutId: NodeJS.Timeout | undefined;
+  private pingInterval: NodeJS.Timeout | undefined;
 
 
   constructor(
@@ -150,6 +151,8 @@ export class ColyseusService {
         $(refPlayer).bindTo(this.cs.player);
       }
 
+
+
       $(room.state).currentAssignments.onAdd((slayer, playerId) => {
         console.log("Assignment change: " + slayer.id + " to " + playerId)
         if (playerId == this.cs.player.id){
@@ -169,6 +172,11 @@ export class ColyseusService {
         }
       })
 
+      if (room.state.currentAssignments.has(this.cs.player.id)){
+        this.cs.slayer = room.state.currentAssignments.get(this.cs.player.id);
+        $(this.cs.slayer!).bindTo(this.cs.slayer);
+      }
+
     $(room.state).roster.onChange((item, ix) => {
       this.rosterChangeSubject.next(item);
     })
@@ -176,7 +184,7 @@ export class ColyseusService {
     }));
 
 
-    setInterval(() => {
+    this.pingInterval = setInterval(() => {
       const pingMsg: IPingMsg = {
         kind: EMessageTypes.ping
       }
@@ -191,6 +199,8 @@ export class ColyseusService {
           this.room.catch((reason) => {
             console.log("Failed to reconnect:");
             console.log(reason.message);
+            this.pingInterval?.close();
+            // this.router.navigate(["/slayer"]);
           })
         }
       }, 5000)
