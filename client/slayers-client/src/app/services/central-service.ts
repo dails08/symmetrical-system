@@ -11,6 +11,8 @@ export class CentralService {
   // public assignmentChange: Subject<Slayer>;
   public role: "player" | "gm" = "player";
 
+  public state: "join" | "dm" | "character";
+
   public storageURLBase = "https://storage.googleapis.com/slayers-media/";
 
 
@@ -23,6 +25,13 @@ export class CentralService {
       displayName: "Chris",
       chekhovPoints: 0
     });
+
+    this.state = "join";
+
+    // if loginoptions in localStorage
+      // if  date.now() - loginoptions.age > 1 hour{
+      //    join(localStorage.get(loginOptions)).then(state = dm or character) 
+      // }
 
 
 

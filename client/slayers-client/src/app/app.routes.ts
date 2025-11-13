@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { GmScreen } from './gm-screen/gm-screen';
 import { CharacterSheet } from './character-sheet/character-sheet';
 import { JoinScreen } from './join-screen/join-screen';
+import { PlayerScreen } from './player-screen/player-screen';
 
 export const routes: Routes = [
     {
@@ -9,11 +10,7 @@ export const routes: Routes = [
         component: GmScreen,
     },
     {
-        path: "slayer",
-        component: CharacterSheet
+        path: "",
+        component: PlayerScreen
     },
-    {
-        path: "**",
-        component: JoinScreen
-    }
 ];
