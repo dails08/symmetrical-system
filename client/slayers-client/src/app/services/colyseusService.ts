@@ -8,7 +8,7 @@ import { EMessageTypes, IBaseMsg, IJoinResponseMsg, ISaveCampaignMsg, IPingMsg, 
 import { Router } from '@angular/router';
 import { CentralService } from './central-service';
 import { environment } from '../../environments/environment';
-import { StorageMap } from '@ngx-pwa/local-storage';
+// import { StorageMap } from '@ngx-pwa/local-storage';
 import { EmailValidator } from '@angular/forms';
 
 
@@ -35,7 +35,7 @@ export class ColyseusService {
   constructor(
     private router: Router,
     private cs: CentralService,
-    private storage: StorageMap
+    // private storage: StorageMap
   ) {
     // this.client = new Client("http://localhost:2567");
     this.client = new Client(environment.colyseusServer);
