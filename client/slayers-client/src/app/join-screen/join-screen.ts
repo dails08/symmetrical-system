@@ -16,6 +16,10 @@ export class JoinScreen {
   }
 
   async join(displayName: string, playerId: string, campaignId: string){
+    const signinData = {
+      timestamp: Date.now(),
+
+    }
     await this.cjs.joinRoom({id: playerId, displayName: displayName, campaignId: campaignId});
   }
 }

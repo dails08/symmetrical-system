@@ -60,7 +60,10 @@ export class ColyseusService {
       if (this.role == "gm"){
         console.log("Navigating to gm screen");
         this.router.navigate(["/gm"]);
-      };
+        this.cs.state = "dm";
+      } else {
+        this.cs.state = "character"
+      }
 
       this.cs.player = resp.player;
       console.log(resp.player);
