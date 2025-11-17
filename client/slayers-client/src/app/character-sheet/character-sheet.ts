@@ -29,7 +29,6 @@ import { CharSheetBlade } from "./char-sheet-blade/char-sheet-blade";
     TacticianPipe,
     TippyDirective,
     Roller,
-    JoinScreen,
     CharSheetTactician,
     CharSheetGunslinger,
     CharSheetArcanist,
@@ -66,7 +65,12 @@ export class CharacterSheet implements AfterViewInit {
     //     })
     //   });
     this.fresh = true;
-    }
+    this.cjs.getReconnect().subscribe(() => {
+
+    })
+
+
+  }
 
     animateHPChange() {
       if (this.cs.slayer){
@@ -83,8 +87,50 @@ export class CharacterSheet implements AfterViewInit {
 
     }
 
+    addListeners() {
+      
+    }
+
 
     ngAfterViewInit(): void {
+      console.log("Character sheet afterViewInit triggering");
+      console.log(this.cs.slayer);
+      
+      this.animateHPChange();
+      const room = this.cjs.room.then((room) => {
+        const $ = getStateCallbacks(room);
+        console.log("Adding listeners")
+        // Add listeners
+        if (this.cs.slayer) {
+          $(this.cs.slayer).listen("currentHP", (newValue, previousValue) => {
+            console.log("Normally changing hp: " + this.cs.slayer!.currentHP + "/" + this.cs.slayer!.maxHP);
+            // this.cs.slayer!.currentHP = newValue;
+            console.log("Damage: " + this.cs.slayer!.currentHP);
+
+            if (this.fresh){
+              setTimeout(()=> {
+                this.animateHPChange();
+              }, 100);
+            } else {
+              this.animateHPChange();
+            }
+          })
+          $(this.cs.slayer).listen("maxHP", (newValue, previousValue) => {
+              console.log("Adjusting max hp: " + this.cs.slayer!.currentHP + "/" + this.cs.slayer!.maxHP);
+              // this.cs.slayer!.currentHP = newValue;
+              // console.log("Damage: " + this.cs.slayer!.currentHP);
+
+              if (this.fresh){
+                setTimeout(()=> {
+                  this.animateHPChange();
+                }, 100);
+              } else {
+                this.animateHPChange();
+              }
+          })
+        }
+        });
+
       this.cjs.getAssignmentChange().subscribe(([newSlayer]) => {
         const room = this.cjs.room.then((room) => {
           const $ = getStateCallbacks(room);
@@ -102,20 +148,20 @@ export class CharacterSheet implements AfterViewInit {
             } else {
               this.animateHPChange();
             }
-        })
-        $(newSlayer).listen("maxHP", (newValue, previousValue) => {
-            console.log("Correcting max hp: " + this.cs.slayer!.currentHP + "/" + this.cs.slayer!.maxHP);
-            // this.cs.slayer!.currentHP = newValue;
-            // console.log("Damage: " + this.cs.slayer!.currentHP);
+          })
+          $(newSlayer).listen("maxHP", (newValue, previousValue) => {
+              console.log("Correcting max hp: " + this.cs.slayer!.currentHP + "/" + this.cs.slayer!.maxHP);
+              // this.cs.slayer!.currentHP = newValue;
+              // console.log("Damage: " + this.cs.slayer!.currentHP);
 
-            if (this.fresh){
-              setTimeout(()=> {
+              if (this.fresh){
+                setTimeout(()=> {
+                  this.animateHPChange();
+                }, 100);
+              } else {
                 this.animateHPChange();
-              }, 100);
-            } else {
-              this.animateHPChange();
-            }
-        })
+              }
+          })
 
 
 

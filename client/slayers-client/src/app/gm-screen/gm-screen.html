@@ -83,6 +83,32 @@
         </div>
       </div>
 
+      <div class="controlsSection">
+        <div class="sectionLabel">
+          <p>Debugging</p>
+        </div>
+        <div class="sectionContent">
+          <div class="printouts">
+            <div id="players">
+              <p><em>Players</em></p>
+              <ol>
+              @for (pair of players | keyvalue; track pair.key){
+                <li>{{pair.value | json}}</li>
+              }
+              </ol>
+            </div>
+            <div id="assignments">
+              <p><em>Assignments</em></p>
+              <ol>
+              @for (pair of assignments | keyvalue; track pair.key){
+                <li>{{pair.key.displayName}} : {{pair.value.name }}</li>
+              }
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
         <div class="saveAndLoad">
             <button (click)="sendSaveCampaign()">Save Campaign</button>

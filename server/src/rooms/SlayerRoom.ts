@@ -20,6 +20,7 @@ export class SlayerRoom extends Room<SlayerRoomState> {
   sessionIDtoPlayerIdMap = new Map<string, string>()
   overlayClients: Client[] = [];
   administrativeAssignments = new Map<string, string>();
+
   // campaign: ICampaign | undefined;
   campaign: ICampaign | undefined = {
     id: "",
@@ -392,18 +393,26 @@ export class SlayerRoom extends Room<SlayerRoomState> {
       const deferredClient = await this.allowReconnection(client, 5 * 60);
       // // deferredClient.
       console.log("...reconnected!");
-      const role: "gm" | "player" = this.campaign.gms.includes(clientPlayer.id) ? "gm" : "player";
-      const joinResponseMessage: IJoinResponseMsg = {
-        kind: EMessageTypes.JoinResponse,
-        role: role,
-        player: clientPlayer
+      const onJoinOptions: IJoinOptions = {
+        campaignId: this.campaign.id,
+        displayName: clientPlayer.displayName,
+        id: clientPlayer.id
       }
-      console.log("Sending join message with role = " + role);
-      client.send(EMessageTypes.JoinResponse, joinResponseMessage);
+      this.onJoin(deferredClient, onJoinOptions);
+
+      // const role: "gm" | "player" = this.campaign.gms.includes(clientPlayer.id) ? "gm" : "player";
+      // const joinResponseMessage: IJoinResponseMsg = {
+      //   kind: EMessageTypes.JoinResponse,
+      //   role: role,
+      //   player: clientPlayer
+      // }
+      // console.log("Sending join message with role = " + role);
+      // client.send(EMessageTypes.JoinResponse, joinResponseMessage);
     
-      this.state.playerMap.set(clientPlayer.id, clientPlayer);
-      this.sessionIDtoPlayerIdMap.delete(client.sessionId);
-      this.sessionIDtoPlayerIdMap.set(deferredClient.sessionId, clientPlayer.id);
+      // this.state.playerMap.set(clientPlayer.id, clientPlayer);
+      // this.sessionIDtoPlayerIdMap.delete(client.sessionId);
+      // console.log("Old id: " + client.sessionId + ", New id: " + deferredClient.sessionId);
+      // this.sessionIDtoPlayerIdMap.set(deferredClient.sessionId, clientPlayer.id);
 
       
     } catch (e){

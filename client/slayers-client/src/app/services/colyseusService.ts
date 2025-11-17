@@ -26,6 +26,7 @@ export class ColyseusService {
   private roomStateSubject = new Subject<SlayerRoomState>();
   private rosterChangeSubject = new Subject<Slayer>();
   private assignmentChangeSubject = new Subject<[Slayer]>();
+  public reconnectSubject = new Subject();
 
   public connected: boolean = false;
   private timeoutId: NodeJS.Timeout | undefined;
@@ -41,6 +42,23 @@ export class ColyseusService {
     this.client = new Client(environment.colyseusServer);
 
     console.log(this.client);
+
+    const reconnectToken = localStorage.getItem("colyseusReconnectionToken");
+    if (reconnectToken){
+      console.log("Found reconnect token, reconnecting");
+      this.room = this.client.reconnect(reconnectToken);
+      console.log("Reconnected room:");
+      this.reconnectSubject.next(true);
+      this.room.then((roomData) => {
+        console.log("Printing awaited reconnect room state");
+        console.log(roomData.state);
+      })
+      this.postJoinSetup();
+      this.room.catch((reason: any) => {
+        console.log("Some error with reconnect: " + reason);
+      })
+    }
+
     // const joinOptions: IJoinOptions = {
     //   name: ,
     //   displayName: "dails",
@@ -142,9 +160,13 @@ export class ColyseusService {
 
       this.cs.player = resp.player;
       console.log(resp.player);
-      console.log(this.cs.player);
       // const $ = getStateCallbacks(room);
       // $(this.cs.player).bindTo(this.cs.player)
+      console.log("room hierarchy:");
+      console.log(room);
+      console.log(JSON.stringify(room.state));
+      console.log(Object.entries(room.state));
+      console.log(room.state.playerMap);
       const refPlayer = room.state.playerMap.get(this.cs.player.id)
       if (refPlayer){
         $(refPlayer).bindTo(this.cs.player);
@@ -157,6 +179,7 @@ export class ColyseusService {
         if (playerId == this.cs.player.id){
           console.log("Assigned " + slayer.name)
           this.cs.slayer = slayer;
+          console.log(this.cs.slayer);
           $(this.cs.slayer).bindTo(this.cs.slayer);
           // this.assignmentChange.next(this.slayer);
           this.assignmentChangeSubject.next([slayer]);
@@ -215,6 +238,7 @@ export class ColyseusService {
   async joinRoom(options: IJoinOptions, roomId?: string){
     this.room = this.client.joinOrCreate<SlayerRoomState>("gameplay", options);
     this.postJoinSetup();
+    
     // this.init();
     // const room = await this.room;
     // this.roomType = "gameplay";
@@ -311,6 +335,10 @@ export class ColyseusService {
 
   getAssignmentChange() {
     return this.assignmentChangeSubject.asObservable();
+  }
+
+  getReconnect() {
+    return this.reconnectSubject.asObservable();
   }
 
   async sendMessage(msg: IBaseMsg) {
