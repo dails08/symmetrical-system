@@ -8,36 +8,47 @@ import { createArcanistContent, loadArcanistContent } from "../playbooks/arcanis
 
 export class OverlayScene extends Scene {
 
-    dddice: ThreeDDice;
+    dddice!: ThreeDDice;
 
 
-    width: number;
-    height: number;
-    center_width: number;
-    center_height: number;
+    width!: number;
+    height!: number;
+    center_width!: number;
+    center_height!: number;
 
     // SPACE: Phaser.Types.Input.Keyboard.CursorKeys
-    SPACE: Phaser.Input.Keyboard.Key;
+    SPACE!: Phaser.Input.Keyboard.Key;
 
-    cc: ComboCounter;
+    cc!: ComboCounter;
 
-    setAnimations: Map<string, Phaser.GameObjects.Sprite>;
+    setAnimations!: Map<string, Phaser.GameObjects.Video>;
 
     // testAnim: Phaser.Animations.Animation;
 
     // tactician variables
-    solidArrow: Phaser.GameObjects.Sprite;
-    exchangeArrows: Phaser.GameObjects.Sprite;
+    solidArrow!: Phaser.GameObjects.Sprite;
+    exchangeArrows!: Phaser.GameObjects.Sprite;
 
     playSpellAnimation(spellName: string){
         console.log("Casting " + spellName);
-        const spellSprite = this.setAnimations.get(spellName);
-        if (spellSprite){
+        // const spellAnimationVideo = this.add.video(this.center_width, this.center_height, spellName);
+        // spellAnimationVideo.play()
+        // spellAnimationVideo.on("complete", () => { spellAnimationVideo.destroy()});
+        // spellAnimationVideo.play();
+        const spellVideo = this.setAnimations.get(spellName);
+        if (spellVideo){
             console.log("Found spell!");
-            console.log(spellSprite);
-            spellSprite.play("spellAnimation")
+            console.log(spellVideo);
+            spellVideo.once("complete", () => { spellVideo.setVisible(false)});
+            spellVideo.setVisible(true);
+            spellVideo.play()
+            
         } else {
             console.log("No spell found!");
+            console.log("In set:");
+            for (const key of this.setAnimations.keys()){
+                console.log(key);
+            }
         }
     }
 
@@ -85,7 +96,7 @@ export class OverlayScene extends Scene {
             progressBar.fillRect(this.width / 3 + 10, this.height * .6 + 10, (this.width / 3 - 20) * val, 30);
             percentText.setText(100 * val + "%");
         });
-        this.load.on("fileprogress", (file) => {
+        this.load.on("fileprogress", (file: any) => {
             filenameText.setText(file.key);
             // console.log(filename);
 
@@ -137,42 +148,12 @@ export class OverlayScene extends Scene {
         // backgroundShade.fillStyle(0x000000, 1);
         // backgroundShade.fillRect(0,0,this.width, this.height);
 
-        this.setAnimations = new Map<string, Phaser.GameObjects.Sprite>();
+        this.setAnimations = new Map<string, Phaser.GameObjects.Video>();
 
 
 
         createArcanistContent(this);
 
-        room.onMessage(EMessageTypes.playAnimation, (msg: IPlayAnimationMsg) => {
-            console.log("Received play animation message!")
-            console.log("Playing " + msg.key);
-            const spellSprite = this.setAnimations.get(msg.key);
-            if (spellSprite){
-                console.log("Found animation!");
-                console.log(spellSprite);
-                spellSprite.play("spellAnimation")
-            } else {
-                console.log("No animation found!");
-            }
-            console.log("Looking for audio key " + msg.key);
-            if (this.sound.get(msg.key)){
-                console.log("Matching audio!");
-                const matchingAudio = this.sound.play(msg.key);
-            } else {
-                console.log("No matching audio!");
-                console.log(this.cache.audio.getKeys());
-            }
-
-            setInterval(() => {
-                const msg: IBaseMsg = {
-                    kind: EMessageTypes.SaveCampaign
-                };
-                room.send(EMessageTypes.SaveCampaign, msg);
-            }, 1000 * 60)
-            
-
-        
-        })
 
         // colyseus triggers
 
@@ -202,7 +183,7 @@ export class OverlayScene extends Scene {
 
         this.SPACE.addListener("down", () => {
             console.log("Casting spell");
-            this.playSpellAnimation("hex");
+            this.playSpellAnimation("soul-siphon");
         })
         
 
@@ -227,7 +208,7 @@ class ComboCounter extends Phaser.GameObjects.Container {
     comboPrefix: Phaser.GameObjects.BitmapText;
     fontName: string;
     pulseTween: Phaser.Tweens.Tween | undefined;
-    parentScene: Phaser.Scene;
+    // parentScene: Phaser.Scene;
 
     constructor(scene: OverlayScene, x: number, y: number){
         super(scene, x, y, []);
